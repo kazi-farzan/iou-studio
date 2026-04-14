@@ -40,7 +40,7 @@ export default function Pricing() {
                   <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                     Step 1
                   </p>
-                  <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white sm:text-3xl">
+                  <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)] sm:text-3xl">
                     Select your base package
                   </h2>
                   <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
@@ -62,7 +62,7 @@ export default function Pricing() {
                       />
 
                       <Card
-                        className="h-full border-white/10 p-6 transition-all duration-300 peer-checked:border-violet-300/35 peer-checked:bg-violet-500/10 peer-checked:shadow-[0_24px_70px_rgba(124,58,237,0.18)]"
+                        className="h-full p-6 transition-all duration-300 peer-checked:border-[color:var(--border-accent)] peer-checked:bg-[var(--surface-accent)] peer-checked:shadow-[var(--shadow-accent)]"
                         interactive
                       >
                         <div className="flex h-full flex-col">
@@ -71,12 +71,12 @@ export default function Pricing() {
                               <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
                                 {item.timeline}
                               </p>
-                              <h3 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-white">
+                              <h3 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
                                 {item.name}
                               </h3>
                             </div>
 
-                            <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-white">
+                            <span className="theme-panel rounded-full px-3 py-1 text-xs font-medium text-[var(--text-primary)]">
                               {formatPrice(item.price)}
                             </span>
                           </div>
@@ -104,7 +104,7 @@ export default function Pricing() {
                   <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                     Step 2
                   </p>
-                  <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white sm:text-3xl">
+                  <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)] sm:text-3xl">
                     Add the features you need
                   </h2>
                   <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
@@ -123,14 +123,14 @@ export default function Pricing() {
                         type="checkbox"
                       />
 
-                      <div className="flex h-full items-start gap-4 rounded-[24px] border border-white/10 bg-white/[0.03] p-5 transition-all duration-300 hover:border-violet-300/22 hover:bg-white/[0.05] peer-checked:border-violet-300/35 peer-checked:bg-violet-500/10 peer-checked:shadow-[0_18px_50px_rgba(124,58,237,0.14)]">
-                        <div className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-md border border-white/15 bg-black/20 text-xs text-white transition-all duration-300 peer-checked:border-violet-300/40 peer-checked:bg-violet-400/20">
+                      <div className="theme-panel flex h-full items-start gap-4 rounded-[24px] p-5 transition-all duration-300 hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)] peer-checked:border-[color:var(--border-accent)] peer-checked:bg-[var(--surface-accent)] peer-checked:shadow-[var(--shadow-accent)]">
+                        <div className="theme-panel-contrast mt-0.5 flex h-5 w-5 items-center justify-center rounded-md text-xs text-[var(--text-primary)] transition-all duration-300 peer-checked:border-[color:var(--border-accent)] peer-checked:bg-[var(--surface-accent-strong)] peer-checked:text-[var(--accent-contrast-text)]">
                           {selectedFeatureIds.includes(feature.id) ? "X" : ""}
                         </div>
 
                         <div className="flex-1">
                           <div className="flex flex-wrap items-center justify-between gap-2">
-                            <p className="text-base font-medium text-white">
+                            <p className="text-base font-medium text-[var(--text-primary)]">
                               {feature.name}
                             </p>
                             <span className="text-sm font-medium text-[var(--accent-secondary)]">
@@ -156,7 +156,7 @@ export default function Pricing() {
                 <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                   Step 3
                 </p>
-                <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white">
+                <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
                   Review your live total
                 </h2>
                 <p className="text-sm leading-7 text-[var(--text-secondary)]">
@@ -164,22 +164,22 @@ export default function Pricing() {
                 </p>
               </div>
 
-              <div className="space-y-4 rounded-[24px] border border-white/10 bg-black/20 p-5">
+              <div className="theme-panel-contrast space-y-4 rounded-[24px] p-5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-xs uppercase tracking-[0.24em] text-[var(--text-muted)]">
                       Base Package
                     </p>
-                    <p className="mt-2 text-base font-medium text-white">
+                    <p className="mt-2 text-base font-medium text-[var(--text-primary)]">
                       {selectedBase ? selectedBase.name : "Select a package to begin"}
                     </p>
                   </div>
-                  <span className="text-sm font-medium text-white">
+                  <span className="text-sm font-medium text-[var(--text-primary)]">
                     {selectedBase ? formatPrice(selectedBase.price) : "--"}
                   </span>
                 </div>
 
-                <div className="border-t border-white/8 pt-4">
+                <div className="border-t border-[color:var(--border-subtle)] pt-4">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-xs uppercase tracking-[0.24em] text-[var(--text-muted)]">
@@ -202,18 +202,18 @@ export default function Pricing() {
                         )}
                       </div>
                     </div>
-                    <span className="text-sm font-medium text-white">
+                    <span className="text-sm font-medium text-[var(--text-primary)]">
                       {formatPrice(featuresTotal)}
                     </span>
                   </div>
                 </div>
 
-                <div className="border-t border-white/8 pt-4">
+                <div className="border-t border-[color:var(--border-subtle)] pt-4">
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-sm font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
                       Estimated Total
                     </p>
-                    <p className="text-3xl font-semibold tracking-[-0.04em] text-white">
+                    <p className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
                       {formatPrice(total)}
                     </p>
                   </div>
@@ -239,7 +239,7 @@ export default function Pricing() {
                 </Button>
               </div>
 
-              <div className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+              <div className="theme-panel rounded-[24px] p-5">
                 <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
                   Request Preview
                 </p>

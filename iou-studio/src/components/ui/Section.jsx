@@ -42,7 +42,7 @@ export default function Section({
             ) : null}
 
             {title ? (
-              <h1 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
+              <h1 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-5xl lg:text-6xl">
                 {title}
               </h1>
             ) : null}

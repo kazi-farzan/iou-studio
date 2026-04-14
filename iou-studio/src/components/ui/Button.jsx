@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import useHoverMotion from "../../hooks/useHoverMotion.js";
 
 const baseClasses =
-  "inline-flex items-center justify-center rounded-full border px-5 py-3 text-sm font-medium tracking-[0.01em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex items-center justify-center rounded-full border px-5 py-3 text-sm font-medium tracking-[0.01em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] disabled:pointer-events-none disabled:opacity-50";
 
 const sizeClasses = {
   sm: "px-4 py-2.5 text-sm",
@@ -12,9 +12,9 @@ const sizeClasses = {
 
 const variantClasses = {
   primary:
-    "border-violet-300/20 bg-[linear-gradient(135deg,rgba(124,58,237,0.95),rgba(167,139,250,0.92))] text-white shadow-[0_18px_50px_rgba(124,58,237,0.28)] hover:brightness-105",
+    "border-[color:var(--border-accent)] bg-[linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))] text-[var(--accent-solid-text)] shadow-[var(--shadow-accent)] hover:brightness-105",
   secondary:
-    "border-white/10 bg-white/[0.04] text-[var(--text-primary)] backdrop-blur-sm hover:border-violet-300/30 hover:bg-violet-500/10 hover:text-white",
+    "border-[color:var(--border-subtle)] bg-[var(--surface-muted)] text-[var(--text-primary)] backdrop-blur-sm hover:border-[color:var(--border-accent)] hover:bg-[var(--surface-accent)] hover:text-[var(--text-primary)]",
 };
 
 function getClasses({ variant, size, className }) {

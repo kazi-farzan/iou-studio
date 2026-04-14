@@ -29,7 +29,7 @@ export default function Contact() {
                 <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                   Inquiry Form
                 </p>
-                <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white sm:text-3xl">
+                <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)] sm:text-3xl">
                   Send a structured project brief
                 </h2>
               </div>
@@ -40,9 +40,9 @@ export default function Contact() {
               >
                 <div className="grid gap-4 md:grid-cols-2">
                   <label className="grid gap-2">
-                    <span className="text-sm font-medium text-white">Name</span>
+                    <span className="text-sm font-medium text-[var(--text-primary)]">Name</span>
                     <input
-                      className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white outline-none transition-all duration-300 placeholder:text-[var(--text-muted)] focus:border-violet-300/35 focus:bg-white/[0.05]"
+                      className="theme-input rounded-2xl px-4 py-3 text-sm transition-all duration-300"
                       name="name"
                       placeholder="Your name"
                       type="text"
@@ -50,9 +50,9 @@ export default function Contact() {
                   </label>
 
                   <label className="grid gap-2">
-                    <span className="text-sm font-medium text-white">Email</span>
+                    <span className="text-sm font-medium text-[var(--text-primary)]">Email</span>
                     <input
-                      className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white outline-none transition-all duration-300 placeholder:text-[var(--text-muted)] focus:border-violet-300/35 focus:bg-white/[0.05]"
+                      className="theme-input rounded-2xl px-4 py-3 text-sm transition-all duration-300"
                       name="email"
                       placeholder="you@example.com"
                       type="email"
@@ -61,9 +61,9 @@ export default function Contact() {
                 </div>
 
                 <label className="grid gap-2">
-                  <span className="text-sm font-medium text-white">Service</span>
+                  <span className="text-sm font-medium text-[var(--text-primary)]">Service</span>
                   <select
-                    className="rounded-2xl border border-white/10 bg-[var(--background-soft)] px-4 py-3 text-sm text-white outline-none transition-all duration-300 focus:border-violet-300/35"
+                    className="theme-input rounded-2xl px-4 py-3 text-sm transition-all duration-300"
                     name="service"
                   >
                     <option>Web & app development</option>
@@ -75,9 +75,9 @@ export default function Contact() {
                 </label>
 
                 <label className="grid gap-2">
-                  <span className="text-sm font-medium text-white">Project Brief</span>
+                  <span className="text-sm font-medium text-[var(--text-primary)]">Project Brief</span>
                   <textarea
-                    className="min-h-40 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white outline-none transition-all duration-300 placeholder:text-[var(--text-muted)] focus:border-violet-300/35 focus:bg-white/[0.05]"
+                    className="theme-input min-h-40 rounded-2xl px-4 py-3 text-sm transition-all duration-300"
                     name="message"
                     placeholder="Tell IOU Studio about your goal, timeline, and what you need help with."
                     rows={6}
@@ -108,7 +108,7 @@ export default function Contact() {
               <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                 WhatsApp
               </p>
-              <h2 className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-white">
+              <h2 className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
                 Prefer a faster message thread?
               </h2>
               <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
@@ -116,7 +116,7 @@ export default function Contact() {
                 more detailed brief when the scope becomes clearer.
               </p>
               <a
-                className="mt-6 inline-flex text-sm font-medium text-[var(--accent-secondary)] transition-colors duration-300 hover:text-white"
+                className="mt-6 inline-flex text-sm font-medium text-[var(--accent-secondary)] transition-colors duration-300 hover:text-[var(--text-primary)]"
                 href={whatsappLink}
                 rel="noreferrer"
                 target="_blank"
@@ -133,9 +133,9 @@ export default function Contact() {
                 {contactNotes.map((note) => (
                   <div
                     key={note}
-                    className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4"
+                    className="theme-panel flex items-start gap-3 rounded-2xl px-4 py-4"
                   >
-                    <span className="mt-2 h-2 w-2 rounded-full bg-violet-300 shadow-[0_0_12px_rgba(167,139,250,0.85)]" />
+                    <span className="theme-dot mt-2 h-2 w-2 rounded-full" />
                     <p className="text-sm leading-7 text-[var(--text-secondary)]">
                       {note}
                     </p>

@@ -35,7 +35,7 @@ export default function About() {
             <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
               Vision
             </p>
-            <h2 className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
+            <h2 className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
               A studio model that feels faster, sharper, and more guided.
             </h2>
             <p className="mt-5 text-base leading-8 text-[var(--text-secondary)]">
@@ -58,9 +58,9 @@ export default function About() {
               {principles.map((principle) => (
                 <div
                   key={principle.title}
-                  className="rounded-2xl border border-white/10 bg-white/[0.03] p-5"
+                  className="theme-panel rounded-2xl p-5"
                 >
-                  <h3 className="text-lg font-semibold text-white">
+                  <h3 className="text-lg font-semibold text-[var(--text-primary)]">
                     {principle.title}
                   </h3>
                   <p className="mt-2 text-sm leading-7 text-[var(--text-secondary)]">

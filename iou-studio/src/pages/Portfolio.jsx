@@ -60,12 +60,12 @@ export default function Portfolio() {
                   <span className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
                     {project.id}
                   </span>
-                  <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)] transition-all duration-300 group-hover:border-violet-300/30 group-hover:text-white">
+                  <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)] transition-all duration-300 group-hover:border-[color:var(--border-accent)] group-hover:bg-[var(--surface-accent)] group-hover:text-[var(--accent-contrast-text)]">
                     {project.category}
                   </span>
                 </div>
 
-                <h2 className="mt-8 max-w-xl text-3xl font-semibold tracking-[-0.04em] text-white">
+                <h2 className="mt-8 max-w-xl text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
                   {project.title}
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
@@ -73,7 +73,7 @@ export default function Portfolio() {
                 </p>
 
                 <div className="mt-auto pt-8">
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <div className="theme-panel-contrast rounded-2xl p-4">
                     <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
                       Intended Outcome
                     </p>

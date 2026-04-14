@@ -97,13 +97,13 @@ export default function Home() {
       <Section className="pt-4 sm:pt-8 lg:pt-10" width="full">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.12fr)_minmax(320px,0.88fr)] lg:items-end">
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)] shadow-[0_12px_40px_rgba(0,0,0,0.18)]">
-              <span className="h-2 w-2 rounded-full bg-violet-300 shadow-[0_0_16px_rgba(167,139,250,0.95)]" />
+            <div className="theme-panel inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)] shadow-[var(--shadow-soft)]">
+              <span className="theme-dot h-2 w-2 rounded-full" />
               Tech-Driven Creative Agency
             </div>
 
             <div className="space-y-6">
-              <h1 className="max-w-4xl text-5xl font-semibold tracking-[-0.05em] text-white sm:text-6xl lg:text-7xl">
+              <h1 className="max-w-4xl text-5xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] sm:text-6xl lg:text-7xl">
                 Build sharper digital experiences with speed, structure, and style.
               </h1>
 
@@ -126,9 +126,9 @@ export default function Home() {
               {heroSignals.map((signal) => (
                 <div
                   key={signal.label}
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-4 transition-all duration-300 hover:border-violet-300/25 hover:bg-white/[0.06]"
+                  className="theme-panel rounded-2xl px-4 py-4 transition-all duration-300 hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)]"
                 >
-                  <p className="text-sm font-medium text-white">{signal.label}</p>
+                  <p className="text-sm font-medium text-[var(--text-primary)]">{signal.label}</p>
                   <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
                     {signal.description}
                   </p>
@@ -140,7 +140,7 @@ export default function Home() {
           <Card className="relative overflow-hidden p-7 sm:p-8">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute right-[-3rem] top-[-4rem] h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.32),transparent_72%)] blur-2xl"
+              className="theme-ambient-orb-2 pointer-events-none absolute right-[-3rem] top-[-4rem] h-40 w-40 rounded-full blur-2xl"
             />
 
             <div className="relative space-y-6">
@@ -148,7 +148,7 @@ export default function Home() {
                 <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                   Structured Delivery
                 </p>
-                <h2 className="text-2xl font-semibold tracking-[-0.04em] text-white sm:text-3xl">
+                <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-3xl">
                   A faster route from brief to launch.
                 </h2>
                 <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
@@ -161,15 +161,17 @@ export default function Home() {
                 {heroHighlights.map((item, index) => (
                   <div
                     key={item.title}
-                    className="group rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-all duration-300 hover:border-violet-300/25 hover:bg-white/[0.05]"
+                    className="theme-panel group rounded-2xl p-4 transition-all duration-300 hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)]"
                   >
                     <div className="flex items-start gap-4">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-violet-300/20 bg-violet-500/10 text-xs font-semibold text-white transition-all duration-300 group-hover:shadow-[0_0_0_6px_rgba(124,58,237,0.12)]">
+                      <span className="theme-chip flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-semibold transition-all duration-300 group-hover:bg-[var(--surface-accent-strong)] group-hover:shadow-[0_0_0_6px_var(--accent-soft)]">
                         0{index + 1}
                       </span>
 
                       <div>
-                        <p className="text-base font-medium text-white">{item.title}</p>
+                        <p className="text-base font-medium text-[var(--text-primary)]">
+                          {item.title}
+                        </p>
                         <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
                           {item.detail}
                         </p>
@@ -180,20 +182,20 @@ export default function Home() {
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                <div className="theme-panel-contrast rounded-2xl p-4">
                   <p className="text-xs uppercase tracking-[0.24em] text-[var(--text-muted)]">
                     Delivery Focus
                   </p>
-                  <p className="mt-2 text-lg font-semibold text-white">
+                  <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
                     Premium quality without unnecessary friction
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                <div className="theme-panel-contrast rounded-2xl p-4">
                   <p className="text-xs uppercase tracking-[0.24em] text-[var(--text-muted)]">
                     Best Fit
                   </p>
-                  <p className="mt-2 text-lg font-semibold text-white">
+                  <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
                     Brands that need clarity, speed, and long-term flexibility
                   </p>
                 </div>
@@ -209,7 +211,7 @@ export default function Home() {
             <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
               Services Preview
             </p>
-            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
               One studio for product, brand, design, and growth execution.
             </h2>
             <p className="text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
@@ -230,12 +232,12 @@ export default function Home() {
                     <span className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
                       {service.id}
                     </span>
-                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-[11px] font-medium tracking-[0.22em] text-[var(--accent-secondary)] transition-all duration-300 group-hover:border-violet-300/30 group-hover:bg-violet-500/12 group-hover:text-white">
+                    <span className="theme-panel flex h-12 w-12 items-center justify-center rounded-2xl text-[11px] font-medium tracking-[0.22em] text-[var(--accent-secondary)] transition-all duration-300 group-hover:border-[color:var(--border-accent)] group-hover:bg-[var(--surface-accent)] group-hover:text-[var(--accent-contrast-text)]">
                       {service.token}
                     </span>
                   </div>
 
-                  <h3 className="mt-8 text-2xl font-semibold tracking-[-0.03em] text-white">
+                  <h3 className="mt-8 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
                     {service.title}
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
@@ -258,7 +260,7 @@ export default function Home() {
             <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
               How It Works
             </p>
-            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
               A guided flow that keeps decisions clear from day one.
             </h2>
             <p className="text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
@@ -275,11 +277,11 @@ export default function Home() {
                 interactive
               >
                 <div className="flex h-full flex-col">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-violet-300/20 bg-violet-500/10 text-sm font-semibold text-white transition-all duration-300 group-hover:shadow-[0_0_0_8px_rgba(124,58,237,0.12)]">
+                  <span className="theme-chip-strong flex h-12 w-12 items-center justify-center rounded-2xl text-sm font-semibold transition-all duration-300 group-hover:shadow-[0_0_0_8px_var(--accent-soft)]">
                     {step.step}
                   </span>
 
-                  <h3 className="mt-7 text-2xl font-semibold tracking-[-0.03em] text-white">
+                  <h3 className="mt-7 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
                     {step.title}
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
@@ -304,14 +306,14 @@ export default function Home() {
         <Card className="relative overflow-hidden px-6 py-10 sm:px-10 sm:py-12">
           <div
             aria-hidden="true"
-            className="absolute inset-x-10 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(183,148,246,0.9),transparent)]"
+            className="theme-divider absolute inset-x-10 top-0 h-px"
           />
 
           <div className="relative mx-auto max-w-3xl">
             <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
               Ready To Start
             </p>
-            <h2 className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
+            <h2 className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
               Build a package that matches your goals before the first call.
             </h2>
             <p className="mt-4 text-base leading-8 text-[var(--text-secondary)] sm:text-lg">

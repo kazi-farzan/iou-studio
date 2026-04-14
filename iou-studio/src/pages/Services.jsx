@@ -79,13 +79,13 @@ export default function Services() {
                   <span className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
                     {service.id}
                   </span>
-                  <span className="rounded-full border border-violet-300/20 bg-violet-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)] transition-all duration-300 group-hover:border-violet-300/35 group-hover:bg-violet-500/14 group-hover:text-white">
+                  <span className="theme-chip rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] transition-all duration-300 group-hover:bg-[var(--surface-accent-strong)]">
                     Category
                   </span>
                 </div>
 
                 <div className="mt-7 space-y-4">
-                  <h2 className="text-2xl font-semibold tracking-[-0.03em] text-white">
+                  <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
                     {service.title}
                   </h2>
                   <p className="text-sm leading-7 text-[var(--text-secondary)]">
@@ -97,16 +97,16 @@ export default function Services() {
                   {service.deliverables.map((item) => (
                     <div
                       key={item}
-                      className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3 transition-all duration-300 group-hover:border-white/12 group-hover:bg-white/[0.05]"
+                      className="theme-panel flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-300 group-hover:border-[color:var(--border-strong)] group-hover:bg-[var(--surface)]"
                     >
-                      <span className="h-2 w-2 rounded-full bg-violet-300 shadow-[0_0_12px_rgba(167,139,250,0.85)]" />
-                      <span className="text-sm text-white">{item}</span>
+                      <span className="theme-dot h-2 w-2 rounded-full" />
+                      <span className="text-sm text-[var(--text-primary)]">{item}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="mt-auto pt-8">
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <div className="theme-panel-contrast rounded-2xl p-4">
                     <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
                       Ideal Fit
                     </p>

@@ -52,12 +52,12 @@ export default function Products() {
                   <span className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
                     {product.id}
                   </span>
-                  <span className="rounded-full border border-violet-300/20 bg-violet-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)] transition-all duration-300 group-hover:border-violet-300/30 group-hover:text-white">
+                  <span className="theme-chip rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] transition-all duration-300 group-hover:bg-[var(--surface-accent-strong)]">
                     {product.status}
                   </span>
                 </div>
 
-                <h2 className="mt-8 text-3xl font-semibold tracking-[-0.04em] text-white">
+                <h2 className="mt-8 text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
                   {product.name}
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
@@ -65,7 +65,7 @@ export default function Products() {
                 </p>
 
                 <div className="mt-auto pt-8">
-                  <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <div className="theme-panel-contrast rounded-2xl p-4">
                     <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
                       Focus
                     </p>
