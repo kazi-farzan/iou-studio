@@ -1,5 +1,6 @@
 import Button from "../ui/Button.jsx";
 import Card from "../ui/Card.jsx";
+import PricingValueText from "./PricingValueText.jsx";
 import {
   getPlanSummaryRows,
   getSelectedPlanSummary,
@@ -62,23 +63,27 @@ export default function PricingSummaryPanel({
         </div>
 
         <div className="theme-panel-contrast rounded-[24px] p-5">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
+          <div className="grid gap-5 sm:grid-cols-[minmax(0,1fr)_minmax(0,0.88fr)] sm:items-end">
+            <div className="min-w-0">
               <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
                 {summary.headlineLabel}
               </p>
-              <p className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
-                {summary.headlineValue}
-              </p>
+              <div className="mt-2 min-w-0">
+                <PricingValueText size="lg" value={summary.headlineValue} />
+              </div>
             </div>
 
-            <div className="sm:text-right">
+            <div className="min-w-0">
               <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
                 {summary.secondaryLabel}
               </p>
-              <p className="mt-2 text-xl font-semibold text-[var(--text-primary)]">
-                {summary.secondaryValue}
-              </p>
+              <div className="mt-2 min-w-0">
+                <PricingValueText
+                  align="right"
+                  size="md"
+                  value={summary.secondaryValue}
+                />
+              </div>
             </div>
           </div>
 
@@ -90,8 +95,8 @@ export default function PricingSummaryPanel({
         <div className="space-y-3">
           {rows.map((row) => (
             <div key={row.label} className="theme-panel rounded-[22px] p-4">
-              <div className="flex items-start justify-between gap-4">
-                <div>
+              <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0 flex-1">
                   <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
                     {row.label}
                   </p>
@@ -100,9 +105,9 @@ export default function PricingSummaryPanel({
                   </p>
                 </div>
 
-                <p className="text-right text-base font-semibold text-[var(--text-primary)]">
-                  {row.value}
-                </p>
+                <div className="min-w-0 sm:max-w-[10.5rem] sm:flex-none">
+                  <PricingValueText align="right" size="sm" value={row.value} />
+                </div>
               </div>
             </div>
           ))}

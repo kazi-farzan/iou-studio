@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import PricingPlanCard from "../components/pricing/PricingPlanCard.jsx";
 import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
+import PricingValueText from "../components/pricing/PricingValueText.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
@@ -328,8 +329,8 @@ export default function Pricing() {
                             : "theme-panel",
                         ].join(" ")}
                       >
-                        <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-                          <div className="max-w-sm">
+                        <div className="flex min-w-0 flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+                          <div className="max-w-sm min-w-0">
                             <div className="flex flex-wrap items-center gap-2">
                               <p className="text-base font-semibold text-[var(--text-primary)]">
                                 {plan.name}
@@ -356,18 +357,18 @@ export default function Pricing() {
                             </p>
                           </div>
 
-                          <div className="grid flex-1 gap-4 sm:grid-cols-3">
+                          <div className="grid min-w-0 flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                             {snapshot.metrics.map((metric) => (
                               <div
-                                className="theme-panel-contrast rounded-[20px] p-4"
+                                className="theme-panel-contrast min-w-0 rounded-[20px] p-4 sm:p-5"
                                 key={metric.label}
                               >
                                 <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
                                   {metric.label}
                                 </p>
-                                <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
-                                  {metric.value}
-                                </p>
+                                <div className="mt-2 min-w-0">
+                                  <PricingValueText size="md" value={metric.value} />
+                                </div>
                               </div>
                             ))}
                           </div>
