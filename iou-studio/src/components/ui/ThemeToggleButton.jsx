@@ -1,10 +1,10 @@
 import { useTheme } from "../../theme/useTheme.js";
 
-function SunIcon() {
+function SunIcon({ className = "h-4 w-4" }) {
   return (
     <svg
       aria-hidden="true"
-      className="h-4 w-4"
+      className={className}
       fill="none"
       stroke="currentColor"
       strokeLinecap="round"
@@ -18,11 +18,11 @@ function SunIcon() {
   );
 }
 
-function MoonIcon() {
+function MoonIcon({ className = "h-4 w-4" }) {
   return (
     <svg
       aria-hidden="true"
-      className="h-4 w-4"
+      className={className}
       fill="none"
       stroke="currentColor"
       strokeLinecap="round"
@@ -37,18 +37,30 @@ function MoonIcon() {
 
 export default function ThemeToggleButton() {
   const { isDark, toggleTheme } = useTheme();
+  const modeLabel = isDark ? "Light mode" : "Dark mode";
 
   return (
-    <button
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      className="theme-toggle inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-[var(--text-primary)] transition-all duration-300 hover:text-[var(--accent-contrast-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]"
-      onClick={toggleTheme}
-      type="button"
-    >
-      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--surface-strong)] text-[var(--accent-secondary)]">
-        {isDark ? <SunIcon /> : <MoonIcon />}
+    <div className="group relative flex shrink-0">
+      <button
+        aria-label={`Switch to ${modeLabel.toLowerCase()}`}
+        aria-pressed={isDark}
+        className="theme-toggle inline-flex h-11 w-11 items-center justify-center rounded-full text-[var(--accent-secondary)] transition-all duration-300 hover:scale-[1.03] hover:text-[var(--text-primary)] hover:shadow-[0_16px_40px_-22px_var(--accent-glow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]"
+        onClick={toggleTheme}
+        title={modeLabel}
+        type="button"
+      >
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--surface-strong)] text-current transition-all duration-300 group-hover:bg-[var(--surface-accent)] group-hover:text-[var(--accent-contrast-text)] group-focus-within:bg-[var(--surface-accent)] group-focus-within:text-[var(--accent-contrast-text)]">
+          {isDark ? (
+            <SunIcon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[14deg] group-focus-within:scale-110 group-focus-within:rotate-[14deg]" />
+          ) : (
+            <MoonIcon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-[12deg] group-focus-within:scale-110 group-focus-within:-rotate-[12deg]" />
+          )}
+        </span>
+      </button>
+
+      <span className="pointer-events-none absolute left-1/2 top-full z-10 mt-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-full border border-[color:var(--border-subtle)] bg-[var(--surface-strong)] px-3 py-1 text-xs font-medium text-[var(--text-primary)] opacity-0 shadow-[var(--shadow-soft)] backdrop-blur-xl transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+        {modeLabel}
       </span>
-      <span className="hidden sm:inline">{isDark ? "Light mode" : "Dark mode"}</span>
-    </button>
+    </div>
   );
 }
