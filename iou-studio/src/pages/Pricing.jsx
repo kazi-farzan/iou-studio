@@ -1,56 +1,54 @@
 import { useMemo, useState } from "react";
 import PricingPlanCard from "../components/pricing/PricingPlanCard.jsx";
+import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
 import {
   BILLING_MODE_MONTHLY,
   billingOptions,
-  getCouponBanner,
   getCouponByCode,
+  getCouponFeedback,
   getPlanPricing,
   getPlanSnapshot,
-  getPlanSummaryRows,
+  getPricingModeSummary,
   pricingPlans,
   validateCouponCode,
 } from "../data/pricing.js";
 
-const pricingSignals = [
+const pricingNotes = [
   {
-    label: "India-first pricing",
-    value: "INR across every tier",
-    detail: "Structured for local businesses, scaling startups, and premium custom work.",
+    label: "All prices in INR",
+    detail: "Set up for Indian-market retainers, scaling brands, and premium custom work.",
   },
   {
-    label: "Built-in annual savings",
-    value: "2 months included free",
-    detail: "Yearly pricing is intentionally set at 10x the monthly rate.",
+    label: "Yearly saves 2 months",
+    detail: "Switching to yearly reveals the lower effective monthly rate and bills once upfront.",
   },
   {
-    label: "Promo simulation",
-    value: "FIRST3 and TRYONCE",
-    detail: "Coupons stay centralized in frontend business logic with instant UI updates.",
+    label: "Coupon simulation only",
+    detail: "FIRST3 and TRYONCE stay frontend-only, but the rules are structured for backend handoff later.",
   },
 ];
 
-function getBannerClasses(tone) {
+function getSurfaceClasses(tone) {
   if (tone === "accent") {
     return "theme-panel-contrast border-[color:var(--border-accent)] bg-[var(--surface-accent)]";
   }
 
   if (tone === "muted") {
-    return "theme-panel";
+    return "theme-panel border-[color:var(--border-subtle)]";
   }
 
-  return "theme-panel-contrast";
+  return "theme-panel-contrast border-[color:var(--border-subtle)]";
 }
 
 function getToggleClasses(isActive) {
   return [
-    "rounded-[20px] px-4 py-3 text-left transition-all duration-300",
+    "rounded-[22px] border px-4 py-4 text-left transition-all duration-300",
     isActive
-      ? "border border-[color:var(--border-accent)] bg-[linear-gradient(135deg,var(--accent-primary),var(--accent-secondary))] text-[var(--accent-solid-text)] shadow-[var(--shadow-accent)]"
-      : "border border-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
+      ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-accent-strong))] text-[var(--text-primary)] shadow-[var(--shadow-accent)]"
+      : "border-transparent bg-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
   ].join(" ");
 }
 
@@ -69,8 +67,13 @@ export default function Pricing() {
     [appliedCouponCode],
   );
 
-  const couponBanner = useMemo(
-    () => getCouponBanner(appliedCoupon, billingMode),
+  const couponFeedback = useMemo(
+    () => getCouponFeedback(appliedCoupon, billingMode),
+    [appliedCoupon, billingMode],
+  );
+
+  const pricingModeSummary = useMemo(
+    () => getPricingModeSummary(billingMode, appliedCoupon),
     [appliedCoupon, billingMode],
   );
 
@@ -85,15 +88,9 @@ export default function Pricing() {
     [plans, selectedPlanId],
   );
 
-  const selectedSnapshot = useMemo(
-    () => getPlanSnapshot(selectedPlan),
-    [selectedPlan],
-  );
-
-  const selectedPlanRows = useMemo(
-    () => getPlanSummaryRows(selectedPlan),
-    [selectedPlan],
-  );
+  const activeBillingLabel = billingOptions.find(
+    (option) => option.id === billingMode,
+  )?.label;
 
   function handleCouponApply() {
     const result = validateCouponCode(couponInput);
@@ -123,56 +120,56 @@ export default function Pricing() {
     <div className="w-full">
       <Section
         className="pt-4 sm:pt-8"
-        description="Choose the billing rhythm that fits the engagement, preview India-market pricing in INR, and simulate coupon logic before any backend exists."
+        description="Choose how IOU Labs pricing is billed, preview launch-offer coupons, and compare plan totals without losing clarity."
         eyebrow="Pricing"
-        title="Flexible retainers and premium builds with cleaner billing logic."
+        title="Pricing that stays clear from first click to final invoice."
         width="full"
       >
         <div className="space-y-8">
-          <Card className="relative overflow-hidden p-6 sm:p-8 lg:p-10">
-            <div
-              aria-hidden="true"
-              className="theme-ambient-orb-1 pointer-events-none absolute left-[-4rem] top-[-5rem] h-40 w-40 rounded-full blur-2xl"
-            />
-            <div
-              aria-hidden="true"
-              className="theme-ambient-orb-2 pointer-events-none absolute bottom-[-5rem] right-[-4rem] h-44 w-44 rounded-full blur-2xl"
-            />
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.08fr)_380px] xl:items-start">
+            <Card className="relative overflow-hidden p-6 sm:p-8 lg:p-10">
+              <div
+                aria-hidden="true"
+                className="theme-ambient-orb-1 pointer-events-none absolute left-[-4rem] top-[-5rem] h-40 w-40 rounded-full blur-2xl"
+              />
+              <div
+                aria-hidden="true"
+                className="theme-ambient-orb-2 pointer-events-none absolute bottom-[-5rem] right-[-4rem] h-40 w-40 rounded-full blur-2xl"
+              />
 
-            <div className="relative grid gap-8 xl:grid-cols-[minmax(0,1fr)_380px] xl:items-start">
-              <div className="space-y-8">
+              <div className="relative space-y-8">
                 <div className="max-w-3xl space-y-4">
+                  <div className="theme-panel inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
+                    <span className="theme-dot h-2 w-2 rounded-full" />
+                    Frontend Pricing Simulation
+                  </div>
+
                   <p className="text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
-                    IOU Labs pricing is structured for brands that want premium
-                    execution without muddying the buying decision. Monthly plans keep
-                    things flexible. Yearly plans surface the stronger long-term rate.
-                    Coupons simulate launch offers cleanly without scattering logic
-                    through the UI.
+                    IOU Labs pricing is designed to feel straightforward even when the
+                    billing logic changes. Monthly billing stays flexible. Yearly
+                    billing lowers the effective monthly rate. Coupons preview launch
+                    offers without scattering business rules across the page.
                   </p>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-3">
-                  {pricingSignals.map((signal) => (
-                    <div
-                      key={signal.label}
-                      className="theme-panel rounded-[24px] p-5 transition-all duration-300 hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)]"
-                    >
-                      <p className="text-xs font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
-                        {signal.label}
+                  {pricingNotes.map((note) => (
+                    <div key={note.label} className="theme-panel rounded-[24px] p-5">
+                      <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                        {note.label}
                       </p>
-                      <p className="mt-3 text-lg font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
-                        {signal.value}
-                      </p>
-                      <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                        {signal.detail}
+                      <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+                        {note.detail}
                       </p>
                     </div>
                   ))}
                 </div>
               </div>
+            </Card>
 
-              <div className="space-y-4">
-                <div className="theme-panel rounded-[28px] p-2">
+            <div className="space-y-4">
+              <Card className="p-4 sm:p-5">
+                <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-2">
                     {billingOptions.map((option) => (
                       <button
@@ -191,13 +188,32 @@ export default function Pricing() {
                       </button>
                     ))}
                   </div>
-                </div>
 
-                <div className="theme-panel rounded-[28px] p-4 sm:p-5">
+                  <div
+                    className={[
+                      "rounded-[24px] border p-4",
+                      getSurfaceClasses(pricingModeSummary.tone),
+                    ].join(" ")}
+                  >
+                    <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                      {pricingModeSummary.eyebrow}
+                    </p>
+                    <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
+                      {pricingModeSummary.title}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                      {pricingModeSummary.detail}
+                    </p>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="p-4 sm:p-5">
+                <div className="space-y-4">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-xs font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
-                        Coupon
+                        Coupon Simulation
                       </p>
                       <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
                         Try <span className="font-medium text-[var(--text-primary)]">FIRST3</span> or{" "}
@@ -216,10 +232,10 @@ export default function Pricing() {
                     ) : null}
                   </div>
 
-                  <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                  <div className="flex flex-col gap-3 sm:flex-row">
                     <input
                       className={[
-                        "theme-input min-h-13 rounded-full px-5 py-3 text-sm tracking-[0.08em] uppercase",
+                        "theme-input min-h-[52px] rounded-full px-5 py-3 text-sm tracking-[0.08em] uppercase",
                         couponError
                           ? "border-[rgba(217,93,106,0.38)] bg-[rgba(217,93,106,0.08)]"
                           : "",
@@ -236,58 +252,38 @@ export default function Pricing() {
                       onClick={handleCouponApply}
                       size="lg"
                     >
-                      Apply Code
+                      Apply
                     </Button>
                   </div>
 
                   {couponError ? (
-                    <div className="mt-3 rounded-[20px] border border-[rgba(217,93,106,0.32)] bg-[rgba(217,93,106,0.08)] px-4 py-3">
+                    <div className="rounded-[20px] border border-[rgba(217,93,106,0.32)] bg-[rgba(217,93,106,0.08)] px-4 py-3">
                       <p className="text-sm leading-6 text-[var(--text-primary)]">
                         {couponError}
                       </p>
                     </div>
                   ) : null}
-                </div>
 
-                <div
-                  className={[
-                    "rounded-[28px] border p-5",
-                    getBannerClasses(couponBanner.tone),
-                  ].join(" ")}
-                >
-                  <p className="text-xs font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
-                    Live Summary
-                  </p>
-                  <h2 className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
-                    {couponBanner.title}
-                  </h2>
-                  <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                    {couponBanner.detail}
-                  </p>
-
-                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                    <div className="theme-panel rounded-[20px] p-4">
-                      <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                        Active Billing
-                      </p>
-                      <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
-                        {billingOptions.find((option) => option.id === billingMode)?.label}
-                      </p>
-                    </div>
-
-                    <div className="theme-panel rounded-[20px] p-4">
-                      <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                        Selected Plan
-                      </p>
-                      <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
-                        {selectedPlan.name}
-                      </p>
-                    </div>
+                  <div
+                    className={[
+                      "rounded-[24px] border p-4",
+                      getSurfaceClasses(couponFeedback.tone),
+                    ].join(" ")}
+                  >
+                    <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                      {couponFeedback.label}
+                    </p>
+                    <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
+                      {couponFeedback.title}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                      {couponFeedback.detail}
+                    </p>
                   </div>
                 </div>
-              </div>
+              </Card>
             </div>
-          </Card>
+          </div>
 
           <div className="grid gap-5 xl:grid-cols-3">
             {plans.map((plan) => (
@@ -300,19 +296,20 @@ export default function Pricing() {
             ))}
           </div>
 
-          <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start">
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.08fr)_380px] xl:items-start">
             <Card className="p-6 sm:p-8">
               <div className="space-y-6">
                 <div className="max-w-3xl space-y-3">
                   <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-                    Live Pricing Snapshot
+                    Live Comparison
                   </p>
                   <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-                    Every visible plan updates the moment billing or coupon logic changes.
+                    Compare the active billing view without re-reading every card.
                   </h2>
                   <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-                    This summary mirrors the same business logic powering the cards, so
-                    monthly promos and yearly savings always stay internally consistent.
+                    The selected billing mode and coupon logic update every number
+                    below, so this comparison stays aligned with the plan cards and
+                    the breakdown panel.
                   </p>
                 </div>
 
@@ -328,49 +325,51 @@ export default function Pricing() {
                           "rounded-[26px] border p-5 transition-all duration-300",
                           isSelected
                             ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] shadow-[var(--shadow-accent)]"
-                            : "theme-panel hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)]",
+                            : "theme-panel",
                         ].join(" ")}
                       >
-                        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                        <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
                           <div className="max-w-sm">
-                            <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
-                              {plan.name}
-                            </p>
-                            <p className="mt-3 text-base font-semibold text-[var(--text-primary)]">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="text-base font-semibold text-[var(--text-primary)]">
+                                {plan.name}
+                              </p>
+
+                              {plan.isMostPopular ? (
+                                <span className="theme-chip-strong rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em]">
+                                  Most Popular
+                                </span>
+                              ) : null}
+
+                              {isSelected ? (
+                                <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
+                                  Selected
+                                </span>
+                              ) : null}
+                            </div>
+
+                            <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
                               {plan.audience}
                             </p>
-                            <p className="mt-2 text-sm leading-7 text-[var(--text-secondary)]">
+                            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
                               {snapshot.note}
                             </p>
                           </div>
 
                           <div className="grid flex-1 gap-4 sm:grid-cols-3">
-                            <div className="theme-panel-contrast rounded-[20px] p-4">
-                              <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                                {snapshot.todayLabel}
-                              </p>
-                              <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
-                                {snapshot.todayValue}
-                              </p>
-                            </div>
-
-                            <div className="theme-panel-contrast rounded-[20px] p-4">
-                              <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                                {snapshot.recurringLabel}
-                              </p>
-                              <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
-                                {snapshot.recurringValue}
-                              </p>
-                            </div>
-
-                            <div className="theme-panel-contrast rounded-[20px] p-4">
-                              <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                                {snapshot.yearOneLabel}
-                              </p>
-                              <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
-                                {snapshot.yearOneValue}
-                              </p>
-                            </div>
+                            {snapshot.metrics.map((metric) => (
+                              <div
+                                className="theme-panel-contrast rounded-[20px] p-4"
+                                key={metric.label}
+                              >
+                                <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
+                                  {metric.label}
+                                </p>
+                                <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
+                                  {metric.value}
+                                </p>
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </div>
@@ -380,85 +379,11 @@ export default function Pricing() {
               </div>
             </Card>
 
-            <Card className="p-6 sm:p-8 xl:sticky xl:top-28">
-              <div className="space-y-6">
-                <div className="space-y-3">
-                  <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-                    Selected Breakdown
-                  </p>
-                  <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
-                    {selectedPlan.name}
-                  </h2>
-                  <p className="text-sm leading-7 text-[var(--text-secondary)]">
-                    {selectedPlan.description}
-                  </p>
-                </div>
-
-                <div className="theme-panel-contrast rounded-[24px] p-5">
-                  <div className="flex items-end justify-between gap-4">
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                        {selectedSnapshot.todayLabel}
-                      </p>
-                      <p className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
-                        {selectedSnapshot.todayValue}
-                      </p>
-                    </div>
-
-                    <div className="text-right">
-                      <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                        {selectedSnapshot.yearOneLabel}
-                      </p>
-                      <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
-                        {selectedSnapshot.yearOneValue}
-                      </p>
-                    </div>
-                  </div>
-
-                  <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-                    {selectedSnapshot.note}
-                  </p>
-                </div>
-
-                <div className="space-y-3">
-                  {selectedPlanRows.map((row) => (
-                    <div key={row.label} className="theme-panel rounded-[22px] p-4">
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                            {row.label}
-                          </p>
-                          <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                            {row.detail}
-                          </p>
-                        </div>
-                        <p className="text-right text-base font-semibold text-[var(--text-primary)]">
-                          {row.value}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="theme-panel rounded-[24px] p-5">
-                  <p className="text-xs font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                    Current billing mode
-                  </p>
-                  <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
-                    {billingOptions.find((option) => option.id === billingMode)?.label}
-                  </p>
-                  <p className="mt-2 text-sm leading-7 text-[var(--text-secondary)]">
-                    {appliedCoupon
-                      ? `${appliedCoupon.code} is being simulated on the frontend.`
-                      : `No coupon applied. Pricing is showing the standard ${billingMode} rate.`}
-                  </p>
-                </div>
-
-                <Button className="w-full" size="lg" to="/contact">
-                  Talk To IOU Labs
-                </Button>
-              </div>
-            </Card>
+            <PricingSummaryPanel
+              billingLabel={activeBillingLabel}
+              couponFeedback={couponFeedback}
+              plan={selectedPlan}
+            />
           </div>
         </div>
       </Section>

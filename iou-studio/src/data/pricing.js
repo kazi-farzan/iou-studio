@@ -5,12 +5,14 @@ export const billingOptions = [
   {
     id: BILLING_MODE_MONTHLY,
     label: "Monthly",
-    note: "Flexible month-to-month billing",
+    note: "Pay month to month",
+    caption: "Flexible billing with pricing shown exactly as invoiced.",
   },
   {
     id: BILLING_MODE_YEARLY,
     label: "Yearly",
-    note: "Pay yearly and save the equivalent of 2 months",
+    note: "2 months included",
+    caption: "See the lower effective monthly rate while billing once per year.",
   },
 ];
 
@@ -26,7 +28,7 @@ export const pricingPlans = [
       yearly: 180000,
     },
     features: [
-      "Conversion-focused site structure for local lead generation",
+      "Conversion-focused structure for local lead generation",
       "Responsive visual design tuned for mobile-first browsing",
       "Lead forms, WhatsApp handoff, and contact setup",
       "Basic SEO, analytics, and launch performance checks",
@@ -48,7 +50,7 @@ export const pricingPlans = [
       "Multi-page website or campaign system with strategic page hierarchy",
       "Conversion sections for launches, offers, and paid traffic support",
       "CMS-ready content blocks for services, case studies, or updates",
-      "Advanced analytics events, SEO structure, and lead funnel thinking",
+      "Advanced analytics events, SEO structure, and funnel thinking",
       "Monthly iteration support for ongoing refinements and experiments",
     ],
     ctaLabel: "Choose Growth",
@@ -101,7 +103,7 @@ const inrFormatter = new Intl.NumberFormat("en-IN", {
   maximumFractionDigits: 0,
 });
 
-function normalizeCouponCode(code) {
+function normalizeCouponCode(code = "") {
   return code.trim().toUpperCase();
 }
 
@@ -115,36 +117,45 @@ function buildBasePricing(plan, billingMode) {
   const monthlyEquivalent = roundCurrency(annualPrice / 12);
   const yearlySavings = monthlyPrice * 12 - annualPrice;
   const isYearly = billingMode === BILLING_MODE_YEARLY;
+  const yearlySavingsPercent = roundCurrency(
+    (yearlySavings / (monthlyPrice * 12)) * 100,
+  );
 
   return {
     billingMode,
+    isYearly,
     monthlyPrice,
     annualPrice,
     monthlyEquivalent,
     yearlySavings,
+    yearlySavingsPercent,
     headlinePrice: isYearly ? monthlyEquivalent : monthlyPrice,
     headlineSuffix: "/month",
-    billingLabel: isYearly ? `${formatInr(annualPrice)} billed yearly` : "Billed monthly",
-    supportingLabel: isYearly
-      ? `Save ${formatInr(yearlySavings)} compared with monthly billing`
-      : `Switch to yearly and save ${formatInr(yearlySavings)} a year`,
-    immediateCharge: isYearly ? annualPrice : monthlyPrice,
+    billingLine: isYearly ? `${formatInr(annualPrice)} billed yearly` : "Billed monthly",
+    supportLine: isYearly
+      ? `Save ${formatInr(yearlySavings)} a year compared with monthly billing`
+      : `Switch to yearly for ${formatInr(monthlyEquivalent)}/month effective`,
+    todayCharge: isYearly ? annualPrice : monthlyPrice,
     recurringCharge: isYearly ? annualPrice : monthlyPrice,
     recurringLabel: isYearly ? "Renews yearly" : "Renews monthly",
     yearOneSpend: isYearly ? annualPrice : monthlyPrice * 12,
   };
 }
 
-function buildCouponEffect(basePricing, coupon, billingMode) {
+function buildCouponEffect(basePricing, coupon) {
   if (!coupon) {
     return null;
   }
 
-  if (billingMode !== coupon.appliesTo) {
+  if (basePricing.billingMode !== coupon.appliesTo) {
     return {
       ...coupon,
       status: "inactive",
-      note: `${coupon.code} is available on monthly billing only.`,
+      tone: "muted",
+      badgeLabel: "Saved for monthly",
+      title: `${coupon.code} is available on monthly billing`,
+      detail: coupon.description,
+      note: `${coupon.code} will apply if you switch back to monthly billing.`,
     };
   }
 
@@ -155,40 +166,43 @@ function buildCouponEffect(basePricing, coupon, billingMode) {
     const yearOneSpend =
       promoPrice * coupon.promoMonths +
       basePricing.monthlyPrice * (12 - coupon.promoMonths);
+    const savings = basePricing.monthlyPrice * 12 - yearOneSpend;
 
     return {
       ...coupon,
       status: "active",
+      tone: "accent",
+      badgeLabel: "20% intro offer",
+      title: `${formatInr(promoPrice)}/month for the first 3 months`,
+      detail: `Then ${formatInr(basePricing.monthlyPrice)}/month from month 4 onward.`,
+      note: `FIRST3 saves ${formatInr(savings)} across the first year.`,
       promoPrice,
-      promoMonths: coupon.promoMonths,
-      immediateCharge: promoPrice,
+      todayCharge: promoPrice,
       recurringCharge: basePricing.monthlyPrice,
       recurringLabel: `Then ${formatInr(basePricing.monthlyPrice)}/month from month 4`,
       yearOneSpend,
-      savings: basePricing.monthlyPrice * 12 - yearOneSpend,
-      primaryLine: `${formatInr(promoPrice)}/month for months 1-3`,
-      secondaryLine: `You save ${formatInr(
-        basePricing.monthlyPrice - promoPrice,
-      )} on each of the first 3 months.`,
+      savings,
     };
   }
 
   if (coupon.code === "TRYONCE") {
     const yearOneSpend =
       basePricing.monthlyPrice * (12 - coupon.freeMonths);
+    const savings = basePricing.monthlyPrice * 12 - yearOneSpend;
 
     return {
       ...coupon,
       status: "active",
-      immediateCharge: 0,
+      tone: "accent",
+      badgeLabel: "1 month free",
+      title: "First month free",
+      detail: `Then ${formatInr(basePricing.monthlyPrice)}/month starting from month 2.`,
+      note: `TRYONCE removes the first invoice and saves ${formatInr(savings)} in year one.`,
+      todayCharge: 0,
       recurringCharge: basePricing.monthlyPrice,
       recurringLabel: `Then ${formatInr(basePricing.monthlyPrice)}/month from month 2`,
       yearOneSpend,
-      savings: basePricing.monthlyPrice * 12 - yearOneSpend,
-      primaryLine: "Month 1 free",
-      secondaryLine: `Your regular rate starts at ${formatInr(
-        basePricing.monthlyPrice,
-      )}/month after the free month.`,
+      savings,
     };
   }
 
@@ -198,7 +212,7 @@ function buildCouponEffect(basePricing, coupon, billingMode) {
 function buildEffectivePricing(basePricing, couponEffect) {
   if (!couponEffect || couponEffect.status !== "active") {
     return {
-      immediateCharge: basePricing.immediateCharge,
+      todayCharge: basePricing.todayCharge,
       recurringCharge: basePricing.recurringCharge,
       recurringLabel: basePricing.recurringLabel,
       yearOneSpend: basePricing.yearOneSpend,
@@ -208,11 +222,47 @@ function buildEffectivePricing(basePricing, couponEffect) {
   }
 
   return {
-    immediateCharge: couponEffect.immediateCharge,
+    todayCharge: couponEffect.todayCharge,
     recurringCharge: couponEffect.recurringCharge,
     recurringLabel: couponEffect.recurringLabel,
     yearOneSpend: couponEffect.yearOneSpend,
     savings: couponEffect.savings,
+  };
+}
+
+function buildPlanCallout(basePricing, couponEffect) {
+  if (couponEffect?.status === "active") {
+    return {
+      tone: "accent",
+      eyebrow: couponEffect.code,
+      title: couponEffect.title,
+      detail: couponEffect.detail,
+    };
+  }
+
+  if (couponEffect?.status === "inactive") {
+    return {
+      tone: "muted",
+      eyebrow: couponEffect.code,
+      title: "Saved for monthly billing",
+      detail: couponEffect.note,
+    };
+  }
+
+  if (basePricing.isYearly) {
+    return {
+      tone: "muted",
+      eyebrow: "Yearly value",
+      title: `${formatInr(basePricing.monthlyEquivalent)}/month effective`,
+      detail: `Billed yearly once and saves ${formatInr(basePricing.yearlySavings)} a year.`,
+    };
+  }
+
+  return {
+    tone: "default",
+    eyebrow: "Monthly billing",
+    title: "Flexible month-to-month pricing",
+    detail: `Switch to yearly for ${formatInr(basePricing.monthlyEquivalent)}/month effective.`,
   };
 }
 
@@ -251,34 +301,65 @@ export function validateCouponCode(code) {
   };
 }
 
-export function getCouponBanner(coupon, billingMode) {
+export function getCouponFeedback(coupon, billingMode) {
   if (!coupon) {
     return {
       tone: "neutral",
-      title: "No coupon applied",
-      detail:
-        "Use FIRST3 for 20% off the first 3 months or TRYONCE for 1 free month.",
+      label: "No code applied",
+      title: "Add a coupon to preview launch offers",
+      detail: "Use FIRST3 for 20% off the first 3 months or TRYONCE for 1 free month.",
     };
   }
 
   if (billingMode !== coupon.appliesTo) {
     return {
       tone: "muted",
-      title: `${coupon.code} saved for monthly billing`,
+      label: "Saved for monthly",
+      title: `${coupon.code} is ready if you switch back to monthly`,
       detail: coupon.description,
     };
   }
 
   return {
     tone: "accent",
-    title: `${coupon.code} applied`,
+    label: `${coupon.code} applied`,
+    title: coupon.name,
     detail: coupon.description,
+  };
+}
+
+export function getPricingModeSummary(billingMode, coupon) {
+  if (billingMode === BILLING_MODE_YEARLY) {
+    return {
+      tone: coupon ? "muted" : "accent",
+      eyebrow: "Yearly billing active",
+      title: "Lower effective monthly pricing is now visible across every plan",
+      detail: coupon
+        ? "Yearly billing already includes the built-in savings. Your coupon stays saved for monthly pricing."
+        : "You are seeing the effective monthly rate while yearly billing is invoiced once upfront.",
+    };
+  }
+
+  if (coupon) {
+    return {
+      tone: "accent",
+      eyebrow: `${coupon.code} active`,
+      title: "Monthly pricing is reflecting your selected launch offer",
+      detail: coupon.description,
+    };
+  }
+
+  return {
+    tone: "neutral",
+    eyebrow: "Monthly billing active",
+    title: "Flexible month-to-month pricing is currently selected",
+    detail: "Use coupons to simulate intro offers, or switch to yearly for the stronger long-term rate.",
   };
 }
 
 export function getPlanPricing(plan, billingMode, coupon) {
   const base = buildBasePricing(plan, billingMode);
-  const couponEffect = buildCouponEffect(base, coupon, billingMode);
+  const couponEffect = buildCouponEffect(base, coupon);
   const effective = buildEffectivePricing(base, couponEffect);
 
   return {
@@ -286,88 +367,122 @@ export function getPlanPricing(plan, billingMode, coupon) {
     base,
     coupon: couponEffect,
     effective,
+    callout: buildPlanCallout(base, couponEffect),
   };
 }
 
 export function getPlanSnapshot(planPricing) {
   const { base, coupon, effective } = planPricing;
 
-  if (base.billingMode === BILLING_MODE_YEARLY) {
+  if (base.isYearly) {
     return {
-      todayLabel: "Today",
-      todayValue: formatInr(effective.immediateCharge),
-      recurringLabel: "Renews",
-      recurringValue: formatInr(effective.recurringCharge),
-      yearOneLabel: "Year-one spend",
-      yearOneValue: formatInr(effective.yearOneSpend),
-      note: `${formatInr(base.monthlyEquivalent)}/month effective. Save ${formatInr(
-        base.yearlySavings,
-      )} a year.`,
+      note: `Billed yearly once. Save ${formatInr(base.yearlySavings)} a year versus monthly billing.`,
+      metrics: [
+        {
+          label: "Effective rate",
+          value: `${formatInr(base.monthlyEquivalent)}/month`,
+        },
+        {
+          label: "Due today",
+          value: formatInr(effective.todayCharge),
+        },
+        {
+          label: "Year 1",
+          value: formatInr(effective.yearOneSpend),
+        },
+      ],
     };
   }
 
   if (coupon?.status === "active" && coupon.code === "FIRST3") {
     return {
-      todayLabel: "Months 1-3",
-      todayValue: `${formatInr(coupon.promoPrice)}/month`,
-      recurringLabel: "Month 4 onward",
-      recurringValue: `${formatInr(coupon.recurringCharge)}/month`,
-      yearOneLabel: "Year-one spend",
-      yearOneValue: formatInr(coupon.yearOneSpend),
-      note: `Promo savings: ${formatInr(coupon.savings)} across the first year.`,
+      note: `20% off for the first 3 months, then ${formatInr(
+        coupon.recurringCharge,
+      )}/month.`,
+      metrics: [
+        {
+          label: "Starting rate",
+          value: `${formatInr(coupon.todayCharge)}/month`,
+        },
+        {
+          label: "Due today",
+          value: formatInr(coupon.todayCharge),
+        },
+        {
+          label: "Year 1",
+          value: formatInr(coupon.yearOneSpend),
+        },
+      ],
     };
   }
 
   if (coupon?.status === "active" && coupon.code === "TRYONCE") {
     return {
-      todayLabel: "Month 1",
-      todayValue: "Free",
-      recurringLabel: "Month 2 onward",
-      recurringValue: `${formatInr(coupon.recurringCharge)}/month`,
-      yearOneLabel: "Year-one spend",
-      yearOneValue: formatInr(coupon.yearOneSpend),
-      note: `One free month saves ${formatInr(coupon.savings)} in year one.`,
+      note: `First month free, then ${formatInr(coupon.recurringCharge)}/month from month 2.`,
+      metrics: [
+        {
+          label: "Starting rate",
+          value: "Free",
+        },
+        {
+          label: "Due today",
+          value: formatInr(coupon.todayCharge),
+        },
+        {
+          label: "Year 1",
+          value: formatInr(coupon.yearOneSpend),
+        },
+      ],
     };
   }
 
   return {
-    todayLabel: "Today",
-    todayValue: `${formatInr(effective.immediateCharge)}/month`,
-    recurringLabel: "Renews",
-    recurringValue: `${formatInr(effective.recurringCharge)}/month`,
-    yearOneLabel: "Year-one spend",
-    yearOneValue: formatInr(effective.yearOneSpend),
-    note: "Standard monthly pricing with no promotional discount applied.",
+    note: `Pay month to month or switch to yearly to save ${formatInr(
+      base.yearlySavings,
+    )} a year.`,
+    metrics: [
+      {
+        label: "Current rate",
+        value: `${formatInr(effective.todayCharge)}/month`,
+      },
+      {
+        label: "Due today",
+        value: formatInr(effective.todayCharge),
+      },
+      {
+        label: "Year 1",
+        value: formatInr(effective.yearOneSpend),
+      },
+    ],
   };
 }
 
 export function getPlanSummaryRows(planPricing) {
   const { base, coupon, effective } = planPricing;
 
-  if (base.billingMode === BILLING_MODE_YEARLY) {
+  if (base.isYearly) {
     return [
-      {
-        label: "Annual invoice",
-        value: formatInr(effective.immediateCharge),
-        detail: "Billed upfront for the full year.",
-      },
       {
         label: "Effective monthly rate",
         value: `${formatInr(base.monthlyEquivalent)}/month`,
-        detail: "How the yearly plan averages out month to month.",
+        detail: "The yearly invoice averaged into a monthly view.",
+      },
+      {
+        label: "Annual invoice",
+        value: formatInr(effective.todayCharge),
+        detail: "Billed once upfront for the full year.",
       },
       {
         label: "Annual savings",
         value: formatInr(base.yearlySavings),
-        detail: "Compared with staying on monthly billing for 12 months.",
+        detail: "Savings compared with 12 monthly payments.",
       },
       {
         label: "Coupon status",
-        value: coupon?.status === "inactive" ? "Monthly only" : "Not needed",
-        detail:
-          coupon?.status === "inactive"
-            ? coupon.note
-            : "Yearly pricing already includes the built-in savings.",
+        value: coupon?.status === "inactive" ? "Monthly only" : "Built-in savings active",
+        detail: coupon?.status === "inactive"
+          ? coupon.note
+          : "Yearly billing already reflects the strongest available rate.",
       },
     ];
   }
@@ -376,23 +491,23 @@ export function getPlanSummaryRows(planPricing) {
     return [
       {
         label: "Months 1-3",
-        value: `${formatInr(coupon.promoPrice)}/month`,
-        detail: "Discounted introductory rate.",
+        value: `${formatInr(coupon.todayCharge)}/month`,
+        detail: "Discounted intro rate with FIRST3 applied.",
       },
       {
         label: "Month 4 onward",
         value: `${formatInr(coupon.recurringCharge)}/month`,
-        detail: "Regular monthly price after the first 3 cycles.",
+        detail: "Regular monthly billing resumes after the promo window.",
       },
       {
         label: "Year-one spend",
         value: formatInr(coupon.yearOneSpend),
-        detail: "Total projected spend across the first 12 months.",
+        detail: "Projected total across the first 12 months.",
       },
       {
         label: "Promo savings",
         value: formatInr(coupon.savings),
-        detail: "Saved across the first 3 months with FIRST3.",
+        detail: "Saved over the first year through the intro offer.",
       },
     ];
   }
@@ -400,14 +515,14 @@ export function getPlanSummaryRows(planPricing) {
   if (coupon?.status === "active" && coupon.code === "TRYONCE") {
     return [
       {
-        label: "Month 1",
+        label: "First invoice",
         value: "Free",
-        detail: "No invoice for the first month.",
+        detail: "No charge for the first month with TRYONCE.",
       },
       {
         label: "Month 2 onward",
         value: `${formatInr(coupon.recurringCharge)}/month`,
-        detail: "Regular monthly price begins after the free month.",
+        detail: "Regular monthly billing resumes after the free month.",
       },
       {
         label: "Year-one spend",
@@ -424,14 +539,14 @@ export function getPlanSummaryRows(planPricing) {
 
   return [
     {
-      label: "Today",
-      value: `${formatInr(effective.immediateCharge)}/month`,
-      detail: "Your first monthly invoice.",
+      label: "Current monthly rate",
+      value: `${formatInr(effective.todayCharge)}/month`,
+      detail: "Standard month-to-month pricing with no promo applied.",
     },
     {
-      label: "Recurring",
+      label: "Recurring invoice",
       value: `${formatInr(effective.recurringCharge)}/month`,
-      detail: "Standard monthly renewal rate.",
+      detail: "The ongoing monthly rate if you stay on this plan.",
     },
     {
       label: "Year-one spend",
@@ -439,9 +554,63 @@ export function getPlanSummaryRows(planPricing) {
       detail: "Projected total across 12 monthly billing cycles.",
     },
     {
-      label: "Upgrade path",
+      label: "Yearly upgrade savings",
       value: formatInr(base.yearlySavings),
-      detail: "Available annual savings if you switch to yearly billing.",
+      detail: `Switching to yearly lowers the effective rate to ${formatInr(
+        base.monthlyEquivalent,
+      )}/month.`,
     },
   ];
+}
+
+export function getSelectedPlanSummary(planPricing) {
+  const { base, coupon, effective } = planPricing;
+
+  if (base.isYearly) {
+    return {
+      headlineLabel: "Effective monthly rate",
+      headlineValue: `${formatInr(base.monthlyEquivalent)}/month`,
+      secondaryLabel: "Due today",
+      secondaryValue: formatInr(effective.todayCharge),
+      note: `Yearly billing keeps the lowest rate active and saves ${formatInr(
+        base.yearlySavings,
+      )} over 12 months.`,
+      footer: "Your yearly invoice is paid once upfront while the displayed price reflects the monthly equivalent.",
+    };
+  }
+
+  if (coupon?.status === "active" && coupon.code === "FIRST3") {
+    return {
+      headlineLabel: "Months 1-3",
+      headlineValue: `${formatInr(coupon.todayCharge)}/month`,
+      secondaryLabel: "Month 4 onward",
+      secondaryValue: `${formatInr(coupon.recurringCharge)}/month`,
+      note: `FIRST3 is active. You save ${formatInr(coupon.savings)} across the first year.`,
+      footer: "This promo applies to monthly billing only and automatically rolls into the standard monthly rate after month 3.",
+    };
+  }
+
+  if (coupon?.status === "active" && coupon.code === "TRYONCE") {
+    return {
+      headlineLabel: "First invoice",
+      headlineValue: "Free",
+      secondaryLabel: "Month 2 onward",
+      secondaryValue: `${formatInr(coupon.recurringCharge)}/month`,
+      note: `TRYONCE removes the first invoice and saves ${formatInr(
+        coupon.savings,
+      )} over the first year.`,
+      footer: "After the free month, billing resumes at the standard monthly rate automatically.",
+    };
+  }
+
+  return {
+    headlineLabel: "Current monthly rate",
+    headlineValue: `${formatInr(effective.todayCharge)}/month`,
+    secondaryLabel: "Year-one spend",
+    secondaryValue: formatInr(effective.yearOneSpend),
+    note: `Flexible monthly pricing is active. Switch to yearly to save ${formatInr(
+      base.yearlySavings,
+    )} over the year.`,
+    footer: "Monthly billing keeps the first invoice lighter and leaves room to upgrade into yearly pricing later.",
+  };
 }
