@@ -43,7 +43,7 @@ export default function Portfolio() {
       <Section
         animated={false}
         className="pt-4 sm:pt-8"
-        description="The portfolio structure is ready for future case studies, with placeholder project blocks that reflect the kind of work IOU Labs is built to deliver."
+        description="The portfolio structure is ready for future case studies, with placeholder project blocks that reflect the kind of work IOU Studio is built to deliver."
         eyebrow="Portfolio"
         title="Selected work, structured for future expansion."
         width="full"

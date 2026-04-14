@@ -3,7 +3,7 @@ import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
 
 const whatsappLink =
-  "https://api.whatsapp.com/send?text=Hello%20IOU%20Labs%2C%20I%27d%20like%20to%20discuss%20a%20project.";
+  "https://api.whatsapp.com/send?text=Hello%20IOU%20Studio%2C%20I%27d%20like%20to%20discuss%20a%20project.";
 
 const contactNotes = [
   "Share your main goal, timeline, and the type of support you need.",
@@ -79,7 +79,7 @@ export default function Contact() {
                   <textarea
                     className="min-h-40 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white outline-none transition-all duration-300 placeholder:text-[var(--text-muted)] focus:border-violet-300/35 focus:bg-white/[0.05]"
                     name="message"
-                    placeholder="Tell IOU Labs about your goal, timeline, and what you need help with."
+                    placeholder="Tell IOU Studio about your goal, timeline, and what you need help with."
                     rows={6}
                   />
                 </label>

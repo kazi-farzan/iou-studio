@@ -25,7 +25,7 @@ export default function About() {
       <Section
         animated={false}
         className="pt-4 sm:pt-8"
-        description="IOU Labs is a tech-driven creative agency built around one idea: the best client experiences come from combining intelligent systems with polished execution."
+        description="IOU Studio is a tech-driven creative agency built around one idea: the best client experiences come from combining intelligent systems with polished execution."
         eyebrow="About"
         title="Built for brands that need clarity, quality, and forward motion."
         width="full"
@@ -39,7 +39,7 @@ export default function About() {
               A studio model that feels faster, sharper, and more guided.
             </h2>
             <p className="mt-5 text-base leading-8 text-[var(--text-secondary)]">
-              IOU Labs is designed to remove the usual friction between strategy,
+              IOU Studio is designed to remove the usual friction between strategy,
               design, and execution. Instead of forcing clients to figure out every
               detail upfront, the studio uses structured offers and scalable systems
               to make better decisions easier.

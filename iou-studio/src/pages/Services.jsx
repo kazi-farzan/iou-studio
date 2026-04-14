@@ -62,7 +62,7 @@ export default function Services() {
     <div className="w-full">
       <Section
         className="pt-4 sm:pt-8"
-        description="IOU Labs combines technical execution with brand and creative clarity so clients can build what they need without piecing together multiple vendors."
+        description="IOU Studio combines technical execution with brand and creative clarity so clients can build what they need without piecing together multiple vendors."
         eyebrow="Services"
         title="Four focused capabilities, designed to work as one system."
         width="full"
@@ -134,7 +134,7 @@ export default function Services() {
             Build Your Package
           </Button>
           <Button size="lg" to="/contact" variant="secondary">
-            Contact IOU Labs
+            Contact IOU Studio
           </Button>
         </div>
       </Section>

@@ -86,7 +86,7 @@ function buildRequestPreview({ selectedBase, selectedFeatures, total }) {
     : ["- No add-on features selected"];
 
   return [
-    "IOU Labs Package Request",
+    "IOU Studio Package Request",
     "",
     `Base Package: ${selectedBase.name} (${formatPrice(selectedBase.price)})`,
     "Add-On Features:",

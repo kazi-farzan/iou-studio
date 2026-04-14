@@ -31,7 +31,7 @@ export default function Navbar() {
 
             <span className="space-y-0.5">
               <span className="block text-sm uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-                IOU Labs
+                IOU Studio
               </span>
               <span className="block text-sm text-[var(--text-secondary)] transition-colors duration-300 group-hover:text-white">
                 Tech-driven creative systems

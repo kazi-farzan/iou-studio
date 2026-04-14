@@ -35,7 +35,7 @@ export default function Products() {
       <Section
         animated={false}
         className="pt-4 sm:pt-8"
-        description="IOU Labs is shaping a small ecosystem of internal tools and future SaaS products built around speed, structure, and better decision-making."
+        description="IOU Studio is shaping a small ecosystem of internal tools and future SaaS products built around speed, structure, and better decision-making."
         eyebrow="Products"
         title="Future tools designed to make execution feel smarter."
         width="full"

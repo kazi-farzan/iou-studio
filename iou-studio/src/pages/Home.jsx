@@ -108,7 +108,7 @@ export default function Home() {
               </h1>
 
               <p className="max-w-2xl text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
-                IOU Labs combines premium execution with a guided package system so
+                IOU Studio combines premium execution with a guided package system so
                 brands can move from idea to launch with more clarity and less drag.
               </p>
             </div>
@@ -324,7 +324,7 @@ export default function Home() {
                 Build Your Package
               </Button>
               <Button size="lg" to="/contact" variant="secondary">
-                Contact IOU Labs
+                Contact IOU Studio
               </Button>
             </div>
           </div>
