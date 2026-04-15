@@ -6,6 +6,7 @@ import PricingPlanCard from "../components/pricing/PricingPlanCard.jsx";
 import RecentBuilds from "../components/pricing/RecentBuilds.jsx";
 import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
 import PricingValueText from "../components/pricing/PricingValueText.jsx";
+import StepFlowIndicator from "../components/pricing/StepFlowIndicator.jsx";
 import WhatHappensNext from "../components/pricing/WhatHappensNext.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
@@ -284,6 +285,29 @@ export default function Pricing() {
     selectedPlan,
   ]);
 
+  const stepFlowSteps = useMemo(() => {
+    const hasReviewState = summaryPanelData.items.length > 0;
+    const canProceed = !summaryPanelData.isActionDisabled;
+
+    if (!hasReviewState) {
+      return [
+        { id: "select", label: "Select", status: "current" },
+        { id: "review", label: "Review", status: "upcoming" },
+        { id: "proceed", label: "Proceed", status: "upcoming" },
+      ];
+    }
+
+    return [
+      { id: "select", label: "Select", status: "complete" },
+      { id: "review", label: "Review", status: "current" },
+      {
+        id: "proceed",
+        label: "Proceed",
+        status: canProceed ? "available" : "upcoming",
+      },
+    ];
+  }, [summaryPanelData.isActionDisabled, summaryPanelData.items.length]);
+
   useEffect(() => {
     if (location.hash !== "#builder") {
       return;
@@ -363,6 +387,8 @@ export default function Pricing() {
               All selections update live. Clear scope before you proceed.
             </p>
           </div>
+
+          <StepFlowIndicator steps={stepFlowSteps} />
 
           <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start xl:gap-8">
             <div className="min-w-0 space-y-10 sm:space-y-8">

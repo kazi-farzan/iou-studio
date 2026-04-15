@@ -26,32 +26,42 @@
 20. Add “Recent Builds” Section
 21. Add Metrics Strip
 22. Advanced Summary Panel Refinement
+23. Add Step Flow Indicator
 
 ---
 
 ## Current Phase
 
-Phase 4 — Product-Level Refinement
+Phase 4 — Product-Level Refinement (Complete)
+
+---
+
+## Next Phase
+
+Phase 5 — System Expansion
 
 ---
 
 ## Next Tasks (STRICT ORDER)
 
-23. Add Step Flow Indicator
-    - show progression (Select → Review → Proceed)
-    - improve user orientation
-
 24. Improve CTA Flow
-    - refine action clarity
-    - prepare for real conversion behavior
+    - refine “Continue” behavior
+    - align action with real user intent
+    - prepare for conversion step
+
+25. Prepare Configurator for Expansion
+    - clean state structure
+    - ensure scalability for:
+      - more modules
+      - deeper options
 
 ---
 
 ## Later (Do NOT touch yet)
 
-25. Full configurator system (3-column layout)
-26. Backend integration
-27. Checkout flow
-28. Advanced UX polish
-29. 3D hero (only if aligned with system feel)
-30. Branding refinement layer
+26. Full configurator system (3-column layout)
+27. Backend integration
+28. Checkout flow
+29. Advanced UX polish
+30. 3D hero (only if aligned with system feel)
+31. Branding refinement layer

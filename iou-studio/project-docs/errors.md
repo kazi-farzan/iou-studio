@@ -17,11 +17,11 @@
 
 ## Watchlist
 
-* Ensure Summary Panel grouping remains consistent across modes
-* Maintain clear hierarchy as more logic is added
-* Avoid over-segmentation (too many sections inside panel)
-* Ensure mobile layout preserves grouping clarity
-* Prevent visual clutter from excessive dividers or spacing
-* Maintain performance with increased UI complexity
-* Ensure consistency between module UI and summary panel
-* Keep UI calm and not overly “product dashboard-like”
+* Ensure Step Flow Indicator aligns correctly with user state
+* Avoid misleading progression (do not fake step completion)
+* Maintain consistency between flow indicator and actual UI state
+* Prevent UI clutter with added guidance layers
+* Ensure mobile layout handles step indicator cleanly
+* Maintain performance with increasing UI complexity
+* Preserve system-first feel (avoid turning into wizard flow)
+* Keep UI calm and not overly instructional
