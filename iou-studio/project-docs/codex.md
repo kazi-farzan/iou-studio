@@ -26,11 +26,13 @@
 * Behavioral shift completed for entry flow
 * Mode-based interaction implemented (Packages vs Build Your Own)
 * Proto configurator introduced (module selection)
+* Summary panel structure introduced
 
 * Moving into:
-  → summary panel
-  → pricing logic
-  → real system feedback
+  - live summary reflection
+  - module-based pricing logic
+  - module-based timeline logic
+  - real system feedback
 
 ---
 
@@ -89,6 +91,23 @@ Future work must:
 
 ---
 
+## Summary Principle
+
+The Summary Panel is the primary control surface of the configurator.
+
+It must:
+- reflect current state clearly
+- show what is selected
+- show what changes next
+- remain calm and structured
+
+It should NOT feel like:
+- a promo sidebar
+- a decorative recap card
+- a generic sticky widget
+
+---
+
 ## Execution Mode
 
 Development is sequential and controlled.
@@ -102,3 +121,30 @@ Rules:
 
 Goal:
 Evolve into a full configurator without breaking the system
+
+---
+
+## System Direction Block for Future Codex Prompts
+
+SYSTEM DIRECTION (CRITICAL):
+
+This is NOT a marketing website.
+This is a system interface.
+
+Design and structure decisions must reflect:
+- User is configuring a system, not reading a brochure
+- UI should feel like a control panel, not a landing page
+- Clarity over persuasion
+- Structure over decoration
+- Interaction over explanation
+
+Avoid:
+- Generic SaaS layouts
+- Marketing-heavy sections
+- Fluffy copy
+- Overly decorative UI
+
+Prioritize:
+- Clear hierarchy
+- Visible system state (selection, pricing, next step)
+- Minimal, calm, premium interface

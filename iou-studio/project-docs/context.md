@@ -72,16 +72,21 @@ It should feel like a control panel or configurator.
   - Always accessible system entry point
 
 * Pricing page reframed as system interface
-  - Removed traditional pricing perception
-  - Updated copy and hierarchy
+  - Traditional pricing-page tone removed
+  - Header and copy shifted toward configuration language
 
 * Mode-based interaction implemented
   - Toggle: Packages vs Build Your Own
-  - Packages = starting configurations (not plans)
+  - Packages = starting configurations (not SaaS plans)
 
-* Proto configurator introduced (Build Your Own)
-  - Users can select/deselect service modules
-  - Basic interactive system behavior established
+* Proto configurator introduced
+  - Build Your Own mode now contains selectable service modules
+  - Users can select and deselect modules
+  - First meaningful configurator interaction is in place
+
+* Summary layer introduced
+  - Sticky Summary Panel planned/added as the main control surface for the build flow
+  - Next step is making custom selections reflect live inside the summary
 
 * Transition from marketing site → system interface actively implemented
 
@@ -92,9 +97,9 @@ It should feel like a control panel or configurator.
 Phase 2 — Proto Configurator
 
 Goal:
-Introduce real interaction where users begin building their system through selections.
+Turn the pricing area into a real configuration surface where users can make selections and see the current build state clearly.
 
 Current Focus:
-- Module selection behavior
-- Preparing for live summary + pricing feedback
-- Maintaining clarity and control in UI
+- Summary panel behavior
+- Live reflection of user selections
+- Preparing pricing + timeline logic without breaking structure

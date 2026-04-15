@@ -17,9 +17,14 @@
    - Removed SaaS-style perception
 
 10. Add Basic “Build Your Own” Section (Proto)
-   - Service categories implemented
+   - Service categories/modules implemented
    - Select/deselect interaction added
-   - First level of configurator behavior introduced
+   - Proto configurator behavior established
+
+11. Add Sticky Summary Panel
+   - Summary control surface added
+   - Desktop sticky + mobile stacked behavior planned/implemented
+   - Structure for selected items, total, timeline, and CTA established
 
 ---
 
@@ -29,30 +34,32 @@ Phase 2 — Proto Configurator
 
 ---
 
-## Next Tasks (STRICT ORDER)
-
-11. Add Sticky Summary Panel
-   - Selected items
-   - Total price
-   - Timeline (basic)
-   - Primary action CTA
+## In Progress / Immediate Next
 
 12. Connect Build Your Own → Summary
-   - Selections reflected in summary panel
+   - Selected modules reflected live in Summary Panel
+   - Empty state handled cleanly
+   - Preserve Packages mode behavior
 
 13. Introduce Basic Pricing Logic (Modules)
-   - Each module contributes to total price
+   - Each selected module contributes to total price
+   - Keep logic centralized and simple
 
-14. Add Visual Feedback for Price Changes
-   - Subtle updates when selections change
+14. Introduce Basic Timeline Logic
+   - Each selected module contributes to estimated timeline
+   - Summary reflects changes clearly
+
+15. Add Visual Feedback for Price / Summary Changes
+   - Subtle transitions only
+   - No flashy motion
 
 ---
 
 ## Later (Do NOT touch yet)
 
-15. Full configurator system (3-column layout)
-16. Backend integration
-17. Checkout flow
-18. Advanced UX polish
-19. 3D hero (only if aligned with system feel)
-20. Branding refinement layer
+16. Full configurator system (3-column layout)
+17. Backend integration
+18. Checkout flow
+19. Advanced UX polish
+20. 3D hero (only if aligned with system feel)
+21. Branding refinement layer
