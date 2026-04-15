@@ -29,16 +29,18 @@
 * Live pricing logic implemented
 * Live timeline logic implemented
 
+* Summary panel refined for clarity and hierarchy
+
 * System now supports:
   - selection
   - price feedback
   - timeline feedback
-  - visible system state
+  - clear system visibility
 
 * Moving into:
-  - clarity improvements
-  - UX refinement
   - interaction polish
+  - subtle feedback systems
+  - mobile refinement
 
 ---
 
@@ -72,24 +74,24 @@ Every section must answer:
 Summary Panel = system control surface
 
 Must:
-- reflect current state
-- update live
-- show price clearly
-- show timeline clearly
-- guide next step
+- reflect current state clearly
+- update instantly
+- show price and timeline clearly
+- guide next action
 
 ---
 
-## System Completion Layer
+## Clarity Principle (NEW)
 
-The system now includes:
+The system must be:
+- easy to scan
+- easy to understand
+- visually calm
 
-- Selection → modules
-- Feedback → price + timeline
-- Visibility → summary panel
-
-This forms the core user loop:
-→ select → understand → decide
+Avoid:
+- clutter
+- over-styling
+- unnecessary UI layers
 
 ---
 

@@ -83,26 +83,30 @@ It should feel like a control panel or configurator.
   - Pricing updates instantly
   - Timeline updates instantly
 
+* Summary Panel refined
+  - Improved hierarchy (items / total / timeline / CTA)
+  - Reduced visual noise
+  - Better readability and spacing
+
 * Users can now:
   - select modules
   - see price
   - see delivery estimate
-  - understand system outcome without interaction friction
+  - understand system outcome instantly
 
 ---
 
 ## Current Phase
 
-Phase 2 — Proto Configurator (Functional System)
+Phase 2 — Proto Configurator (Usable System)
 
 Goal:
-Deliver a complete, usable system where users can:
+Deliver a clear, premium-feeling system where users can:
 - configure services
-- understand cost
-- understand delivery time
-- feel confident proceeding
+- understand cost and timeline
+- confidently proceed
 
 Current Focus:
-- clarity and polish
-- system feedback refinement
-- preparing for next-stage UX improvements
+- UX refinement
+- system feedback polish
+- interaction clarity

@@ -3,10 +3,10 @@ import Card from "../ui/Card.jsx";
 
 function SummaryList({ items }) {
   return (
-    <ul className="space-y-3">
+    <ul className="divide-y divide-[color:var(--border-subtle)]">
       {items.map((item) => (
         <li
-          className="flex items-start justify-between gap-4 rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-4"
+          className="grid gap-x-6 gap-y-2 py-4 first:pt-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start"
           key={item.id}
         >
           <div className="min-w-0 flex-1">
@@ -18,8 +18,8 @@ function SummaryList({ items }) {
 
             <p
               className={[
-                "text-sm font-medium text-[var(--text-primary)]",
-                item.eyebrow ? "mt-2" : "",
+                "text-sm font-medium leading-6 text-[var(--text-primary)]",
+                item.eyebrow ? "mt-1" : "",
               ]
                 .filter(Boolean)
                 .join(" ")}
@@ -28,14 +28,14 @@ function SummaryList({ items }) {
             </p>
 
             {item.detail ? (
-              <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+              <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
                 {item.detail}
               </p>
             ) : null}
           </div>
 
           {item.value ? (
-            <p className="max-w-[9.5rem] shrink-0 break-words text-right text-sm font-medium leading-6 text-[var(--text-primary)]">
+            <p className="max-w-full text-sm font-medium leading-6 text-[var(--text-primary)] sm:max-w-[10.5rem] sm:justify-self-end sm:text-right">
               {item.value}
             </p>
           ) : null}
@@ -47,9 +47,9 @@ function SummaryList({ items }) {
 
 function EmptyState({ detail, title }) {
   return (
-    <div className="rounded-[20px] border border-dashed border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-4">
+    <div className="theme-panel rounded-[22px] border border-dashed border-[color:var(--border-subtle)] px-4 py-5">
       <p className="text-sm font-medium text-[var(--text-primary)]">{title}</p>
-      <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+      <p className="mt-2 max-w-[32ch] text-sm leading-6 text-[var(--text-secondary)]">
         {detail}
       </p>
     </div>
@@ -66,7 +66,7 @@ function SummarySection({
     <section
       aria-atomic={live ? "true" : undefined}
       aria-live={live ? "polite" : undefined}
-      className="border-t border-[color:var(--border-subtle)] px-5 py-5 sm:px-6"
+      className="border-t border-[color:var(--border-subtle)] px-5 py-5 sm:px-6 sm:py-6"
     >
       <div className="space-y-4">
         <div className="space-y-2">
@@ -75,7 +75,7 @@ function SummarySection({
           </p>
 
           {description ? (
-            <p className="text-sm leading-6 text-[var(--text-secondary)]">
+            <p className="max-w-[34ch] text-sm leading-6 text-[var(--text-secondary)]">
               {description}
             </p>
           ) : null}
@@ -84,6 +84,57 @@ function SummarySection({
         {children}
       </div>
     </section>
+  );
+}
+
+function SummaryMeta({ modeLabel, statusLabel }) {
+  return (
+    <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+      <span className="text-[var(--accent-secondary)]">{modeLabel}</span>
+
+      {statusLabel ? (
+        <>
+          <span className="h-1 w-1 rounded-full bg-[var(--border-strong)]" />
+          <span>{statusLabel}</span>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+function TotalSummary({ timeline, total }) {
+  return (
+    <div className="space-y-4">
+      <div className="rounded-[24px] border border-[color:var(--border-strong)] bg-[var(--surface-soft)] px-4 py-5 sm:px-5">
+        <p className="max-w-full break-words text-3xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] tabular-nums sm:text-[2.5rem]">
+          {total.value}
+        </p>
+
+        {total.meta ? (
+          <p className="mt-3 text-sm font-medium leading-6 text-[var(--text-secondary)]">
+            {total.meta}
+          </p>
+        ) : null}
+      </div>
+
+      <div className="grid gap-x-6 gap-y-2 border-t border-[color:var(--border-subtle)] pt-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+        <div className="space-y-2">
+          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+            {timeline.label}
+          </p>
+
+          {timeline.description ? (
+            <p className="max-w-[32ch] text-sm leading-6 text-[var(--text-secondary)]">
+              {timeline.description}
+            </p>
+          ) : null}
+        </div>
+
+        <p className="text-sm font-medium leading-6 text-[var(--text-primary)] sm:justify-self-end sm:text-right">
+          {timeline.value}
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -106,27 +157,20 @@ export default function PricingSummaryPanel({ summary }) {
   return (
     <Card className="overflow-hidden p-0 xl:sticky xl:top-28">
       <div className="flex flex-col">
-        <div className="px-5 py-5 sm:px-6">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
-              {modeLabel}
-            </span>
+        <div className="px-5 py-5 sm:px-6 sm:py-6">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                Build Summary
+              </p>
+              <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
+                Current setup
+              </h2>
+            </div>
 
-            {statusLabel ? (
-              <span className="theme-panel-contrast rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-secondary)]">
-                {statusLabel}
-              </span>
-            ) : null}
-          </div>
+            <SummaryMeta modeLabel={modeLabel} statusLabel={statusLabel} />
 
-          <div className="mt-4 space-y-3">
-            <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-              Build Summary
-            </p>
-            <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
-              Current setup and next step.
-            </h2>
-            <p className="text-sm leading-7 text-[var(--text-secondary)]">
+            <p className="max-w-[36ch] text-sm leading-7 text-[var(--text-secondary)]">
               {description}
             </p>
           </div>
@@ -141,40 +185,32 @@ export default function PricingSummaryPanel({ summary }) {
         </SummarySection>
 
         <SummarySection description={total.description} label={total.label} live>
-          <div className="theme-panel-contrast rounded-[22px] p-5">
-            <p className="break-words text-3xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] sm:text-4xl">
-              {total.value}
-            </p>
-
-            {total.meta ? (
-              <p className="mt-3 text-sm font-medium text-[var(--text-primary)]">
-                {total.meta}
-              </p>
-            ) : null}
-          </div>
+          <TotalSummary timeline={timeline} total={total} />
         </SummarySection>
 
-        <SummarySection description={timeline.description} label={timeline.label} live>
-          <div className="rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-4">
-            <p className="text-sm font-medium text-[var(--text-primary)]">
-              {timeline.value}
-            </p>
-          </div>
-        </SummarySection>
-
-        <div className="border-t border-[color:var(--border-subtle)] px-5 py-5 sm:px-6">
+        <div className="border-t border-[color:var(--border-subtle)] px-5 py-5 sm:px-6 sm:py-6">
           <div className="space-y-4">
             {isActionDisabled ? (
-              <Button className="w-full" disabled size="lg">
+              <Button
+                className="w-full border-[color:var(--border-accent)] bg-[var(--surface-accent)] text-[var(--text-primary)] hover:bg-[var(--surface-accent-strong)]"
+                disabled
+                size="lg"
+                variant="secondary"
+              >
                 {ctaLabel}
               </Button>
             ) : (
-              <Button className="w-full" size="lg" to="/contact">
+              <Button
+                className="w-full border-[color:var(--border-accent)] bg-[var(--surface-accent)] text-[var(--text-primary)] hover:bg-[var(--surface-accent-strong)]"
+                size="lg"
+                to="/contact"
+                variant="secondary"
+              >
                 {ctaLabel}
               </Button>
             )}
 
-            <p className="text-sm leading-6 text-[var(--text-secondary)]">
+            <p className="max-w-[34ch] text-sm leading-6 text-[var(--text-secondary)]">
               {ctaNote}
             </p>
           </div>

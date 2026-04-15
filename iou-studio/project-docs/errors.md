@@ -17,11 +17,11 @@
 
 ## Watchlist
 
-* Ensure pricing + timeline updates stay consistent under rapid interaction
-* Verify no UI jitter when totals update
-* Maintain clean hierarchy inside Summary Panel
-* Avoid clutter as more data is added
-* Ensure responsiveness with longer module lists
-* Prevent duplicated logic between pricing and timeline calculations
+* Ensure smooth UI behavior during rapid selection changes
+* Avoid layout shift when totals update
+* Maintain clarity in Summary Panel as data grows
+* Ensure mobile layout does not become cramped
+* Prevent duplication of pricing/timeline logic
 * Maintain separation between Packages and Build modes
-* Ensure empty states remain clear and intentional
+* Keep empty states intentional and clear
+* Watch for visual regressions during animation additions
