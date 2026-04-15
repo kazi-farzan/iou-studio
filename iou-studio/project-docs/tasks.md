@@ -22,27 +22,26 @@
 16. Add Subtle System Feedback
 17. Improve Module UX
 18. Improve Mobile Experience
+19. Add “What Happens Next” Section
 
 ---
 
 ## Current Phase
 
-Phase 2 — Proto Configurator (Usable Product)
+Phase 3 — Trust & Conversion Layer
 
 ---
 
 ## Next Tasks (STRICT ORDER)
 
-19. Add “What Happens Next” Section
-    - explain post-action flow
-    - remove uncertainty
-
 20. Add “Recent Builds” Section
     - visual proof of work
-    - credibility layer
+    - real output examples
+    - replaces testimonials
 
 21. Add Metrics Strip
     - reinforce trust through data
+    - subtle credibility layer
 
 ---
 

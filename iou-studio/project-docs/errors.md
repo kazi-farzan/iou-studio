@@ -17,11 +17,10 @@
 
 ## Watchlist
 
-* Ensure mobile interactions remain smooth under rapid selection
-* Avoid layout compression on smaller screens
-* Maintain consistent spacing across breakpoints
-* Ensure Summary Panel remains readable with more modules
-* Prevent overflow issues for large pricing values
-* Maintain performance with added transitions
-* Ensure mode switching behaves consistently on mobile
-* Keep UI clean as trust sections are added next
+* Ensure “What Happens Next” section integrates cleanly with flow
+* Avoid turning trust sections into marketing-style content
+* Maintain consistency between How It Works and What Happens Next
+* Ensure mobile layout remains clean with added sections
+* Prevent vertical clutter as more sections are added
+* Maintain performance with growing page size
+* Keep system clarity intact while adding trust layers

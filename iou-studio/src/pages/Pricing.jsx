@@ -4,6 +4,7 @@ import CustomBuildModuleCard from "../components/pricing/CustomBuildModuleCard.j
 import PricingPlanCard from "../components/pricing/PricingPlanCard.jsx";
 import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
 import PricingValueText from "../components/pricing/PricingValueText.jsx";
+import WhatHappensNext from "../components/pricing/WhatHappensNext.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
@@ -693,6 +694,8 @@ export default function Pricing() {
           </div>
         </div>
       </Section>
+
+      <WhatHappensNext />
     </div>
   );
 }
