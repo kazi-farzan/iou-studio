@@ -100,12 +100,17 @@ It should feel like a control panel or configurator.
 * Post-action clarity added
   - “What Happens Next” section implemented
   - users now understand process after clicking CTA
-  - removes uncertainty and hesitation
+
+* Proof layer added
+  - “Recent Builds” section implemented
+  - showcases outputs of the system
+  - reinforces credibility through visible work examples
 
 * Users can now:
   - configure systems confidently
   - understand cost and delivery instantly
   - understand what happens next
+  - see real examples of likely outputs
   - proceed without ambiguity
 
 ---
@@ -118,9 +123,10 @@ Goal:
 Make the system not just usable, but:
 - trustworthy
 - confidence-inspiring
+- visibly credible
 - ready for real user action
 
 Current Focus:
-- proof (recent builds)
-- credibility
-- reinforcing trust without marketing fluff
+- credibility reinforcement
+- quiet authority
+- trust through proof, not persuasion

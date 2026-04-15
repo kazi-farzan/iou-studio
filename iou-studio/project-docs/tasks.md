@@ -23,6 +23,7 @@
 17. Improve Module UX
 18. Improve Mobile Experience
 19. Add “What Happens Next” Section
+20. Add “Recent Builds” Section
 
 ---
 
@@ -34,14 +35,10 @@ Phase 3 — Trust & Conversion Layer
 
 ## Next Tasks (STRICT ORDER)
 
-20. Add “Recent Builds” Section
-    - visual proof of work
-    - real output examples
-    - replaces testimonials
-
 21. Add Metrics Strip
     - reinforce trust through data
     - subtle credibility layer
+    - show calm operational proof
 
 ---
 

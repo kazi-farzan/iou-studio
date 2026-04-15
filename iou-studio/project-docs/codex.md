@@ -34,11 +34,12 @@
 * Mobile UX improved
 
 * Post-action clarity implemented
-  - Users understand what happens after interaction
+* Proof layer implemented through Recent Builds
 
 * Moving into:
-  - proof layer (recent builds)
-  - credibility reinforcement
+  - trust reinforcement through metrics
+  - conversion readiness
+  - final pre-expansion polish
 
 ---
 
@@ -79,12 +80,13 @@ Must:
 
 ---
 
-## Trust Principle (NEW)
+## Trust Principle
 
 Trust is built through:
 - clarity
 - transparency
 - predictability
+- visible proof
 
 NOT:
 - testimonials
@@ -93,15 +95,30 @@ NOT:
 
 ---
 
-## Conversion Principle (NEW)
+## Conversion Principle
 
 Before user acts, they must know:
 - what they are getting
 - what it costs
 - how long it takes
 - what happens next
+- what similar outputs look like
 
 All must be visible in UI.
+
+---
+
+## Proof Principle (NEW)
+
+Proof should feel like:
+- output of the system
+- visible evidence
+- calm confidence
+
+Avoid:
+- portfolio-showcase styling
+- marketing-heavy case study language
+- flashy presentation
 
 ---
 

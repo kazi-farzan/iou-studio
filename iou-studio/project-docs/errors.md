@@ -17,10 +17,11 @@
 
 ## Watchlist
 
-* Ensure “What Happens Next” section integrates cleanly with flow
-* Avoid turning trust sections into marketing-style content
-* Maintain consistency between How It Works and What Happens Next
-* Ensure mobile layout remains clean with added sections
-* Prevent vertical clutter as more sections are added
-* Maintain performance with growing page size
-* Keep system clarity intact while adding trust layers
+* Ensure “Recent Builds” section feels like proof, not portfolio marketing
+* Avoid visual mismatch between Recent Builds cards and system UI
+* Maintain clean spacing as trust sections accumulate
+* Prevent page from becoming too vertically dense
+* Ensure mobile layout remains comfortable with added sections
+* Keep performance stable as more visual sections are added
+* Maintain consistent tone across trust-related sections
+* Keep the site feeling like a system, not drifting into showcase mode
