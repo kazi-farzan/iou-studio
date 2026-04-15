@@ -29,13 +29,19 @@
 * Live pricing logic implemented
 * Live timeline logic implemented
 
-* Subtle system feedback added
-* Interface now feels responsive and alive
+* System feedback refined
+* Module UX improved
+
+* System now supports:
+  - clear selection
+  - immediate feedback
+  - visible state
+  - predictable behavior
 
 * Moving into:
-  - UX refinement
-  - trust layers
   - mobile optimization
+  - trust layer additions
+  - conversion readiness
 
 ---
 
@@ -76,19 +82,16 @@ Must:
 
 ---
 
-## Feedback Principle (NEW)
+## Feedback Principle
 
-System must feel responsive but calm.
-
-Use:
-- subtle transitions
-- minimal motion
-- instant feedback
+System must feel:
+- responsive
+- calm
+- precise
 
 Avoid:
-- flashy animations
-- attention-seeking motion
-- unnecessary effects
+- flashy animation
+- distracting motion
 
 ---
 
@@ -103,6 +106,20 @@ Avoid:
 - clutter
 - over-styling
 - unnecessary UI layers
+
+---
+
+## Interaction Clarity Principle (NEW)
+
+User should always know:
+- what is clickable
+- what is selected
+- what will happen next
+
+Avoid:
+- ambiguous states
+- unclear affordance
+- hidden interactions
 
 ---
 

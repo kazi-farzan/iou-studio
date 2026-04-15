@@ -20,30 +20,26 @@
 14. Implement Timeline Logic
 15. Improve Summary Panel Clarity
 16. Add Subtle System Feedback
+17. Improve Module UX
 
 ---
 
 ## Current Phase
 
-Phase 2 — Proto Configurator (Polished System)
+Phase 2 — Proto Configurator (Refined System)
 
 ---
 
 ## Next Tasks (STRICT ORDER)
 
-17. Improve Module UX
-    - clearer selection states
-    - stronger affordance
-    - better interaction clarity
-
 18. Improve Mobile Experience
     - spacing refinement
+    - tap target improvements
     - summary readability
-    - touch usability
 
 19. Add “What Happens Next” Section
-    - remove post-click uncertainty
-    - explain process clearly
+    - explain post-action flow
+    - remove uncertainty
 
 20. Add “Recent Builds” Section
     - visual proof of work

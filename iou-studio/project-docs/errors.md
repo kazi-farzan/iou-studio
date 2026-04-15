@@ -17,10 +17,11 @@
 
 ## Watchlist
 
-* Ensure smooth transitions do not cause layout jitter
-* Avoid over-animating system interactions
-* Maintain clarity during rapid module selection
-* Ensure Summary Panel remains readable as data changes
-* Verify mobile layout with dynamic content
-* Prevent state inconsistencies between modes
-* Keep performance stable with added transitions
+* Ensure module interaction remains consistent across devices
+* Verify no accidental double-click or toggle issues
+* Maintain clarity between hover and selected states
+* Ensure Summary Panel remains readable with more modules
+* Avoid visual clutter after UX refinements
+* Maintain performance with added transitions
+* Prevent inconsistencies between Packages and Build modes
+* Ensure mobile usability is not degraded

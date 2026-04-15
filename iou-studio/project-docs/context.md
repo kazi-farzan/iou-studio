@@ -30,7 +30,7 @@ It should feel like a control panel or configurator.
 * Light theme: soft cream with subtle warm tones
 * Dark theme: charcoal with soft violet accents
 * Glassmorphism + soft shadows
-* Smooth animations (subtle only, system-aligned)
+* Smooth, subtle system-aligned animations
 
 ---
 
@@ -38,8 +38,8 @@ It should feel like a control panel or configurator.
 
 * React (Vite)
 * Tailwind CSS
-* GSAP (planned/day 2, minimal usage)
-* Three.js (planned later, only if aligned)
+* GSAP (planned, minimal use)
+* Three.js (planned later if aligned)
 
 ---
 
@@ -47,9 +47,9 @@ It should feel like a control panel or configurator.
 
 * Light/Dark theme toggle
 * Premium UI polish
-* Custom-generated visuals
 * Smooth system interactions
 * Clear configuration flow
+* Strong trust through clarity
 
 ---
 
@@ -73,7 +73,7 @@ It should feel like a control panel or configurator.
 
 * Proto configurator implemented
   - Module selection (add/remove)
-  - Real interaction model established
+  - Interaction-first system established
 
 * Summary Panel implemented
   - Acts as system control surface
@@ -83,31 +83,34 @@ It should feel like a control panel or configurator.
   - Pricing updates instantly
   - Timeline updates instantly
 
-* Subtle system feedback implemented
-  - smoother selection transitions
-  - smoother summary updates
-  - refined interaction feel
+* System feedback refined
+  - smoother transitions
+  - responsive interaction feel
+
+* Module UX improved
+  - clearer selection states
+  - better affordance
+  - stronger interaction clarity
 
 * Users can now:
-  - select modules
-  - see price
-  - see delivery estimate
-  - understand system outcome instantly
+  - select modules confidently
+  - understand system state instantly
+  - see price and timeline without friction
 
 ---
 
 ## Current Phase
 
-Phase 2 — Proto Configurator (Polished System)
+Phase 2 — Proto Configurator (Refined System)
 
 Goal:
-Deliver a system that is not just functional, but:
-- clear
+Deliver a system that is:
+- intuitive
 - responsive
+- clear
 - trustworthy
-- premium-feeling
 
 Current Focus:
-- UX refinement
-- interaction clarity
+- mobile experience
 - trust-building layers
+- reducing friction before conversion

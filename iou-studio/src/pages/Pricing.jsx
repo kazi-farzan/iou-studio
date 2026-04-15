@@ -660,9 +660,9 @@ export default function Pricing() {
                           Build your custom setup
                         </h2>
                         <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-                          Select services to start building your system. The base
-                          total and delivery estimate update immediately as modules
-                          are added or removed.
+                          Select any module card to add or remove it from your
+                          system. The base total and delivery estimate update
+                          immediately as the active module set changes.
                         </p>
                       </div>
 
@@ -672,7 +672,7 @@ export default function Pricing() {
                       </div>
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
                       {customBuildModules.map((module) => (
                         <CustomBuildModuleCard
                           isSelected={selectedCustomModuleIds.includes(module.id)}
