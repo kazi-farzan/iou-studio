@@ -23,24 +23,19 @@
 * System-entry UX established
 
 * Mode-based interaction implemented
-* Proto configurator implemented (module selection)
+* Proto configurator implemented
 
 * Summary panel implemented
 * Live pricing logic implemented
 * Live timeline logic implemented
 
-* Summary panel refined for clarity and hierarchy
-
-* System now supports:
-  - selection
-  - price feedback
-  - timeline feedback
-  - clear system visibility
+* Subtle system feedback added
+* Interface now feels responsive and alive
 
 * Moving into:
-  - interaction polish
-  - subtle feedback systems
-  - mobile refinement
+  - UX refinement
+  - trust layers
+  - mobile optimization
 
 ---
 
@@ -81,7 +76,23 @@ Must:
 
 ---
 
-## Clarity Principle (NEW)
+## Feedback Principle (NEW)
+
+System must feel responsive but calm.
+
+Use:
+- subtle transitions
+- minimal motion
+- instant feedback
+
+Avoid:
+- flashy animations
+- attention-seeking motion
+- unnecessary effects
+
+---
+
+## Clarity Principle
 
 The system must be:
 - easy to scan

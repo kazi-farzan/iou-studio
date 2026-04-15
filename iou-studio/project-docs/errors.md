@@ -17,11 +17,10 @@
 
 ## Watchlist
 
-* Ensure smooth UI behavior during rapid selection changes
-* Avoid layout shift when totals update
-* Maintain clarity in Summary Panel as data grows
-* Ensure mobile layout does not become cramped
-* Prevent duplication of pricing/timeline logic
-* Maintain separation between Packages and Build modes
-* Keep empty states intentional and clear
-* Watch for visual regressions during animation additions
+* Ensure smooth transitions do not cause layout jitter
+* Avoid over-animating system interactions
+* Maintain clarity during rapid module selection
+* Ensure Summary Panel remains readable as data changes
+* Verify mobile layout with dynamic content
+* Prevent state inconsistencies between modes
+* Keep performance stable with added transitions

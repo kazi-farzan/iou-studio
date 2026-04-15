@@ -14,57 +14,51 @@
 9. Adapt Existing Pricing → “Packages”
 
 10. Add Basic “Build Your Own” Section (Proto)
-    - Module selection UI implemented
-
 11. Add Sticky Summary Panel
-    - Summary acts as control surface
-
 12. Connect Build Your Own → Summary
-    - Live module reflection
-
 13. Implement Module Pricing Logic
-    - Real-time price updates
-
 14. Implement Timeline Logic
-    - Real-time delivery estimates
-
 15. Improve Summary Panel Clarity
-    - Better hierarchy
-    - Reduced noise
-    - Improved readability
+16. Add Subtle System Feedback
 
 ---
 
 ## Current Phase
 
-Phase 2 — Proto Configurator (Usable System)
+Phase 2 — Proto Configurator (Polished System)
 
 ---
 
 ## Next Tasks (STRICT ORDER)
 
-16. Add Subtle System Feedback
-    - Smooth transitions for:
-      - price updates
-      - selection changes
-      - summary updates
-
 17. Improve Module UX
     - clearer selection states
-    - better affordance for interaction
+    - stronger affordance
+    - better interaction clarity
 
 18. Improve Mobile Experience
+    - spacing refinement
     - summary readability
-    - spacing adjustments
-    - interaction comfort
+    - touch usability
+
+19. Add “What Happens Next” Section
+    - remove post-click uncertainty
+    - explain process clearly
+
+20. Add “Recent Builds” Section
+    - visual proof of work
+    - credibility layer
+
+21. Add Metrics Strip
+    - reinforce trust through data
 
 ---
 
 ## Later (Do NOT touch yet)
 
-19. Full configurator system (3-column layout)
-20. Backend integration
-21. Checkout flow
-22. Advanced UX polish
-23. 3D hero (only if aligned with system feel)
-24. Branding refinement layer
+22. Full configurator system (3-column layout)
+23. Backend integration
+24. Checkout flow
+25. Advanced UX polish
+26. 3D hero (only if aligned with system feel)
+27. Branding refinement layer

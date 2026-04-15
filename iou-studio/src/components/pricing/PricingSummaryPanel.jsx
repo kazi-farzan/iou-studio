@@ -1,14 +1,265 @@
+import { useEffect, useMemo, useRef, useState } from "react";
 import Button from "../ui/Button.jsx";
 import Card from "../ui/Card.jsx";
+
+const SUMMARY_LIST_TRANSITION_MS = 180;
+const SUMMARY_FEEDBACK_MS = 420;
+
+function getSummarySignal(values = []) {
+  return values.map((value) => String(value ?? "")).join("||");
+}
+
+function getSummaryItemClasses(presenceState) {
+  return [
+    "grid gap-x-6 gap-y-2 py-4 first:pt-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none",
+    presenceState === "entering"
+      ? "translate-y-1 opacity-60"
+      : presenceState === "exiting"
+        ? "-translate-y-1 opacity-0"
+        : "translate-y-0 opacity-100",
+  ].join(" ");
+}
+
+function getSettlingClasses(isSettling) {
+  return [
+    "transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none",
+    isSettling ? "translate-y-1 opacity-75" : "translate-y-0 opacity-100",
+  ].join(" ");
+}
+
+function getTotalSurfaceClasses(isActive) {
+  return [
+    "rounded-[24px] border px-4 py-5 sm:px-5 transition-[background-color,border-color,box-shadow] duration-500 ease-out motion-reduce:transition-none",
+    isActive
+      ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] shadow-[var(--shadow-soft)]"
+      : "border-[color:var(--border-strong)] bg-[var(--surface-soft)]",
+  ].join(" ");
+}
+
+function getTimelineSurfaceClasses(isActive) {
+  return [
+    "rounded-[20px] border px-3 py-4 sm:px-4 transition-[background-color,border-color,box-shadow] duration-500 ease-out motion-reduce:transition-none",
+    isActive
+      ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] shadow-[var(--shadow-soft)]"
+      : "border-transparent bg-transparent",
+  ].join(" ");
+}
+
+function toStableSummaryItems(items) {
+  return items.map((item, index) => ({
+    ...item,
+    presenceState: "stable",
+    sortIndex: index,
+  }));
+}
+
+function usePrefersReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => {
+      setPrefersReducedMotion(mediaQuery.matches);
+    };
+
+    updatePreference();
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", updatePreference);
+
+      return () => {
+        mediaQuery.removeEventListener("change", updatePreference);
+      };
+    }
+
+    mediaQuery.addListener(updatePreference);
+
+    return () => {
+      mediaQuery.removeListener(updatePreference);
+    };
+  }, []);
+
+  return prefersReducedMotion;
+}
+
+function useFeedbackPulse(signal, enabled, duration = SUMMARY_FEEDBACK_MS) {
+  const [isActive, setIsActive] = useState(false);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return undefined;
+    }
+
+    if (!enabled) {
+      return undefined;
+    }
+
+    let activateFrameId = 0;
+    let timeoutId = 0;
+
+    activateFrameId = window.requestAnimationFrame(() => {
+      setIsActive(true);
+      timeoutId = window.setTimeout(() => {
+        setIsActive(false);
+      }, duration);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(activateFrameId);
+      window.clearTimeout(timeoutId);
+    };
+  }, [duration, enabled, signal]);
+
+  return enabled && isActive;
+}
+
+function useSettlingChange(signal, enabled) {
+  const [isSettling, setIsSettling] = useState(false);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return undefined;
+    }
+
+    if (!enabled) {
+      return undefined;
+    }
+
+    let activateFrameId = 0;
+    let releaseFrameId = 0;
+
+    activateFrameId = window.requestAnimationFrame(() => {
+      setIsSettling(true);
+      releaseFrameId = window.requestAnimationFrame(() => {
+        setIsSettling(false);
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(activateFrameId);
+      window.cancelAnimationFrame(releaseFrameId);
+    };
+  }, [enabled, signal]);
+
+  return enabled && isSettling;
+}
+
+function useStagedSummaryItems(items, enabled) {
+  const itemsSignature = useMemo(
+    () =>
+      items
+        .map((item) =>
+          getSummarySignal([
+            item.id,
+            item.eyebrow,
+            item.title,
+            item.detail,
+            item.value,
+          ]),
+        )
+        .join("::"),
+    [items],
+  );
+  const stableItems = useMemo(() => toStableSummaryItems(items), [items]);
+  const [stagedItems, setStagedItems] = useState(() => stableItems);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (!enabled) {
+      isFirstRender.current = false;
+      const frameId = window.requestAnimationFrame(() => {
+        setStagedItems(stableItems);
+      });
+
+      return () => {
+        window.cancelAnimationFrame(frameId);
+      };
+    }
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return undefined;
+    }
+
+    let applyFrameId = 0;
+    let settleFrameId = 0;
+    let timeoutId = 0;
+
+    applyFrameId = window.requestAnimationFrame(() => {
+      setStagedItems((current) => {
+        const currentIds = new Set(current.map((entry) => entry.id));
+        const nextIndexMap = new Map(
+          items.map((item, index) => [item.id, index]),
+        );
+
+        const mergedItems = current.map((entry, index) => {
+          const nextIndex = nextIndexMap.get(entry.id);
+
+          if (nextIndex === undefined) {
+            return {
+              ...entry,
+              presenceState: "exiting",
+              sortIndex: index - 0.1,
+            };
+          }
+
+          return {
+            ...entry,
+            ...items[nextIndex],
+            presenceState: "stable",
+            sortIndex: nextIndex,
+          };
+        });
+
+        const enteringItems = items
+          .filter((item) => !currentIds.has(item.id))
+          .map((item, index) => ({
+            ...item,
+            presenceState: "entering",
+            sortIndex: nextIndexMap.get(item.id) ?? index,
+          }));
+
+        return [...mergedItems, ...enteringItems].sort(
+          (left, right) => left.sortIndex - right.sortIndex,
+        );
+      });
+
+      settleFrameId = window.requestAnimationFrame(() => {
+        setStagedItems((current) =>
+          current.map((entry) =>
+            entry.presenceState === "entering"
+              ? { ...entry, presenceState: "stable" }
+              : entry,
+          ),
+        );
+      });
+
+      timeoutId = window.setTimeout(() => {
+        setStagedItems((current) =>
+          current.filter((entry) => entry.presenceState !== "exiting"),
+        );
+      }, SUMMARY_LIST_TRANSITION_MS);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(applyFrameId);
+      window.cancelAnimationFrame(settleFrameId);
+      window.clearTimeout(timeoutId);
+    };
+  }, [enabled, items, itemsSignature, stableItems]);
+
+  return enabled ? stagedItems : stableItems;
+}
 
 function SummaryList({ items }) {
   return (
     <ul className="divide-y divide-[color:var(--border-subtle)]">
       {items.map((item) => (
-        <li
-          className="grid gap-x-6 gap-y-2 py-4 first:pt-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start"
-          key={item.id}
-        >
+        <li className={getSummaryItemClasses(item.presenceState)} key={item.id}>
           <div className="min-w-0 flex-1">
             {item.eyebrow ? (
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
@@ -47,7 +298,7 @@ function SummaryList({ items }) {
 
 function EmptyState({ detail, title }) {
   return (
-    <div className="theme-panel rounded-[22px] border border-dashed border-[color:var(--border-subtle)] px-4 py-5">
+    <div className="theme-panel rounded-[22px] border border-dashed border-[color:var(--border-subtle)] px-4 py-5 transition-[background-color,border-color,opacity,transform] duration-200 ease-out motion-reduce:transition-none">
       <p className="text-sm font-medium text-[var(--text-primary)]">{title}</p>
       <p className="mt-2 max-w-[32ch] text-sm leading-6 text-[var(--text-secondary)]">
         {detail}
@@ -102,37 +353,63 @@ function SummaryMeta({ modeLabel, statusLabel }) {
   );
 }
 
-function TotalSummary({ timeline, total }) {
+function TotalSummary({
+  timeline,
+  timelineFeedbackActive,
+  timelineSettling,
+  total,
+  totalFeedbackActive,
+  totalSettling,
+}) {
   return (
     <div className="space-y-4">
-      <div className="rounded-[24px] border border-[color:var(--border-strong)] bg-[var(--surface-soft)] px-4 py-5 sm:px-5">
-        <p className="max-w-full break-words text-3xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] tabular-nums sm:text-[2.5rem]">
+      <div className={getTotalSurfaceClasses(totalFeedbackActive)}>
+        <p
+          className={[
+            "max-w-full break-words text-3xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] tabular-nums sm:text-[2.5rem]",
+            getSettlingClasses(totalSettling),
+          ].join(" ")}
+        >
           {total.value}
         </p>
 
         {total.meta ? (
-          <p className="mt-3 text-sm font-medium leading-6 text-[var(--text-secondary)]">
+          <p
+            className={[
+              "mt-3 text-sm font-medium leading-6 text-[var(--text-secondary)]",
+              getSettlingClasses(totalSettling),
+            ].join(" ")}
+          >
             {total.meta}
           </p>
         ) : null}
       </div>
 
-      <div className="grid gap-x-6 gap-y-2 border-t border-[color:var(--border-subtle)] pt-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
-        <div className="space-y-2">
-          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
-            {timeline.label}
-          </p>
+      <div className="border-t border-[color:var(--border-subtle)] pt-4">
+        <div className={getTimelineSurfaceClasses(timelineFeedbackActive)}>
+          <div className="grid gap-x-6 gap-y-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+            <div className="space-y-2">
+              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+                {timeline.label}
+              </p>
 
-          {timeline.description ? (
-            <p className="max-w-[32ch] text-sm leading-6 text-[var(--text-secondary)]">
-              {timeline.description}
+              {timeline.description ? (
+                <p className="max-w-[32ch] text-sm leading-6 text-[var(--text-secondary)]">
+                  {timeline.description}
+                </p>
+              ) : null}
+            </div>
+
+            <p
+              className={[
+                "text-sm font-medium leading-6 text-[var(--text-primary)] sm:justify-self-end sm:text-right",
+                getSettlingClasses(timelineSettling),
+              ].join(" ")}
+            >
+              {timeline.value}
             </p>
-          ) : null}
+          </div>
         </div>
-
-        <p className="text-sm font-medium leading-6 text-[var(--text-primary)] sm:justify-self-end sm:text-right">
-          {timeline.value}
-        </p>
       </div>
     </div>
   );
@@ -153,6 +430,52 @@ export default function PricingSummaryPanel({ summary }) {
     timeline,
     total,
   } = summary;
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const stagedItems = useStagedSummaryItems(items, !prefersReducedMotion);
+  const itemSignal = useMemo(
+    () =>
+      items
+        .map((item) =>
+          getSummarySignal([
+            item.id,
+            item.eyebrow,
+            item.title,
+            item.detail,
+            item.value,
+          ]),
+        )
+        .join("::"),
+    [items],
+  );
+  const totalSignal = useMemo(
+    () => getSummarySignal([total.label, total.value, total.meta, total.description]),
+    [total.description, total.label, total.meta, total.value],
+  );
+  const timelineSignal = useMemo(
+    () =>
+      getSummarySignal([
+        timeline.label,
+        timeline.value,
+        timeline.description,
+      ]),
+    [timeline.description, timeline.label, timeline.value],
+  );
+  const selectionSettling = useSettlingChange(itemSignal, !prefersReducedMotion);
+  const totalSettling = useSettlingChange(totalSignal, !prefersReducedMotion);
+  const timelineSettling = useSettlingChange(
+    timelineSignal,
+    !prefersReducedMotion,
+  );
+  const totalFeedbackActive = useFeedbackPulse(
+    totalSignal,
+    !prefersReducedMotion,
+  );
+  const timelineFeedbackActive = useFeedbackPulse(
+    timelineSignal,
+    !prefersReducedMotion,
+  );
+  const ctaButtonClassName =
+    "w-full border-[color:var(--border-accent)] bg-[var(--surface-accent)] text-[var(--text-primary)] transition-[background-color,border-color,transform,box-shadow] duration-200 ease-out hover:bg-[var(--surface-accent-strong)] active:translate-y-px active:scale-[0.995] motion-reduce:transition-none";
 
   return (
     <Card className="overflow-hidden p-0 xl:sticky xl:top-28">
@@ -177,22 +500,38 @@ export default function PricingSummaryPanel({ summary }) {
         </div>
 
         <SummarySection description={selectionHint} label={selectionLabel} live>
-          {items.length ? (
-            <SummaryList items={items} />
-          ) : (
-            <EmptyState detail={emptyState.detail} title={emptyState.title} />
-          )}
+          <div
+            className={[
+              "overflow-hidden transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none",
+              selectionSettling
+                ? "translate-y-1 opacity-85"
+                : "translate-y-0 opacity-100",
+            ].join(" ")}
+          >
+            {stagedItems.length ? (
+              <SummaryList items={stagedItems} />
+            ) : (
+              <EmptyState detail={emptyState.detail} title={emptyState.title} />
+            )}
+          </div>
         </SummarySection>
 
         <SummarySection description={total.description} label={total.label} live>
-          <TotalSummary timeline={timeline} total={total} />
+          <TotalSummary
+            timeline={timeline}
+            timelineFeedbackActive={timelineFeedbackActive}
+            timelineSettling={timelineSettling}
+            total={total}
+            totalFeedbackActive={totalFeedbackActive}
+            totalSettling={totalSettling}
+          />
         </SummarySection>
 
         <div className="border-t border-[color:var(--border-subtle)] px-5 py-5 sm:px-6 sm:py-6">
           <div className="space-y-4">
             {isActionDisabled ? (
               <Button
-                className="w-full border-[color:var(--border-accent)] bg-[var(--surface-accent)] text-[var(--text-primary)] hover:bg-[var(--surface-accent-strong)]"
+                className={ctaButtonClassName}
                 disabled
                 size="lg"
                 variant="secondary"
@@ -201,7 +540,7 @@ export default function PricingSummaryPanel({ summary }) {
               </Button>
             ) : (
               <Button
-                className="w-full border-[color:var(--border-accent)] bg-[var(--surface-accent)] text-[var(--text-primary)] hover:bg-[var(--surface-accent-strong)]"
+                className={ctaButtonClassName}
                 size="lg"
                 to="/contact"
                 variant="secondary"

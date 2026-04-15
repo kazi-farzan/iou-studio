@@ -30,7 +30,7 @@ It should feel like a control panel or configurator.
 * Light theme: soft cream with subtle warm tones
 * Dark theme: charcoal with soft violet accents
 * Glassmorphism + soft shadows
-* Smooth animations (GSAP)
+* Smooth animations (subtle only, system-aligned)
 
 ---
 
@@ -38,8 +38,8 @@ It should feel like a control panel or configurator.
 
 * React (Vite)
 * Tailwind CSS
-* GSAP (planned/day 2)
-* Three.js (planned later)
+* GSAP (planned/day 2, minimal usage)
+* Three.js (planned later, only if aligned)
 
 ---
 
@@ -48,8 +48,8 @@ It should feel like a control panel or configurator.
 * Light/Dark theme toggle
 * Premium UI polish
 * Custom-generated visuals
-* 3D homepage section
-* Smooth scroll interactions
+* Smooth system interactions
+* Clear configuration flow
 
 ---
 
@@ -83,10 +83,10 @@ It should feel like a control panel or configurator.
   - Pricing updates instantly
   - Timeline updates instantly
 
-* Summary Panel refined
-  - Improved hierarchy (items / total / timeline / CTA)
-  - Reduced visual noise
-  - Better readability and spacing
+* Subtle system feedback implemented
+  - smoother selection transitions
+  - smoother summary updates
+  - refined interaction feel
 
 * Users can now:
   - select modules
@@ -98,15 +98,16 @@ It should feel like a control panel or configurator.
 
 ## Current Phase
 
-Phase 2 — Proto Configurator (Usable System)
+Phase 2 — Proto Configurator (Polished System)
 
 Goal:
-Deliver a clear, premium-feeling system where users can:
-- configure services
-- understand cost and timeline
-- confidently proceed
+Deliver a system that is not just functional, but:
+- clear
+- responsive
+- trustworthy
+- premium-feeling
 
 Current Focus:
 - UX refinement
-- system feedback polish
 - interaction clarity
+- trust-building layers
