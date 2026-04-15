@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
+import CustomBuildModuleCard from "../components/pricing/CustomBuildModuleCard.jsx";
 import PricingPlanCard from "../components/pricing/PricingPlanCard.jsx";
 import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
 import PricingValueText from "../components/pricing/PricingValueText.jsx";
@@ -46,7 +47,32 @@ const configurationModes = [
   },
 ];
 
-const customBuildCategories = ["Branding", "Website", "Ordering Systems"];
+const customBuildModules = [
+  {
+    id: "branding",
+    title: "Branding",
+    description: "Identity direction, visual language, and core brand assets.",
+    startingPrice: 12000,
+  },
+  {
+    id: "website",
+    title: "Website",
+    description: "Responsive website setup shaped around your offer and content flow.",
+    startingPrice: 18000,
+  },
+  {
+    id: "ordering-system",
+    title: "Ordering System",
+    description: "Digital ordering structure with operational handoff points in place.",
+    startingPrice: 26000,
+  },
+  {
+    id: "customer-capture",
+    title: "Customer Capture",
+    description: "Lead capture, WhatsApp routing, and inquiry collection entry points.",
+    startingPrice: 9000,
+  },
+];
 
 function getSurfaceClasses(tone) {
   if (tone === "accent") {
@@ -89,6 +115,7 @@ export default function Pricing() {
   const [appliedCouponCode, setAppliedCouponCode] = useState("");
   const [couponError, setCouponError] = useState("");
   const [selectedPlanId, setSelectedPlanId] = useState(defaultPlanId);
+  const [selectedCustomModuleIds, setSelectedCustomModuleIds] = useState([]);
 
   const appliedCoupon = useMemo(
     () => getCouponByCode(appliedCouponCode),
@@ -120,6 +147,11 @@ export default function Pricing() {
     (option) => option.id === billingMode,
   )?.label;
   const isPackagesMode = mode === "packages";
+  const selectedCustomModulesLabel = selectedCustomModuleIds.length
+    ? `${selectedCustomModuleIds.length} module${
+        selectedCustomModuleIds.length === 1 ? "" : "s"
+      } selected`
+    : "Select modules to begin";
 
   useEffect(() => {
     if (location.hash !== "#builder") {
@@ -164,6 +196,16 @@ export default function Pricing() {
   function handleCouponChange(event) {
     setCouponInput(event.target.value.toUpperCase());
     setCouponError("");
+  }
+
+  function handleCustomModuleToggle(moduleId) {
+    setSelectedCustomModuleIds((current) => {
+      if (current.includes(moduleId)) {
+        return current.filter((item) => item !== moduleId);
+      }
+
+      return [...current, moduleId];
+    });
   }
 
   return (
@@ -484,37 +526,34 @@ export default function Pricing() {
 
           {isPackagesMode ? null : (
             <Card className="p-6 sm:p-8 lg:p-10">
-              <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
-                <div className="max-w-3xl space-y-4">
-                  <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-                    Custom Build
-                  </p>
-                  <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-                    Build your custom setup
-                  </h2>
-                  <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-                    Select services and configure your system. Pricing updates as you
-                    build.
-                  </p>
-                  <p className="text-sm leading-7 text-[var(--text-muted)]">
-                    Module selection and live pricing controls will appear here in the
-                    next layer of the configurator.
-                  </p>
+              <div className="space-y-8">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                  <div className="max-w-3xl space-y-4">
+                    <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                      Custom Build
+                    </p>
+                    <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+                      Build your custom setup
+                    </h2>
+                    <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+                      Select services to start building your system.
+                    </p>
+                  </div>
+
+                  <div className="theme-panel inline-flex w-fit items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                    <span className="theme-dot h-2 w-2 rounded-full" />
+                    {selectedCustomModulesLabel}
+                  </div>
                 </div>
 
-                <div className="grid gap-3">
-                  {customBuildCategories.map((category) => (
-                    <div
-                      key={category}
-                      className="theme-panel rounded-[22px] px-4 py-4"
-                    >
-                      <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
-                        Module
-                      </p>
-                      <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
-                        {category}
-                      </p>
-                    </div>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {customBuildModules.map((module) => (
+                    <CustomBuildModuleCard
+                      isSelected={selectedCustomModuleIds.includes(module.id)}
+                      key={module.id}
+                      module={module}
+                      onToggle={handleCustomModuleToggle}
+                    />
                   ))}
                 </div>
               </div>
