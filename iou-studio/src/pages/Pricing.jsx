@@ -33,6 +33,21 @@ const pricingNotes = [
   },
 ];
 
+const configurationModes = [
+  {
+    id: "packages",
+    label: "Packages",
+    detail: "Start from preset configurations.",
+  },
+  {
+    id: "custom",
+    label: "Build Your Own",
+    detail: "Move into a custom system build.",
+  },
+];
+
+const customBuildCategories = ["Branding", "Website", "Ordering Systems"];
+
 function getSurfaceClasses(tone) {
   if (tone === "accent") {
     return "theme-panel-contrast border-[color:var(--border-accent)] bg-[var(--surface-accent)]";
@@ -43,6 +58,15 @@ function getSurfaceClasses(tone) {
   }
 
   return "theme-panel-contrast border-[color:var(--border-subtle)]";
+}
+
+function getModeToggleClasses(isActive) {
+  return [
+    "flex-1 rounded-[22px] border px-4 py-4 text-left transition-all duration-300",
+    isActive
+      ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] text-[var(--text-primary)]"
+      : "border-transparent bg-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-subtle)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
+  ].join(" ");
 }
 
 function getToggleClasses(isActive) {
@@ -59,6 +83,7 @@ const defaultPlanId =
 
 export default function Pricing() {
   const location = useLocation();
+  const [mode, setMode] = useState("packages");
   const [billingMode, setBillingMode] = useState(BILLING_MODE_MONTHLY);
   const [couponInput, setCouponInput] = useState("");
   const [appliedCouponCode, setAppliedCouponCode] = useState("");
@@ -94,6 +119,7 @@ export default function Pricing() {
   const activeBillingLabel = billingOptions.find(
     (option) => option.id === billingMode,
   )?.label;
+  const isPackagesMode = mode === "packages";
 
   useEffect(() => {
     if (location.hash !== "#builder") {
@@ -165,6 +191,34 @@ export default function Pricing() {
             </p>
           </div>
 
+          <div className="max-w-4xl space-y-3">
+            <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+              Configuration Mode
+            </p>
+
+            <div className="theme-panel flex flex-col gap-2 rounded-[28px] border border-[color:var(--border-subtle)] p-2 sm:flex-row">
+              {configurationModes.map((option) => (
+                <button
+                  key={option.id}
+                  aria-pressed={mode === option.id}
+                  className={getModeToggleClasses(mode === option.id)}
+                  onClick={() => setMode(option.id)}
+                  type="button"
+                >
+                  <span className="block text-sm font-semibold tracking-[0.01em]">
+                    {option.label}
+                  </span>
+                  <span className="mt-1 block text-xs leading-5 opacity-80">
+                    {option.detail}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div
+            className={isPackagesMode ? "space-y-8 transition-all duration-300" : "hidden"}
+          >
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1.08fr)_380px] xl:items-start">
             <Card className="p-5 sm:p-6 lg:p-7">
               <div className="space-y-6">
@@ -426,6 +480,46 @@ export default function Pricing() {
               plan={selectedPlan}
             />
           </div>
+          </div>
+
+          {isPackagesMode ? null : (
+            <Card className="p-6 sm:p-8 lg:p-10">
+              <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+                <div className="max-w-3xl space-y-4">
+                  <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                    Custom Build
+                  </p>
+                  <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+                    Build your custom setup
+                  </h2>
+                  <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+                    Select services and configure your system. Pricing updates as you
+                    build.
+                  </p>
+                  <p className="text-sm leading-7 text-[var(--text-muted)]">
+                    Module selection and live pricing controls will appear here in the
+                    next layer of the configurator.
+                  </p>
+                </div>
+
+                <div className="grid gap-3">
+                  {customBuildCategories.map((category) => (
+                    <div
+                      key={category}
+                      className="theme-panel rounded-[22px] px-4 py-4"
+                    >
+                      <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                        Module
+                      </p>
+                      <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
+                        {category}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Card>
+          )}
         </div>
       </Section>
     </div>
