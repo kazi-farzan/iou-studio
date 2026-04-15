@@ -40,6 +40,23 @@ Avoid:
 - marketing-heavy sections
 - unnecessary visual clutter
 
+## Interaction Principle (NEW)
+
+Every section added must answer:
+“What is the user doing next?”
+
+Not:
+“What are we showing?”
+
+Sections should:
+- guide action
+- reduce uncertainty
+- move user toward configuration
+
+Avoid:
+- passive informational blocks
+- standalone marketing sections
+
 ## Execution Mode (IMPORTANT)
 
 Development is being done in small, sequential tasks.

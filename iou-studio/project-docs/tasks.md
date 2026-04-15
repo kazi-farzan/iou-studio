@@ -5,19 +5,16 @@
 1. Fix white screen after npm run dev
 2. Verify Tailwind setup
 3. Implement full theme system
-   - Light theme: soft cream + warm tones
-   - Dark theme: charcoal + violet accents
-   - Theme toggle in navbar
-   - localStorage persistence
-   - No flicker
-   - Global update across pages
 
 4. Replace Hero with System Entry
-   - Removed marketing-style hero
-   - Added system-first messaging
-   - Introduced “Start Building” CTA
-   - Introduced “See How It Works” CTA
-   - Established system interface direction
+   - System-first messaging
+   - New CTAs
+   - Removed agency-style hero
+
+5. Add “How It Works” Section
+   - 3-step system explanation
+   - Structured horizontal layout
+   - Reinforces user flow (select → customize → review)
 
 ---
 
@@ -29,35 +26,31 @@ Phase 1 — Behavioral Shift (System Interface)
 
 ## Next Tasks (STRICT ORDER)
 
-5. Add “How It Works” Section
-   - 3-step system explanation
-   - Horizontal structured layout
-
 6. Add Persistent “Start Building” CTA
    - Sticky or floating CTA
-   - Always accessible entry to system
+   - Always visible entry into system
 
 7. Reframe Pricing Page Header
-   - Shift from “Pricing” → system-oriented language
-   - Align copy with configurator model
+   - Align with system language
+   - Remove “agency pricing” feel
 
 8. Add Toggle: Packages vs Build Your Own
    - Top-level mode switch
 
 9. Adapt Existing Pricing → “Packages”
    - Rename to “Starting Configurations”
-   - Update CTAs
+   - Update CTA language
 
 10. Add Basic “Build Your Own” Section (Proto)
    - Service categories
    - Add/remove interaction
-   - Simple pricing hooks
+   - Initial configurator behavior
 
 11. Add Sticky Summary Panel
    - Selected items
    - Total price
-   - Timeline (basic)
-   - Primary CTA
+   - Timeline
+   - Primary action CTA
 
 ---
 

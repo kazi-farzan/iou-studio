@@ -13,8 +13,9 @@
 
 ## Watchlist
 
-* Ensure new sections follow system-interface direction (not marketing UI)
-* Maintain consistency between hero and upcoming sections (How It Works, Pricing)
-* Avoid reintroducing generic agency patterns in new components
-* Verify responsiveness after layout changes
-* Ensure theme consistency in newly added sections
+* Ensure Hero → How It Works flow feels connected
+* Maintain consistent spacing and alignment between sections
+* Avoid reintroducing marketing-style components in new sections
+* Check responsiveness for newly added sections
+* Ensure new sections inherit theme tokens correctly
+* Watch for layout shifts as more interactive elements are added

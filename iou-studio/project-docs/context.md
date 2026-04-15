@@ -48,16 +48,29 @@ It should feel like a control panel or configurator.
 * Base React + Vite setup active
 * Theme system completed (light/dark with persistence)
 * Navbar implemented with theme toggle
+
 * System-first Hero implemented
   - Replaced marketing-style hero with system-entry UX
   - Clear messaging: build → price → launch
   - Primary CTA: “Start Building”
   - Secondary CTA: “See How It Works”
-* Transition from marketing site → system interface initiated
+
+* “How It Works” section implemented
+  - 3-step structured flow
+  - Explains system interaction clearly
+  - Reinforces user journey (select → customize → review)
+
+* Transition from marketing site → system interface actively in progress
+
+---
 
 ## Current Phase
 
 Phase 1 — Behavioral Shift (System over brochure)
 
 Goal:
-Convert the site from a marketing-style layout into an interactive system where users begin configuring services immediately.
+Convert the site into an interactive system where users understand the flow and begin configuring services immediately.
+
+Current Focus:
+- Reinforcing system behavior through UI
+- Guiding users toward interaction, not passive reading
