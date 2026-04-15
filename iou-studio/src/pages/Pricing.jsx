@@ -10,6 +10,7 @@ import Section from "../components/ui/Section.jsx";
 import {
   BILLING_MODE_MONTHLY,
   billingOptions,
+  formatInr,
   getCouponByCode,
   getCouponFeedback,
   getPlanPricing,
@@ -74,6 +75,12 @@ const customBuildModules = [
   },
 ];
 
+const packageTimelineEstimates = {
+  starter: "Estimated delivery: 3-4 weeks",
+  growth: "Estimated delivery: 4-6 weeks",
+  premium: "Estimated delivery: 6-8 weeks",
+};
+
 function getSurfaceClasses(tone) {
   if (tone === "accent") {
     return "theme-panel-contrast border-[color:var(--border-accent)] bg-[var(--surface-accent)]";
@@ -102,6 +109,74 @@ function getToggleClasses(isActive) {
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-accent-strong))] text-[var(--text-primary)] shadow-[var(--shadow-accent)]"
       : "border-transparent bg-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
   ].join(" ");
+}
+
+function getPackageTimeline(planId) {
+  return (
+    packageTimelineEstimates[planId] ||
+    "Estimated delivery: timeline will be confirmed during scope review"
+  );
+}
+
+function getCustomTimeline(selectedModules) {
+  if (!selectedModules.length) {
+    return "Timeline will update as you build";
+  }
+
+  if (selectedModules.length === 1) {
+    return "Estimated delivery: 2-4 weeks";
+  }
+
+  if (selectedModules.length === 2) {
+    return "Estimated delivery: 4-6 weeks";
+  }
+
+  return "Estimated delivery: 6-8 weeks";
+}
+
+function getPackageTotalSummary(plan) {
+  if (!plan) {
+    return {
+      description: "Pricing appears here as soon as a starting configuration is active.",
+      label: "Current total",
+      meta: "",
+      value: "Select a package",
+    };
+  }
+
+  if (plan.base.isYearly) {
+    return {
+      description: `Effective monthly rate: ${formatInr(plan.base.monthlyEquivalent)}/month.`,
+      label: "Current total",
+      meta: plan.base.billingLine,
+      value: formatInr(plan.effective.todayCharge),
+    };
+  }
+
+  if (plan.coupon?.status === "active" && plan.coupon.code === "FIRST3") {
+    return {
+      description: "Intro pricing is active for the first 3 months of monthly billing.",
+      label: "Current total",
+      meta: `Then ${formatInr(plan.coupon.recurringCharge)}/month from month 4`,
+      value: `${formatInr(plan.coupon.todayCharge)}/month`,
+    };
+  }
+
+  if (plan.coupon?.status === "active" && plan.coupon.code === "TRYONCE") {
+    return {
+      description: "The first monthly invoice is removed before standard billing resumes.",
+      label: "Current total",
+      meta: `Then ${formatInr(plan.coupon.recurringCharge)}/month from month 2`,
+      value: "Free",
+    };
+  }
+
+  return {
+    description: `Switch to yearly for ${formatInr(plan.base.monthlyEquivalent)}/month effective.`,
+    label: "Current total",
+    meta: plan.base.billingLine,
+    value: `${formatInr(plan.effective.todayCharge)}/month`,
+  };
 }
 
 const defaultPlanId =
@@ -139,19 +214,133 @@ export default function Pricing() {
   );
 
   const selectedPlan = useMemo(
-    () => plans.find((plan) => plan.id === selectedPlanId) || plans[0],
+    () => plans.find((plan) => plan.id === selectedPlanId) || null,
     [plans, selectedPlanId],
   );
 
-  const activeBillingLabel = billingOptions.find(
-    (option) => option.id === billingMode,
-  )?.label;
+  const activeBillingLabel =
+    billingOptions.find((option) => option.id === billingMode)?.label || "Pricing";
   const isPackagesMode = mode === "packages";
-  const selectedCustomModulesLabel = selectedCustomModuleIds.length
-    ? `${selectedCustomModuleIds.length} module${
-        selectedCustomModuleIds.length === 1 ? "" : "s"
+
+  const selectedCustomModules = useMemo(
+    () =>
+      customBuildModules.filter((module) =>
+        selectedCustomModuleIds.includes(module.id),
+      ),
+    [selectedCustomModuleIds],
+  );
+
+  const customBuildTotal = useMemo(
+    () =>
+      selectedCustomModules.reduce(
+        (total, module) => total + module.startingPrice,
+        0,
+      ),
+    [selectedCustomModules],
+  );
+
+  const selectedCustomModulesLabel = selectedCustomModules.length
+    ? `${selectedCustomModules.length} module${
+        selectedCustomModules.length === 1 ? "" : "s"
       } selected`
     : "Select modules to begin";
+
+  const summaryPanelData = useMemo(() => {
+    if (isPackagesMode) {
+      return {
+        ctaLabel: "Continue",
+        ctaNote: selectedPlan
+          ? "Move into scope review and confirm the next step."
+          : "Choose a starting configuration to unlock the next step.",
+        description:
+          "Monitor the active starting configuration, current pricing, and delivery window while you configure.",
+        emptyState: {
+          title: "No starting configuration selected yet.",
+          detail: "Choose a package to review the current price and timeline.",
+        },
+        isActionDisabled: !selectedPlan,
+        items: selectedPlan
+          ? [
+              {
+                id: selectedPlan.id,
+                title: selectedPlan.name,
+                detail: selectedPlan.description,
+                value: selectedPlan.audience,
+              },
+            ]
+          : [],
+        modeLabel: "Packages",
+        selectionHint: selectedPlan
+          ? "This starting configuration can still be customized before handoff."
+          : "The summary will lock onto the package you activate.",
+        selectionLabel: "Selected setup",
+        statusLabel: activeBillingLabel,
+        timeline: {
+          description: selectedPlan
+            ? "Final delivery depends on scope confirmation and content readiness."
+            : "Select a package to view the baseline delivery window.",
+          label: "Estimated timeline",
+          value: selectedPlan
+            ? getPackageTimeline(selectedPlan.id)
+            : "Timeline pending",
+        },
+        total: getPackageTotalSummary(selectedPlan),
+      };
+    }
+
+    return {
+      ctaLabel: "Continue",
+      ctaNote: selectedCustomModules.length
+        ? "Review the selection with us and turn it into a scoped build."
+        : "Add modules to prepare a custom build summary and next step.",
+      description:
+        "Track the active module selection, running total, and delivery window as the build takes shape.",
+      emptyState: {
+        title: "No modules selected yet.",
+        detail: "Add modules to start building your custom setup.",
+      },
+      isActionDisabled: !selectedCustomModules.length,
+      items: selectedCustomModules.map((module) => ({
+        id: module.id,
+        title: module.title,
+        detail: module.description,
+        value: `from ${formatInr(module.startingPrice)}`,
+      })),
+      modeLabel: "Build Your Own",
+      selectionHint: selectedCustomModules.length
+        ? "Module pricing is a starting scope signal and stays ready for deeper estimation."
+        : "Module selections will appear here as soon as you start building.",
+      selectionLabel: "Selected modules",
+      statusLabel: selectedCustomModules.length
+        ? `${selectedCustomModules.length} active`
+        : "Awaiting selection",
+      timeline: {
+        description: selectedCustomModules.length
+          ? "The estimate expands as scope and integration needs increase."
+          : "Choose modules to generate a starting delivery window.",
+        label: "Estimated timeline",
+        value: getCustomTimeline(selectedCustomModules),
+      },
+      total: {
+        description: selectedCustomModules.length
+          ? "The running total uses current module starting prices and stays ready for deeper pricing integration."
+          : "Totals will update as you add modules to the custom build.",
+        label: "Running total",
+        meta: selectedCustomModules.length
+          ? "Starting price based on the active module selection"
+          : "",
+        value: selectedCustomModules.length
+          ? `from ${formatInr(customBuildTotal)}`
+          : "Not yet configured",
+      },
+    };
+  }, [
+    activeBillingLabel,
+    customBuildTotal,
+    isPackagesMode,
+    selectedCustomModules,
+    selectedPlan,
+  ]);
 
   useEffect(() => {
     if (location.hash !== "#builder") {
@@ -233,35 +422,36 @@ export default function Pricing() {
             </p>
           </div>
 
-          <div className="max-w-4xl space-y-3">
-            <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-              Configuration Mode
-            </p>
+          <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start">
+            <div className="space-y-8">
+              <div className="max-w-4xl space-y-3">
+                <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                  Configuration Mode
+                </p>
 
-            <div className="theme-panel flex flex-col gap-2 rounded-[28px] border border-[color:var(--border-subtle)] p-2 sm:flex-row">
-              {configurationModes.map((option) => (
-                <button
-                  key={option.id}
-                  aria-pressed={mode === option.id}
-                  className={getModeToggleClasses(mode === option.id)}
-                  onClick={() => setMode(option.id)}
-                  type="button"
-                >
-                  <span className="block text-sm font-semibold tracking-[0.01em]">
-                    {option.label}
-                  </span>
-                  <span className="mt-1 block text-xs leading-5 opacity-80">
-                    {option.detail}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
+                <div className="theme-panel flex flex-col gap-2 rounded-[28px] border border-[color:var(--border-subtle)] p-2 sm:flex-row">
+                  {configurationModes.map((option) => (
+                    <button
+                      key={option.id}
+                      aria-pressed={mode === option.id}
+                      className={getModeToggleClasses(mode === option.id)}
+                      onClick={() => setMode(option.id)}
+                      type="button"
+                    >
+                      <span className="block text-sm font-semibold tracking-[0.01em]">
+                        {option.label}
+                      </span>
+                      <span className="mt-1 block text-xs leading-5 opacity-80">
+                        {option.detail}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          <div
-            className={isPackagesMode ? "space-y-8 transition-all duration-300" : "hidden"}
-          >
-          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.08fr)_380px] xl:items-start">
+              {isPackagesMode ? (
+                <>
+                  <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(280px,0.7fr)] lg:items-start">
             <Card className="p-5 sm:p-6 lg:p-7">
               <div className="space-y-6">
                 <div className="max-w-3xl space-y-3">
@@ -410,155 +600,156 @@ export default function Pricing() {
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="max-w-3xl space-y-2">
-              <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-                Starting Configurations
-              </p>
-              <p className="text-sm leading-6 text-[var(--text-secondary)]">
-                Choose a baseline setup. Live totals and the breakdown panel follow the
-                configuration you select.
-              </p>
-            </div>
+                  <div className="space-y-4">
+                    <div className="max-w-3xl space-y-2">
+                      <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                        Starting Configurations
+                      </p>
+                      <p className="text-sm leading-6 text-[var(--text-secondary)]">
+                        Choose a baseline setup. The summary panel follows the active
+                        configuration so you always have the current state in view.
+                      </p>
+                    </div>
 
-            <div className="grid gap-5 xl:grid-cols-3">
-              {plans.map((plan) => (
-                <PricingPlanCard
-                  isSelected={selectedPlanId === plan.id}
-                  key={plan.id}
-                  onSelect={setSelectedPlanId}
-                  plan={plan}
-                />
-              ))}
-            </div>
-          </div>
+                    <div className="grid gap-5 lg:grid-cols-2 2xl:grid-cols-3">
+                      {plans.map((plan) => (
+                        <PricingPlanCard
+                          isSelected={selectedPlanId === plan.id}
+                          key={plan.id}
+                          onSelect={setSelectedPlanId}
+                          plan={plan}
+                        />
+                      ))}
+                    </div>
+                  </div>
 
-          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.08fr)_380px] xl:items-start">
-            <Card className="p-6 sm:p-8">
-              <div className="space-y-6">
-                <div className="max-w-3xl space-y-3">
-                  <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-                    Live Comparison
-                  </p>
-                  <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-                    Compare the active billing view without re-reading every card.
-                  </h2>
-                  <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-                    The selected billing mode and coupon logic update every number
-                    below, so this comparison stays aligned with the plan cards and
-                    the breakdown panel.
-                  </p>
-                </div>
+                  <Card className="p-6 sm:p-8">
+                    <div className="space-y-6">
+                      <div className="max-w-3xl space-y-3">
+                        <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                          Live Comparison
+                        </p>
+                        <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+                          Compare the active billing view without re-reading every
+                          card.
+                        </h2>
+                        <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+                          The selected billing mode and coupon logic update every number
+                          below, so this comparison stays aligned with the plan cards
+                          and the summary panel.
+                        </p>
+                      </div>
 
-                <div className="space-y-4">
-                  {plans.map((plan) => {
-                    const snapshot = getPlanSnapshot(plan);
-                    const isSelected = plan.id === selectedPlanId;
+                      <div className="space-y-4">
+                        {plans.map((plan) => {
+                          const snapshot = getPlanSnapshot(plan);
+                          const isSelected = plan.id === selectedPlanId;
 
-                    return (
-                      <div
-                        key={plan.id}
-                        className={[
-                          "rounded-[26px] border p-5 transition-all duration-300",
-                          isSelected
-                            ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] shadow-[var(--shadow-accent)]"
-                            : "theme-panel",
-                        ].join(" ")}
-                      >
-                        <div className="flex min-w-0 flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-                          <div className="max-w-sm min-w-0">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <p className="text-base font-semibold text-[var(--text-primary)]">
-                                {plan.name}
-                              </p>
+                          return (
+                            <div
+                              key={plan.id}
+                              className={[
+                                "rounded-[26px] border p-5 transition-all duration-300",
+                                isSelected
+                                  ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] shadow-[var(--shadow-accent)]"
+                                  : "theme-panel",
+                              ].join(" ")}
+                            >
+                              <div className="flex min-w-0 flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+                                <div className="max-w-sm min-w-0">
+                                  <div className="flex flex-wrap items-center gap-2">
+                                    <p className="text-base font-semibold text-[var(--text-primary)]">
+                                      {plan.name}
+                                    </p>
 
-                              {plan.isMostPopular ? (
-                                <span className="theme-chip-strong rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em]">
-                                  Most Popular
-                                </span>
-                              ) : null}
+                                    {plan.isMostPopular ? (
+                                      <span className="theme-chip-strong rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em]">
+                                        Most Popular
+                                      </span>
+                                    ) : null}
 
-                              {isSelected ? (
-                                <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
-                                  Selected
-                                </span>
-                              ) : null}
-                            </div>
+                                    {isSelected ? (
+                                      <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
+                                        Selected
+                                      </span>
+                                    ) : null}
+                                  </div>
 
-                            <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                              {plan.audience}
-                            </p>
-                            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                              {snapshot.note}
-                            </p>
-                          </div>
+                                  <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                                    {plan.audience}
+                                  </p>
+                                  <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+                                    {snapshot.note}
+                                  </p>
+                                </div>
 
-                          <div className="grid min-w-0 flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                            {snapshot.metrics.map((metric) => (
-                              <div
-                                className="theme-panel-contrast min-w-0 rounded-[20px] p-4 sm:p-5"
-                                key={metric.label}
-                              >
-                                <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                                  {metric.label}
-                                </p>
-                                <div className="mt-2 min-w-0">
-                                  <PricingValueText size="md" value={metric.value} />
+                                <div className="grid min-w-0 flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                                  {snapshot.metrics.map((metric) => (
+                                    <div
+                                      className="theme-panel-contrast min-w-0 rounded-[20px] p-4 sm:p-5"
+                                      key={metric.label}
+                                    >
+                                      <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
+                                        {metric.label}
+                                      </p>
+                                      <div className="mt-2 min-w-0">
+                                        <PricingValueText
+                                          size="md"
+                                          value={metric.value}
+                                        />
+                                      </div>
+                                    </div>
+                                  ))}
                                 </div>
                               </div>
-                            ))}
-                          </div>
-                        </div>
+                            </div>
+                          );
+                        })}
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </Card>
+                    </div>
+                  </Card>
+                </>
+              ) : (
+                <Card className="p-6 sm:p-8 lg:p-10">
+                  <div className="space-y-8">
+                    <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                      <div className="max-w-3xl space-y-4">
+                        <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                          Custom Build
+                        </p>
+                        <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+                          Build your custom setup
+                        </h2>
+                        <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+                          Select services to start building your system.
+                        </p>
+                      </div>
 
-            <PricingSummaryPanel
-              billingLabel={activeBillingLabel}
-              couponFeedback={couponFeedback}
-              plan={selectedPlan}
-            />
-          </div>
-          </div>
+                      <div className="theme-panel inline-flex w-fit items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                        <span className="theme-dot h-2 w-2 rounded-full" />
+                        {selectedCustomModulesLabel}
+                      </div>
+                    </div>
 
-          {isPackagesMode ? null : (
-            <Card className="p-6 sm:p-8 lg:p-10">
-              <div className="space-y-8">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-                  <div className="max-w-3xl space-y-4">
-                    <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-                      Custom Build
-                    </p>
-                    <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-                      Build your custom setup
-                    </h2>
-                    <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-                      Select services to start building your system.
-                    </p>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      {customBuildModules.map((module) => (
+                        <CustomBuildModuleCard
+                          isSelected={selectedCustomModuleIds.includes(module.id)}
+                          key={module.id}
+                          module={module}
+                          onToggle={handleCustomModuleToggle}
+                        />
+                      ))}
+                    </div>
                   </div>
+                </Card>
+              )}
+            </div>
 
-                  <div className="theme-panel inline-flex w-fit items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
-                    <span className="theme-dot h-2 w-2 rounded-full" />
-                    {selectedCustomModulesLabel}
-                  </div>
-                </div>
-
-                <div className="grid gap-4 md:grid-cols-2">
-                  {customBuildModules.map((module) => (
-                    <CustomBuildModuleCard
-                      isSelected={selectedCustomModuleIds.includes(module.id)}
-                      key={module.id}
-                      module={module}
-                      onToggle={handleCustomModuleToggle}
-                    />
-                  ))}
-                </div>
-              </div>
-            </Card>
-          )}
+            <div className="xl:self-start">
+              <PricingSummaryPanel summary={summaryPanelData} />
+            </div>
+          </div>
         </div>
       </Section>
     </div>
