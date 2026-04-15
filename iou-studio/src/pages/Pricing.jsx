@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import PricingPlanCard from "../components/pricing/PricingPlanCard.jsx";
 import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
 import PricingValueText from "../components/pricing/PricingValueText.jsx";
@@ -57,6 +58,7 @@ const defaultPlanId =
   pricingPlans.find((plan) => plan.isMostPopular)?.id || pricingPlans[0].id;
 
 export default function Pricing() {
+  const location = useLocation();
   const [billingMode, setBillingMode] = useState(BILLING_MODE_MONTHLY);
   const [couponInput, setCouponInput] = useState("");
   const [appliedCouponCode, setAppliedCouponCode] = useState("");
@@ -93,6 +95,27 @@ export default function Pricing() {
     (option) => option.id === billingMode,
   )?.label;
 
+  useEffect(() => {
+    if (location.hash !== "#builder") {
+      return;
+    }
+
+    const builderSection = document.getElementById("builder");
+
+    if (!builderSection) {
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    builderSection.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  }, [location.hash]);
+
   function handleCouponApply() {
     const result = validateCouponCode(couponInput);
 
@@ -118,7 +141,7 @@ export default function Pricing() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full scroll-mt-28 sm:scroll-mt-32" id="builder">
       <Section
         className="pt-4 sm:pt-8"
         description="Choose how IOU Labs pricing is billed, preview launch-offer coupons, and compare plan totals without losing clarity."
