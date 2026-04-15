@@ -92,25 +92,31 @@ It should feel like a control panel or configurator.
   - better affordance
   - stronger interaction clarity
 
+* Mobile experience refined
+  - improved spacing and layout
+  - better tap targets
+  - readable summary panel
+  - smooth vertical flow
+
 * Users can now:
-  - select modules confidently
-  - understand system state instantly
-  - see price and timeline without friction
+  - configure systems on desktop AND mobile
+  - understand cost and timeline instantly
+  - interact without friction
 
 ---
 
 ## Current Phase
 
-Phase 2 — Proto Configurator (Refined System)
+Phase 2 — Proto Configurator (Usable Product)
 
 Goal:
 Deliver a system that is:
 - intuitive
 - responsive
-- clear
+- mobile-friendly
 - trustworthy
 
 Current Focus:
-- mobile experience
-- trust-building layers
-- reducing friction before conversion
+- trust layers
+- conversion clarity
+- removing hesitation before action

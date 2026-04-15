@@ -11,7 +11,7 @@ function getSummarySignal(values = []) {
 
 function getSummaryItemClasses(presenceState) {
   return [
-    "grid gap-x-6 gap-y-2 py-4 first:pt-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none",
+    "grid gap-x-4 gap-y-3 py-5 first:pt-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-x-6 sm:gap-y-2 sm:py-4 transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none",
     presenceState === "entering"
       ? "translate-y-1 opacity-60"
       : presenceState === "exiting"
@@ -29,7 +29,7 @@ function getSettlingClasses(isSettling) {
 
 function getTotalSurfaceClasses(isActive) {
   return [
-    "rounded-[24px] border px-4 py-5 sm:px-5 transition-[background-color,border-color,box-shadow] duration-500 ease-out motion-reduce:transition-none",
+    "rounded-[24px] border px-5 py-6 sm:px-5 sm:py-5 transition-[background-color,border-color,box-shadow] duration-500 ease-out motion-reduce:transition-none",
     isActive
       ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] shadow-[var(--shadow-soft)]"
       : "border-[color:var(--border-strong)] bg-[var(--surface-soft)]",
@@ -38,7 +38,7 @@ function getTotalSurfaceClasses(isActive) {
 
 function getTimelineSurfaceClasses(isActive) {
   return [
-    "rounded-[20px] border px-3 py-4 sm:px-4 transition-[background-color,border-color,box-shadow] duration-500 ease-out motion-reduce:transition-none",
+    "rounded-[20px] border px-4 py-5 sm:px-4 sm:py-4 transition-[background-color,border-color,box-shadow] duration-500 ease-out motion-reduce:transition-none",
     isActive
       ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] shadow-[var(--shadow-soft)]"
       : "border-transparent bg-transparent",
@@ -286,7 +286,7 @@ function SummaryList({ items }) {
           </div>
 
           {item.value ? (
-            <p className="max-w-full text-sm font-medium leading-6 text-[var(--text-primary)] sm:max-w-[10.5rem] sm:justify-self-end sm:text-right">
+            <p className="max-w-full break-words text-sm font-medium leading-6 text-[var(--text-primary)] sm:max-w-[10.5rem] sm:justify-self-end sm:text-right">
               {item.value}
             </p>
           ) : null}
@@ -298,7 +298,7 @@ function SummaryList({ items }) {
 
 function EmptyState({ detail, title }) {
   return (
-    <div className="theme-panel rounded-[22px] border border-dashed border-[color:var(--border-subtle)] px-4 py-5 transition-[background-color,border-color,opacity,transform] duration-200 ease-out motion-reduce:transition-none">
+    <div className="theme-panel rounded-[22px] border border-dashed border-[color:var(--border-subtle)] px-5 py-6 transition-[background-color,border-color,opacity,transform] duration-200 ease-out motion-reduce:transition-none">
       <p className="text-sm font-medium text-[var(--text-primary)]">{title}</p>
       <p className="mt-2 max-w-[32ch] text-sm leading-6 text-[var(--text-secondary)]">
         {detail}
@@ -317,9 +317,9 @@ function SummarySection({
     <section
       aria-atomic={live ? "true" : undefined}
       aria-live={live ? "polite" : undefined}
-      className="border-t border-[color:var(--border-subtle)] px-5 py-5 sm:px-6 sm:py-6"
+      className="border-t border-[color:var(--border-subtle)] px-5 py-6 sm:px-6 sm:py-6"
     >
-      <div className="space-y-4">
+      <div className="space-y-5 sm:space-y-4">
         <div className="space-y-2">
           <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
             {label}
@@ -340,7 +340,7 @@ function SummarySection({
 
 function SummaryMeta({ modeLabel, statusLabel }) {
   return (
-    <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+    <div className="flex flex-wrap items-center gap-2.5 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
       <span className="text-[var(--accent-secondary)]">{modeLabel}</span>
 
       {statusLabel ? (
@@ -362,11 +362,11 @@ function TotalSummary({
   totalSettling,
 }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div className={getTotalSurfaceClasses(totalFeedbackActive)}>
         <p
           className={[
-            "max-w-full break-words text-3xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] tabular-nums sm:text-[2.5rem]",
+            "max-w-full break-words text-[1.9rem] font-semibold leading-[1.1] tracking-[-0.05em] text-[var(--text-primary)] tabular-nums sm:text-[2.5rem]",
             getSettlingClasses(totalSettling),
           ].join(" ")}
         >
@@ -376,7 +376,7 @@ function TotalSummary({
         {total.meta ? (
           <p
             className={[
-              "mt-3 text-sm font-medium leading-6 text-[var(--text-secondary)]",
+              "mt-3 break-words text-sm font-medium leading-6 text-[var(--text-secondary)]",
               getSettlingClasses(totalSettling),
             ].join(" ")}
           >
@@ -385,9 +385,9 @@ function TotalSummary({
         ) : null}
       </div>
 
-      <div className="border-t border-[color:var(--border-subtle)] pt-4">
+      <div className="border-t border-[color:var(--border-subtle)] pt-5">
         <div className={getTimelineSurfaceClasses(timelineFeedbackActive)}>
-          <div className="grid gap-x-6 gap-y-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+          <div className="grid gap-x-4 gap-y-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-x-6 sm:gap-y-2">
             <div className="space-y-2">
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
                 {timeline.label}
@@ -402,7 +402,7 @@ function TotalSummary({
 
             <p
               className={[
-                "text-sm font-medium leading-6 text-[var(--text-primary)] sm:justify-self-end sm:text-right",
+                "break-words text-sm font-medium leading-6 text-[var(--text-primary)] sm:justify-self-end sm:text-right",
                 getSettlingClasses(timelineSettling),
               ].join(" ")}
             >
@@ -480,13 +480,13 @@ export default function PricingSummaryPanel({ summary }) {
   return (
     <Card className="overflow-hidden p-0 xl:sticky xl:top-28">
       <div className="flex flex-col">
-        <div className="px-5 py-5 sm:px-6 sm:py-6">
-          <div className="space-y-4">
+        <div className="px-5 py-6 sm:px-6 sm:py-6">
+          <div className="space-y-5 sm:space-y-4">
             <div className="space-y-2">
               <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                 Build Summary
               </p>
-              <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
+              <h2 className="text-[1.75rem] font-semibold leading-tight tracking-[-0.04em] text-[var(--text-primary)] sm:text-2xl">
                 Current setup
               </h2>
             </div>
@@ -527,8 +527,8 @@ export default function PricingSummaryPanel({ summary }) {
           />
         </SummarySection>
 
-        <div className="border-t border-[color:var(--border-subtle)] px-5 py-5 sm:px-6 sm:py-6">
-          <div className="space-y-4">
+        <div className="border-t border-[color:var(--border-subtle)] px-5 py-6 sm:px-6 sm:py-6">
+          <div className="space-y-5 sm:space-y-4">
             {isActionDisabled ? (
               <Button
                 className={ctaButtonClassName}

@@ -72,7 +72,7 @@ function getSurfaceClasses(tone) {
 
 function getModeToggleClasses(isActive) {
   return [
-    "flex-1 rounded-[22px] border px-4 py-4 text-left transition-all duration-300",
+    "flex min-h-[96px] flex-1 flex-col justify-center rounded-[22px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-0 sm:px-5 sm:py-4",
     isActive
       ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] text-[var(--text-primary)]"
       : "border-transparent bg-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-subtle)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
@@ -81,7 +81,7 @@ function getModeToggleClasses(isActive) {
 
 function getToggleClasses(isActive) {
   return [
-    "rounded-[22px] border px-4 py-4 text-left transition-all duration-300",
+    "flex min-h-[88px] flex-col justify-center rounded-[22px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-0",
     isActive
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-accent-strong))] text-[var(--text-primary)] shadow-[var(--shadow-accent)]"
       : "border-transparent bg-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
@@ -338,9 +338,9 @@ export default function Pricing() {
 
   return (
     <div className="w-full scroll-mt-28 sm:scroll-mt-32" id="builder">
-      <Section className="pt-2 sm:pt-4" width="full">
-        <div className="space-y-8">
-          <div className="max-w-4xl space-y-3">
+      <Section className="pt-3 sm:pt-4" width="full">
+        <div className="space-y-10 sm:space-y-8">
+          <div className="max-w-4xl space-y-4 sm:space-y-3">
             <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
               System Configuration
             </p>
@@ -361,14 +361,14 @@ export default function Pricing() {
             </p>
           </div>
 
-          <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start">
-            <div className="space-y-8">
-              <div className="max-w-4xl space-y-3">
+          <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start xl:gap-8">
+            <div className="min-w-0 space-y-10 sm:space-y-8">
+              <div className="max-w-4xl space-y-4 sm:space-y-3">
                 <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                   Configuration Mode
                 </p>
 
-                <div className="theme-panel flex flex-col gap-2 rounded-[28px] border border-[color:var(--border-subtle)] p-2 sm:flex-row">
+                <div className="theme-panel flex flex-col gap-2.5 rounded-[28px] border border-[color:var(--border-subtle)] p-2.5 sm:flex-row">
                   {configurationModes.map((option) => (
                     <button
                       key={option.id}
@@ -391,155 +391,155 @@ export default function Pricing() {
               {isPackagesMode ? (
                 <>
                   <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(280px,0.7fr)] lg:items-start">
-            <Card className="p-5 sm:p-6 lg:p-7">
-              <div className="space-y-6">
-                <div className="max-w-3xl space-y-3">
-                  <div className="theme-panel inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
-                    <span className="theme-dot h-2 w-2 rounded-full" />
-                    Configuration Overview
-                  </div>
+                    <Card className="p-5 sm:p-6 lg:p-7">
+                      <div className="space-y-6">
+                        <div className="max-w-3xl space-y-3">
+                          <div className="theme-panel inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
+                            <span className="theme-dot h-2 w-2 rounded-full" />
+                            Configuration Overview
+                          </div>
 
-                  <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-                    Use this surface to switch billing, test coupon rules, and review
-                    starting configurations in one place. Every change updates the
-                    active totals immediately, so the setup stays clear while you work.
-                  </p>
-                </div>
+                          <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+                            Use this surface to switch billing, test coupon rules, and review
+                            starting configurations in one place. Every change updates the
+                            active totals immediately, so the setup stays clear while you work.
+                          </p>
+                        </div>
 
-                <div className="grid gap-4 md:grid-cols-3">
-                  {pricingNotes.map((note) => (
-                    <div key={note.label} className="theme-panel rounded-[24px] p-5">
-                      <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
-                        {note.label}
-                      </p>
-                      <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                        {note.detail}
-                      </p>
+                        <div className="grid gap-4 md:grid-cols-3">
+                          {pricingNotes.map((note) => (
+                            <div key={note.label} className="theme-panel rounded-[24px] p-5">
+                              <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                                {note.label}
+                              </p>
+                              <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+                                {note.detail}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </Card>
+
+                    <div className="space-y-4">
+                      <Card className="p-4 sm:p-5">
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-2 gap-2.5">
+                            {billingOptions.map((option) => (
+                              <button
+                                key={option.id}
+                                aria-pressed={billingMode === option.id}
+                                className={getToggleClasses(billingMode === option.id)}
+                                onClick={() => setBillingMode(option.id)}
+                                type="button"
+                              >
+                                <span className="block text-sm font-semibold tracking-[0.01em]">
+                                  {option.label}
+                                </span>
+                                <span className="mt-1 block text-xs leading-5 opacity-80">
+                                  {option.note}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+
+                          <div
+                            className={[
+                              "rounded-[24px] border p-4",
+                              getSurfaceClasses(pricingModeSummary.tone),
+                            ].join(" ")}
+                          >
+                            <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                              {pricingModeSummary.eyebrow}
+                            </p>
+                            <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
+                              {pricingModeSummary.title}
+                            </p>
+                            <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                              {pricingModeSummary.detail}
+                            </p>
+                          </div>
+                        </div>
+                      </Card>
+
+                      <Card className="p-4 sm:p-5">
+                        <div className="space-y-4">
+                          <div className="flex items-start justify-between gap-4">
+                            <div>
+                              <p className="text-xs font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
+                                Coupon Simulation
+                              </p>
+                              <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                                Try <span className="font-medium text-[var(--text-primary)]">FIRST3</span> or{" "}
+                                <span className="font-medium text-[var(--text-primary)]">TRYONCE</span>.
+                              </p>
+                            </div>
+
+                            {appliedCoupon ? (
+                              <button
+                                className="text-sm font-medium text-[var(--accent-secondary)] transition-colors duration-300 hover:text-[var(--text-primary)]"
+                                onClick={handleCouponClear}
+                                type="button"
+                              >
+                                Clear
+                              </button>
+                            ) : null}
+                          </div>
+
+                          <div className="flex flex-col gap-3.5 sm:flex-row">
+                            <input
+                              className={[
+                                "theme-input min-h-[52px] rounded-full px-5 py-3 text-sm tracking-[0.08em] uppercase",
+                                couponError
+                                  ? "border-[rgba(217,93,106,0.38)] bg-[rgba(217,93,106,0.08)]"
+                                  : "",
+                              ]
+                                .filter(Boolean)
+                                .join(" ")}
+                              onChange={handleCouponChange}
+                              placeholder="Enter coupon code"
+                              value={couponInput}
+                            />
+
+                            <Button
+                              className="sm:min-w-[132px]"
+                              onClick={handleCouponApply}
+                              size="lg"
+                            >
+                              Apply
+                            </Button>
+                          </div>
+
+                          {couponError ? (
+                            <div className="rounded-[20px] border border-[rgba(217,93,106,0.32)] bg-[rgba(217,93,106,0.08)] px-4 py-3">
+                              <p className="text-sm leading-6 text-[var(--text-primary)]">
+                                {couponError}
+                              </p>
+                            </div>
+                          ) : null}
+
+                          <div
+                            className={[
+                              "rounded-[24px] border p-4",
+                              getSurfaceClasses(couponFeedback.tone),
+                            ].join(" ")}
+                          >
+                            <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                              {couponFeedback.label}
+                            </p>
+                            <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
+                              {couponFeedback.title}
+                            </p>
+                            <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                              {couponFeedback.detail}
+                            </p>
+                          </div>
+                        </div>
+                      </Card>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </Card>
-
-            <div className="space-y-4">
-              <Card className="p-4 sm:p-5">
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-2">
-                    {billingOptions.map((option) => (
-                      <button
-                        key={option.id}
-                        aria-pressed={billingMode === option.id}
-                        className={getToggleClasses(billingMode === option.id)}
-                        onClick={() => setBillingMode(option.id)}
-                        type="button"
-                      >
-                        <span className="block text-sm font-semibold tracking-[0.01em]">
-                          {option.label}
-                        </span>
-                        <span className="mt-1 block text-xs leading-5 opacity-80">
-                          {option.note}
-                        </span>
-                      </button>
-                    ))}
                   </div>
 
-                  <div
-                    className={[
-                      "rounded-[24px] border p-4",
-                      getSurfaceClasses(pricingModeSummary.tone),
-                    ].join(" ")}
-                  >
-                    <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
-                      {pricingModeSummary.eyebrow}
-                    </p>
-                    <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
-                      {pricingModeSummary.title}
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                      {pricingModeSummary.detail}
-                    </p>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="p-4 sm:p-5">
-                <div className="space-y-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-xs font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
-                        Coupon Simulation
-                      </p>
-                      <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                        Try <span className="font-medium text-[var(--text-primary)]">FIRST3</span> or{" "}
-                        <span className="font-medium text-[var(--text-primary)]">TRYONCE</span>.
-                      </p>
-                    </div>
-
-                    {appliedCoupon ? (
-                      <button
-                        className="text-sm font-medium text-[var(--accent-secondary)] transition-colors duration-300 hover:text-[var(--text-primary)]"
-                        onClick={handleCouponClear}
-                        type="button"
-                      >
-                        Clear
-                      </button>
-                    ) : null}
-                  </div>
-
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <input
-                      className={[
-                        "theme-input min-h-[52px] rounded-full px-5 py-3 text-sm tracking-[0.08em] uppercase",
-                        couponError
-                          ? "border-[rgba(217,93,106,0.38)] bg-[rgba(217,93,106,0.08)]"
-                          : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" ")}
-                      onChange={handleCouponChange}
-                      placeholder="Enter coupon code"
-                      value={couponInput}
-                    />
-
-                    <Button
-                      className="sm:min-w-[132px]"
-                      onClick={handleCouponApply}
-                      size="lg"
-                    >
-                      Apply
-                    </Button>
-                  </div>
-
-                  {couponError ? (
-                    <div className="rounded-[20px] border border-[rgba(217,93,106,0.32)] bg-[rgba(217,93,106,0.08)] px-4 py-3">
-                      <p className="text-sm leading-6 text-[var(--text-primary)]">
-                        {couponError}
-                      </p>
-                    </div>
-                  ) : null}
-
-                  <div
-                    className={[
-                      "rounded-[24px] border p-4",
-                      getSurfaceClasses(couponFeedback.tone),
-                    ].join(" ")}
-                  >
-                    <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
-                      {couponFeedback.label}
-                    </p>
-                    <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
-                      {couponFeedback.title}
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                      {couponFeedback.detail}
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </div>
-          </div>
-
-                  <div className="space-y-4">
+                  <div className="space-y-5 sm:space-y-4">
                     <div className="max-w-3xl space-y-2">
                       <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                         Starting Configurations
@@ -550,7 +550,7 @@ export default function Pricing() {
                       </p>
                     </div>
 
-                    <div className="grid gap-5 lg:grid-cols-2 2xl:grid-cols-3">
+                    <div className="grid gap-6 sm:gap-5 lg:grid-cols-2 2xl:grid-cols-3">
                       {plans.map((plan) => (
                         <PricingPlanCard
                           isSelected={selectedPlanId === plan.id}
@@ -649,9 +649,9 @@ export default function Pricing() {
                   </Card>
                 </>
               ) : (
-                <Card className="p-6 sm:p-8 lg:p-10">
-                  <div className="space-y-8">
-                    <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                <Card className="p-5 sm:p-8 lg:p-10">
+                  <div className="space-y-9 sm:space-y-8">
+                    <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                       <div className="max-w-3xl space-y-4">
                         <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                           Custom Build
@@ -672,7 +672,7 @@ export default function Pricing() {
                       </div>
                     </div>
 
-                    <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
+                    <div className="grid gap-5 sm:gap-5 md:grid-cols-2">
                       {customBuildModules.map((module) => (
                         <CustomBuildModuleCard
                           isSelected={selectedCustomModuleIds.includes(module.id)}
@@ -687,7 +687,7 @@ export default function Pricing() {
               )}
             </div>
 
-            <div className="xl:self-start">
+            <div className="min-w-0 xl:self-start">
               <PricingSummaryPanel summary={summaryPanelData} />
             </div>
           </div>

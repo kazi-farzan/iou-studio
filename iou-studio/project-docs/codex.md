@@ -31,15 +31,14 @@
 
 * System feedback refined
 * Module UX improved
+* Mobile UX improved
 
 * System now supports:
-  - clear selection
-  - immediate feedback
-  - visible state
-  - predictable behavior
+  - clear interaction
+  - live feedback
+  - full usability across devices
 
 * Moving into:
-  - mobile optimization
   - trust layer additions
   - conversion readiness
 
@@ -82,6 +81,20 @@ Must:
 
 ---
 
+## Mobile Principle (NEW)
+
+Mobile experience must be:
+- comfortable
+- readable
+- easy to interact with
+
+Avoid:
+- cramped layouts
+- small tap targets
+- dense UI
+
+---
+
 ## Feedback Principle
 
 System must feel:
@@ -101,25 +114,6 @@ The system must be:
 - easy to scan
 - easy to understand
 - visually calm
-
-Avoid:
-- clutter
-- over-styling
-- unnecessary UI layers
-
----
-
-## Interaction Clarity Principle (NEW)
-
-User should always know:
-- what is clickable
-- what is selected
-- what will happen next
-
-Avoid:
-- ambiguous states
-- unclear affordance
-- hidden interactions
 
 ---
 

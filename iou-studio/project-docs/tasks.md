@@ -21,21 +21,17 @@
 15. Improve Summary Panel Clarity
 16. Add Subtle System Feedback
 17. Improve Module UX
+18. Improve Mobile Experience
 
 ---
 
 ## Current Phase
 
-Phase 2 — Proto Configurator (Refined System)
+Phase 2 — Proto Configurator (Usable Product)
 
 ---
 
 ## Next Tasks (STRICT ORDER)
-
-18. Improve Mobile Experience
-    - spacing refinement
-    - tap target improvements
-    - summary readability
 
 19. Add “What Happens Next” Section
     - explain post-action flow

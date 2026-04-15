@@ -4,7 +4,7 @@ import { formatInr } from "../../data/pricing.js";
 
 function getCardClasses({ isMostPopular, isSelected }) {
   return [
-    "group relative h-full overflow-hidden p-6 sm:p-8",
+    "group relative h-full overflow-hidden p-5 sm:p-8",
     isSelected
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))] shadow-[var(--shadow-soft)]"
       : "",
@@ -47,7 +47,7 @@ export default function PricingPlanCard({
         />
       ) : null}
 
-      <div className="relative flex h-full flex-col">
+      <div className="relative flex h-full min-w-0 flex-col">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="space-y-3">
             <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
@@ -73,7 +73,7 @@ export default function PricingPlanCard({
           </div>
         </div>
 
-        <p className="mt-5 text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+        <p className="mt-6 text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
           {plan.description}
         </p>
 
@@ -81,13 +81,13 @@ export default function PricingPlanCard({
           This is a starting configuration. You can customize this setup later.
         </p>
 
-        <div className="mt-7 rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5">
+        <div className="mt-7 rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5 sm:p-6">
           <p className="text-xs font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
             Starting configuration
           </p>
 
-          <div className="flex items-end gap-2">
-            <span className="text-4xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] sm:text-5xl">
+          <div className="mt-3 flex flex-wrap items-end gap-x-2 gap-y-1">
+            <span className="break-words text-[2.5rem] font-semibold leading-none tracking-[-0.05em] text-[var(--text-primary)] sm:text-5xl">
               {formatInr(plan.base.headlinePrice)}
             </span>
             <span className="pb-1 text-sm font-medium tracking-[0.01em] text-[var(--text-muted)]">
@@ -105,7 +105,7 @@ export default function PricingPlanCard({
 
         <div
           className={[
-            "mt-5 rounded-[22px] border p-4",
+            "mt-6 rounded-[22px] border p-5",
             getCalloutClasses(plan.callout.tone),
           ].join(" ")}
         >
@@ -120,7 +120,7 @@ export default function PricingPlanCard({
           </p>
         </div>
 
-        <div className="mt-7 space-y-3 border-t border-[color:var(--border-subtle)] pt-6">
+        <div className="mt-7 space-y-4 border-t border-[color:var(--border-subtle)] pt-6">
           {plan.features.map((feature) => (
             <div key={feature} className="flex items-start gap-3">
               <span className="theme-dot mt-2 h-2 w-2 shrink-0 rounded-full" />
@@ -132,7 +132,7 @@ export default function PricingPlanCard({
         {plan.coupon ? (
           <div
             className={[
-              "mt-6 rounded-[22px] border p-4",
+              "mt-6 rounded-[22px] border p-5",
               getCalloutClasses(plan.coupon.tone),
             ].join(" ")}
           >
@@ -150,7 +150,7 @@ export default function PricingPlanCard({
           </div>
         ) : null}
 
-        <div className="mt-auto pt-8">
+        <div className="mt-auto space-y-4 pt-8">
           <Button
             className="w-full"
             onClick={() => onSelect(plan.id)}
@@ -160,7 +160,7 @@ export default function PricingPlanCard({
             {isSelected ? "Customize This Setup" : "Start with this"}
           </Button>
 
-          <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
+          <p className="text-sm leading-6 text-[var(--text-secondary)]">
             {isSelected
               ? "This configuration is active below and can still be refined."
               : "Use this as a base setup, then adjust the details as needed."}

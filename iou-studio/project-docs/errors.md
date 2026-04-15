@@ -17,11 +17,11 @@
 
 ## Watchlist
 
-* Ensure module interaction remains consistent across devices
-* Verify no accidental double-click or toggle issues
-* Maintain clarity between hover and selected states
+* Ensure mobile interactions remain smooth under rapid selection
+* Avoid layout compression on smaller screens
+* Maintain consistent spacing across breakpoints
 * Ensure Summary Panel remains readable with more modules
-* Avoid visual clutter after UX refinements
+* Prevent overflow issues for large pricing values
 * Maintain performance with added transitions
-* Prevent inconsistencies between Packages and Build modes
-* Ensure mobile usability is not degraded
+* Ensure mode switching behaves consistently on mobile
+* Keep UI clean as trust sections are added next
