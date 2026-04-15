@@ -25,33 +25,25 @@
 19. Add “What Happens Next” Section
 20. Add “Recent Builds” Section
 21. Add Metrics Strip
+22. Advanced Summary Panel Refinement
 
 ---
 
 ## Current Phase
 
-Phase 3 — Trust & Conversion Layer (Complete)
-
----
-
-## Next Phase
-
-Phase 4 — Product-Level Refinement & Expansion
+Phase 4 — Product-Level Refinement
 
 ---
 
 ## Next Tasks (STRICT ORDER)
 
-22. Improve Summary Panel (Advanced)
-    - refine grouping and scanning further
-    - optimize decision clarity
-
 23. Add Step Flow Indicator
-    - show user progression (Select → Review → Proceed)
+    - show progression (Select → Review → Proceed)
+    - improve user orientation
 
 24. Improve CTA Flow
-    - refine “Continue” behavior
-    - prepare for real conversion flow
+    - refine action clarity
+    - prepare for real conversion behavior
 
 ---
 

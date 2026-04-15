@@ -17,11 +17,11 @@
 
 ## Watchlist
 
-* Ensure trust sections (Recent Builds + Metrics) remain subtle and not marketing-heavy
-* Prevent page from becoming too long or dense
-* Maintain consistent spacing and rhythm between sections
-* Ensure performance remains stable with added UI layers
-* Avoid visual clutter from accumulated components
-* Keep mobile experience clean as more sections exist
-* Maintain consistency in tone across all sections
-* Prevent drift from system-first design into showcase-style design
+* Ensure Summary Panel grouping remains consistent across modes
+* Maintain clear hierarchy as more logic is added
+* Avoid over-segmentation (too many sections inside panel)
+* Ensure mobile layout preserves grouping clarity
+* Prevent visual clutter from excessive dividers or spacing
+* Maintain performance with increased UI complexity
+* Ensure consistency between module UI and summary panel
+* Keep UI calm and not overly “product dashboard-like”
