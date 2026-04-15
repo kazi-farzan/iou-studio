@@ -1,36 +1,7 @@
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
-
-const heroSignals = [
-  {
-    label: "Fast execution",
-    description: "Launch-ready systems built with premium speed and cleaner delivery.",
-  },
-  {
-    label: "Custom structure",
-    description: "Scalable foundations that go beyond one-size-fits-all templates.",
-  },
-  {
-    label: "Guided selection",
-    description: "A smart path that helps clients choose exactly what they need.",
-  },
-];
-
-const heroHighlights = [
-  {
-    title: "Web & app development",
-    detail: "Product websites, platforms, dashboards, and scalable interfaces.",
-  },
-  {
-    title: "Brand and design systems",
-    detail: "Identity, visual consistency, and creative assets that feel deliberate.",
-  },
-  {
-    title: "Marketing execution",
-    detail: "Campaign support, content direction, and growth-focused creative rollouts.",
-  },
-];
+import SystemEntryHero from "../components/home/SystemEntryHero.jsx";
 
 const services = [
   {
@@ -94,116 +65,7 @@ const process = [
 export default function Home() {
   return (
     <div className="w-full">
-      <Section className="pt-4 sm:pt-8 lg:pt-10" width="full">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.12fr)_minmax(320px,0.88fr)] lg:items-end">
-          <div className="space-y-8">
-            <div className="theme-panel inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)] shadow-[var(--shadow-soft)]">
-              <span className="theme-dot h-2 w-2 rounded-full" />
-              Tech-Driven Creative Agency
-            </div>
-
-            <div className="space-y-6">
-              <h1 className="max-w-4xl text-5xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] sm:text-6xl lg:text-7xl">
-                Build sharper digital experiences with speed, structure, and style.
-              </h1>
-
-              <p className="max-w-2xl text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
-                IOU Studio combines premium execution with a guided package system so
-                brands can move from idea to launch with more clarity and less drag.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <Button size="lg" to="/pricing">
-                Build Your Package
-              </Button>
-              <Button size="lg" to="/services" variant="secondary">
-                Explore Services
-              </Button>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-3">
-              {heroSignals.map((signal) => (
-                <div
-                  key={signal.label}
-                  className="theme-panel rounded-2xl px-4 py-4 transition-all duration-300 hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)]"
-                >
-                  <p className="text-sm font-medium text-[var(--text-primary)]">{signal.label}</p>
-                  <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                    {signal.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <Card className="relative overflow-hidden p-7 sm:p-8">
-            <div
-              aria-hidden="true"
-              className="theme-ambient-orb-2 pointer-events-none absolute right-[-3rem] top-[-4rem] h-40 w-40 rounded-full blur-2xl"
-            />
-
-            <div className="relative space-y-6">
-              <div className="space-y-3">
-                <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-                  Structured Delivery
-                </p>
-                <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-3xl">
-                  A faster route from brief to launch.
-                </h2>
-                <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-                  Start with proven foundations, shape the right package, and grow
-                  into custom execution when the project needs more depth.
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                {heroHighlights.map((item, index) => (
-                  <div
-                    key={item.title}
-                    className="theme-panel group rounded-2xl p-4 transition-all duration-300 hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)]"
-                  >
-                    <div className="flex items-start gap-4">
-                      <span className="theme-chip flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-semibold transition-all duration-300 group-hover:bg-[var(--surface-accent-strong)] group-hover:shadow-[0_0_0_6px_var(--accent-soft)]">
-                        0{index + 1}
-                      </span>
-
-                      <div>
-                        <p className="text-base font-medium text-[var(--text-primary)]">
-                          {item.title}
-                        </p>
-                        <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
-                          {item.detail}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-2">
-                <div className="theme-panel-contrast rounded-2xl p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-[var(--text-muted)]">
-                    Delivery Focus
-                  </p>
-                  <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
-                    Premium quality without unnecessary friction
-                  </p>
-                </div>
-
-                <div className="theme-panel-contrast rounded-2xl p-4">
-                  <p className="text-xs uppercase tracking-[0.24em] text-[var(--text-muted)]">
-                    Best Fit
-                  </p>
-                  <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
-                    Brands that need clarity, speed, and long-term flexibility
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-      </Section>
+      <SystemEntryHero />
 
       <Section className="pt-4" width="full">
         <div className="space-y-8">
@@ -254,49 +116,51 @@ export default function Home() {
         </div>
       </Section>
 
-      <Section width="full">
-        <div className="space-y-8">
-          <div className="max-w-3xl space-y-4">
-            <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
-              How It Works
-            </p>
-            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-              A guided flow that keeps decisions clear from day one.
-            </h2>
-            <p className="text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
-              Instead of guessing what to ask for, clients move through a simple
-              system that narrows the right solution before the project even starts.
-            </p>
+      <div className="scroll-mt-28" id="how-it-works">
+        <Section width="full">
+          <div className="space-y-8">
+            <div className="max-w-3xl space-y-4">
+              <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
+                How It Works
+              </p>
+              <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+                A guided flow that keeps decisions clear from day one.
+              </h2>
+              <p className="text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
+                Instead of guessing what to ask for, clients move through a simple
+                system that narrows the right solution before the project even starts.
+              </p>
+            </div>
+
+            <div className="grid gap-5 lg:grid-cols-3">
+              {process.map((step) => (
+                <Card
+                  key={step.step}
+                  className="group h-full p-7"
+                  interactive
+                >
+                  <div className="flex h-full flex-col">
+                    <span className="theme-chip-strong flex h-12 w-12 items-center justify-center rounded-2xl text-sm font-semibold transition-all duration-300 group-hover:shadow-[0_0_0_8px_var(--accent-soft)]">
+                      {step.step}
+                    </span>
+
+                    <h3 className="mt-7 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
+                      {step.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+                      {step.description}
+                    </p>
+
+                    <p className="mt-auto pt-8 text-sm text-[var(--text-muted)]">
+                      {step.note}
+                    </p>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
-
-          <div className="grid gap-5 lg:grid-cols-3">
-            {process.map((step) => (
-              <Card
-                key={step.step}
-                className="group h-full p-7"
-                interactive
-              >
-                <div className="flex h-full flex-col">
-                  <span className="theme-chip-strong flex h-12 w-12 items-center justify-center rounded-2xl text-sm font-semibold transition-all duration-300 group-hover:shadow-[0_0_0_8px_var(--accent-soft)]">
-                    {step.step}
-                  </span>
-
-                  <h3 className="mt-7 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
-                    {step.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                    {step.description}
-                  </p>
-
-                  <p className="mt-auto pt-8 text-sm text-[var(--text-muted)]">
-                    {step.note}
-                  </p>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </Section>
+        </Section>
+      </div>
 
       <Section
         align="center"

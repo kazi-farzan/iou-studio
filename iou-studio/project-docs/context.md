@@ -2,7 +2,16 @@
 
 ## Overview
 
-Premium multi-page website for a tech-driven creative agency.
+IOU Labs is a productized service platform designed as an interactive system.
+
+Users should be able to:
+- explore services like a menu
+- configure what they need
+- see pricing and timelines instantly
+- proceed without needing a call
+
+This is NOT a marketing website.
+It should feel like a control panel or configurator.
 
 ## Services
 
