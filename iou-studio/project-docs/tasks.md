@@ -24,29 +24,42 @@
 18. Improve Mobile Experience
 19. Add “What Happens Next” Section
 20. Add “Recent Builds” Section
+21. Add Metrics Strip
 
 ---
 
 ## Current Phase
 
-Phase 3 — Trust & Conversion Layer
+Phase 3 — Trust & Conversion Layer (Complete)
+
+---
+
+## Next Phase
+
+Phase 4 — Product-Level Refinement & Expansion
 
 ---
 
 ## Next Tasks (STRICT ORDER)
 
-21. Add Metrics Strip
-    - reinforce trust through data
-    - subtle credibility layer
-    - show calm operational proof
+22. Improve Summary Panel (Advanced)
+    - refine grouping and scanning further
+    - optimize decision clarity
+
+23. Add Step Flow Indicator
+    - show user progression (Select → Review → Proceed)
+
+24. Improve CTA Flow
+    - refine “Continue” behavior
+    - prepare for real conversion flow
 
 ---
 
 ## Later (Do NOT touch yet)
 
-22. Full configurator system (3-column layout)
-23. Backend integration
-24. Checkout flow
-25. Advanced UX polish
-26. 3D hero (only if aligned with system feel)
-27. Branding refinement layer
+25. Full configurator system (3-column layout)
+26. Backend integration
+27. Checkout flow
+28. Advanced UX polish
+29. 3D hero (only if aligned with system feel)
+30. Branding refinement layer

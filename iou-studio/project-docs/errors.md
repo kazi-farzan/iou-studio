@@ -17,11 +17,11 @@
 
 ## Watchlist
 
-* Ensure “Recent Builds” section feels like proof, not portfolio marketing
-* Avoid visual mismatch between Recent Builds cards and system UI
-* Maintain clean spacing as trust sections accumulate
-* Prevent page from becoming too vertically dense
-* Ensure mobile layout remains comfortable with added sections
-* Keep performance stable as more visual sections are added
-* Maintain consistent tone across trust-related sections
-* Keep the site feeling like a system, not drifting into showcase mode
+* Ensure trust sections (Recent Builds + Metrics) remain subtle and not marketing-heavy
+* Prevent page from becoming too long or dense
+* Maintain consistent spacing and rhythm between sections
+* Ensure performance remains stable with added UI layers
+* Avoid visual clutter from accumulated components
+* Keep mobile experience clean as more sections exist
+* Maintain consistency in tone across all sections
+* Prevent drift from system-first design into showcase-style design

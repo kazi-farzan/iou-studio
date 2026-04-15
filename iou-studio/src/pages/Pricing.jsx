@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import CustomBuildModuleCard from "../components/pricing/CustomBuildModuleCard.jsx";
+import MetricsStrip from "../components/pricing/MetricsStrip.jsx";
 import PricingPlanCard from "../components/pricing/PricingPlanCard.jsx";
 import RecentBuilds from "../components/pricing/RecentBuilds.jsx";
 import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
@@ -697,6 +698,7 @@ export default function Pricing() {
       </Section>
 
       <RecentBuilds />
+      <MetricsStrip />
       <WhatHappensNext />
     </div>
   );
