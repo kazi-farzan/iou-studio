@@ -20,16 +20,16 @@ import {
 
 const pricingNotes = [
   {
-    label: "All prices in INR",
-    detail: "Set up for Indian-market retainers, scaling brands, and premium custom work.",
+    label: "All selections update live",
+    detail: "Billing mode, coupon checks, and the active starting configuration stay aligned as you adjust the setup.",
   },
   {
-    label: "Yearly saves 2 months",
-    detail: "Switching to yearly reveals the lower effective monthly rate and bills once upfront.",
+    label: "Clear scope before you proceed",
+    detail: "Review totals, billing terms, and delivery context in one place before moving into the next step.",
   },
   {
-    label: "Coupon simulation only",
-    detail: "FIRST3 and TRYONCE stay frontend-only, but the rules are structured for backend handoff later.",
+    label: "Transparent inputs",
+    detail: "Switch between billing modes, test available coupons, and see the resulting changes immediately.",
   },
 ];
 
@@ -142,37 +142,42 @@ export default function Pricing() {
 
   return (
     <div className="w-full scroll-mt-28 sm:scroll-mt-32" id="builder">
-      <Section
-        className="pt-4 sm:pt-8"
-        description="Choose how IOU Labs pricing is billed, preview launch-offer coupons, and compare plan totals without losing clarity."
-        eyebrow="Pricing"
-        title="Pricing that stays clear from first click to final invoice."
-        width="full"
-      >
+      <Section className="pt-2 sm:pt-4" width="full">
         <div className="space-y-8">
-          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.08fr)_380px] xl:items-start">
-            <Card className="relative overflow-hidden p-6 sm:p-8 lg:p-10">
-              <div
-                aria-hidden="true"
-                className="theme-ambient-orb-1 pointer-events-none absolute left-[-4rem] top-[-5rem] h-40 w-40 rounded-full blur-2xl"
-              />
-              <div
-                aria-hidden="true"
-                className="theme-ambient-orb-2 pointer-events-none absolute bottom-[-5rem] right-[-4rem] h-40 w-40 rounded-full blur-2xl"
-              />
+          <div className="max-w-4xl space-y-3">
+            <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
+              System Configuration
+            </p>
 
-              <div className="relative space-y-8">
-                <div className="max-w-3xl space-y-4">
+            <h1 className="max-w-3xl text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+              Configure Your Setup
+            </h1>
+
+            <p className="max-w-3xl text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+              Select a starting configuration or build your own setup.
+              <span className="block">
+                Pricing updates live as you adjust billing and coupon inputs.
+              </span>
+            </p>
+
+            <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
+              All selections update live. Clear scope before you proceed.
+            </p>
+          </div>
+
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.08fr)_380px] xl:items-start">
+            <Card className="p-5 sm:p-6 lg:p-7">
+              <div className="space-y-6">
+                <div className="max-w-3xl space-y-3">
                   <div className="theme-panel inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
                     <span className="theme-dot h-2 w-2 rounded-full" />
-                    Frontend Pricing Simulation
+                    Configuration Overview
                   </div>
 
-                  <p className="text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
-                    IOU Labs pricing is designed to feel straightforward even when the
-                    billing logic changes. Monthly billing stays flexible. Yearly
-                    billing lowers the effective monthly rate. Coupons preview launch
-                    offers without scattering business rules across the page.
+                  <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+                    Use this surface to switch billing, test coupon rules, and review
+                    starting configurations in one place. Every change updates the
+                    active totals immediately, so the setup stays clear while you work.
                   </p>
                 </div>
 
@@ -309,15 +314,27 @@ export default function Pricing() {
             </div>
           </div>
 
-          <div className="grid gap-5 xl:grid-cols-3">
-            {plans.map((plan) => (
-              <PricingPlanCard
-                isSelected={selectedPlanId === plan.id}
-                key={plan.id}
-                onSelect={setSelectedPlanId}
-                plan={plan}
-              />
-            ))}
+          <div className="space-y-4">
+            <div className="max-w-3xl space-y-2">
+              <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                Starting Configurations
+              </p>
+              <p className="text-sm leading-6 text-[var(--text-secondary)]">
+                Choose a baseline setup. Live totals and the breakdown panel follow the
+                configuration you select.
+              </p>
+            </div>
+
+            <div className="grid gap-5 xl:grid-cols-3">
+              {plans.map((plan) => (
+                <PricingPlanCard
+                  isSelected={selectedPlanId === plan.id}
+                  key={plan.id}
+                  onSelect={setSelectedPlanId}
+                  plan={plan}
+                />
+              ))}
+            </div>
           </div>
 
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1.08fr)_380px] xl:items-start">
