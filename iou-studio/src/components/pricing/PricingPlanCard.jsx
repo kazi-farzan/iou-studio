@@ -5,8 +5,11 @@ import { formatInr } from "../../data/pricing.js";
 function getCardClasses({ isMostPopular, isSelected }) {
   return [
     "group relative h-full overflow-hidden p-6 sm:p-8",
-    isMostPopular || isSelected
-      ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface),var(--surface-accent))] shadow-[var(--shadow-accent)]"
+    isSelected
+      ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))] shadow-[var(--shadow-soft)]"
+      : "",
+    isMostPopular && !isSelected
+      ? "border-[color:var(--border-strong)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))]"
       : "",
   ]
     .filter(Boolean)
@@ -37,7 +40,7 @@ export default function PricingPlanCard({
 
   return (
     <Card className={cardClasses} interactive>
-      {plan.isMostPopular || isSelected ? (
+      {isSelected ? (
         <div
           aria-hidden="true"
           className="theme-ambient-orb-2 pointer-events-none absolute right-[-2.5rem] top-[-3rem] h-28 w-28 rounded-full blur-2xl"
@@ -58,13 +61,13 @@ export default function PricingPlanCard({
           <div className="flex flex-wrap items-center gap-2 self-start">
             {plan.isMostPopular ? (
               <span className="theme-chip-strong rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em]">
-                Most Popular
+                Most Selected
               </span>
             ) : null}
 
             {isSelected ? (
               <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
-                Selected
+                Active
               </span>
             ) : null}
           </div>
@@ -74,7 +77,15 @@ export default function PricingPlanCard({
           {plan.description}
         </p>
 
+        <p className="mt-3 text-xs leading-6 text-[var(--text-muted)]">
+          This is a starting configuration. You can customize this setup later.
+        </p>
+
         <div className="mt-7 rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5">
+          <p className="text-xs font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+            Starting configuration
+          </p>
+
           <div className="flex items-end gap-2">
             <span className="text-4xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] sm:text-5xl">
               {formatInr(plan.base.headlinePrice)}
@@ -146,13 +157,13 @@ export default function PricingPlanCard({
             size="lg"
             variant={isSelected ? "primary" : "secondary"}
           >
-            {isSelected ? "Plan Selected" : `Review ${plan.name}`}
+            {isSelected ? "Customize This Setup" : "Start with this"}
           </Button>
 
           <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
             {isSelected
-              ? "This plan is currently driving the pricing breakdown and contact CTA."
-              : "Select this plan to compare totals, billing terms, and coupon effects below."}
+              ? "This configuration is active below and can still be refined."
+              : "Use this as a base setup, then adjust the details as needed."}
           </p>
         </div>
       </div>

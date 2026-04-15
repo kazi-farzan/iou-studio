@@ -18,7 +18,9 @@
 * White screen issue resolved
 * Tailwind working
 * Theme system completed
-* Moving into layout, pricing, and UI polish
+* Behavioral shift completed for core entry flow
+* Mode-based interaction (Packages vs Build Your Own) implemented
+* Moving into proto-configurator development
 
 ## Product Direction (CRITICAL)
 
@@ -56,6 +58,19 @@ Sections should:
 Avoid:
 - passive informational blocks
 - standalone marketing sections
+
+## Mode System (NEW)
+
+The UI now includes mode-based interaction:
+
+- Packages → starting configurations
+- Build Your Own → custom system builder (proto)
+
+Future work must:
+- respect this mode separation
+- avoid merging modes unintentionally
+- keep behavior predictable across modes
+
 
 ## Execution Mode (IMPORTANT)
 

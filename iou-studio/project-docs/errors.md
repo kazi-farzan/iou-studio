@@ -13,9 +13,10 @@
 
 ## Watchlist
 
-* Ensure Hero → How It Works flow feels connected
-* Maintain consistent spacing and alignment between sections
-* Avoid reintroducing marketing-style components in new sections
-* Check responsiveness for newly added sections
-* Ensure new sections inherit theme tokens correctly
-* Watch for layout shifts as more interactive elements are added
+* Ensure toggle (Packages vs Build Your Own) does not break layout
+* Maintain consistency between Packages and Build modes
+* Ensure CTA always leads to correct system entry point
+* Avoid reintroducing “plan-based” or SaaS pricing patterns
+* Check responsiveness for mode switching UI
+* Ensure theme consistency across both modes
+* Watch for layout instability as configurator elements are added

@@ -50,21 +50,42 @@ It should feel like a control panel or configurator.
 * Navbar implemented with theme toggle
 
 * System-first Hero implemented
-  - Replaced marketing-style hero with system-entry UX
-  - Clear messaging: build → price → launch
+  - Clear entry into build flow
   - Primary CTA: “Start Building”
   - Secondary CTA: “See How It Works”
 
 * “How It Works” section implemented
-  - 3-step structured flow
-  - Explains system interaction clearly
+  - 3-step structured system explanation
   - Reinforces user journey (select → customize → review)
 
-* Transition from marketing site → system interface actively in progress
+* Persistent “Start Building” CTA implemented
+  - Always accessible system entry point
+  - Reinforces interaction-first behavior
+
+* Pricing page reframed as system interface
+  - Removed traditional “pricing page” perception
+  - Updated copy and structure
+
+* Mode-based interaction introduced
+  - Toggle: Packages vs Build Your Own
+  - Packages represent starting configurations (not plans)
+  - Build Your Own acts as proto-configurator entry
+
+* Transition from marketing site → system interface is actively implemented
 
 ---
 
 ## Current Phase
+
+Phase 1 — Behavioral Shift (System Interface)
+
+Goal:
+Shift from a static pricing/marketing structure into a mode-driven, interactive system.
+
+Current Focus:
+- Enabling user control
+- Introducing configuration entry points
+- Preparing for modular build system
 
 Phase 1 — Behavioral Shift (System over brochure)
 
