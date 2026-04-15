@@ -69,35 +69,40 @@ It should feel like a control panel or configurator.
 
 * Mode-based interaction implemented
   - Packages vs Build Your Own
-
-* Packages redefined as starting configurations
+  - Packages = starting configurations
 
 * Proto configurator implemented
-  - Users can select/deselect modules
-  - Modules represent real system components
+  - Module selection (add/remove)
+  - Real interaction model established
 
 * Summary Panel implemented
   - Acts as system control surface
-  - Shows current build state
+  - Displays current build state
 
-* Live pricing logic implemented (Build Your Own)
-  - Module selection updates total instantly
-  - Pricing logic centralized
-  - System now responds to user input in real time
+* Live system feedback implemented
+  - Pricing updates instantly
+  - Timeline updates instantly
+
+* Users can now:
+  - select modules
+  - see price
+  - see delivery estimate
+  - understand system outcome without interaction friction
 
 ---
 
 ## Current Phase
 
-Phase 2 — Proto Configurator (Interactive System)
+Phase 2 — Proto Configurator (Functional System)
 
 Goal:
-Create a working system where:
-- users select modules
-- system responds instantly
-- build state is visible and understandable
+Deliver a complete, usable system where users can:
+- configure services
+- understand cost
+- understand delivery time
+- feel confident proceeding
 
 Current Focus:
-- timeline logic
-- refinement of system feedback
-- strengthening clarity and trust
+- clarity and polish
+- system feedback refinement
+- preparing for next-stage UX improvements

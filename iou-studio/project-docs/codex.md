@@ -25,18 +25,20 @@
 * Mode-based interaction implemented
 * Proto configurator implemented (module selection)
 
-* Summary panel implemented as control surface
+* Summary panel implemented
 * Live pricing logic implemented
+* Live timeline logic implemented
 
 * System now supports:
   - selection
-  - live feedback
-  - visible state
+  - price feedback
+  - timeline feedback
+  - visible system state
 
 * Moving into:
-  - timeline logic
-  - system refinement
   - clarity improvements
+  - UX refinement
+  - interaction polish
 
 ---
 
@@ -72,23 +74,22 @@ Summary Panel = system control surface
 Must:
 - reflect current state
 - update live
-- show total clearly
-- guide next action
+- show price clearly
+- show timeline clearly
+- guide next step
 
 ---
 
-## Pricing Principle
+## System Completion Layer
 
-Pricing must:
-- be transparent
-- update instantly
-- be predictable
-- be derived from structured data
+The system now includes:
 
-Avoid:
-- scattered logic
-- hidden calculations
-- inconsistent values
+- Selection → modules
+- Feedback → price + timeline
+- Visibility → summary panel
+
+This forms the core user loop:
+→ select → understand → decide
 
 ---
 
@@ -100,7 +101,7 @@ Avoid:
 - Build incrementally
 
 Goal:
-Evolve into a full configurator without breaking the system
+Refine into a premium, production-ready configurator
 
 ---
 

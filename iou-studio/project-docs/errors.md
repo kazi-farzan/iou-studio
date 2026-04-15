@@ -17,11 +17,11 @@
 
 ## Watchlist
 
-* Ensure pricing updates remain stable under rapid selection changes
-* Verify no layout break when totals grow large
-* Maintain consistency between Packages and Build modes
-* Ensure Summary Panel always reflects accurate state
-* Avoid duplicated pricing logic across components
-* Check responsiveness of summary panel with dynamic data
-* Ensure theme consistency across all states (selected / hover / active)
-* Watch for state bugs when adding timeline logic next
+* Ensure pricing + timeline updates stay consistent under rapid interaction
+* Verify no UI jitter when totals update
+* Maintain clean hierarchy inside Summary Panel
+* Avoid clutter as more data is added
+* Ensure responsiveness with longer module lists
+* Prevent duplicated logic between pricing and timeline calculations
+* Maintain separation between Packages and Build modes
+* Ensure empty states remain clear and intentional

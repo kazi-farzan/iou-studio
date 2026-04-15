@@ -17,29 +17,27 @@
     - Module selection UI implemented
 
 11. Add Sticky Summary Panel
-    - Summary acts as system control surface
+    - Summary acts as control surface
 
 12. Connect Build Your Own → Summary
-    - Selected modules appear live
+    - Live module reflection
 
 13. Implement Module Pricing Logic
-    - Each module contributes to total
-    - Live updates working
-    - Pricing logic centralized
+    - Real-time price updates
+
+14. Implement Timeline Logic
+    - Each module contributes to delivery estimate
+    - Live timeline updates working
 
 ---
 
 ## Current Phase
 
-Phase 2 — Proto Configurator (Interactive System)
+Phase 2 — Proto Configurator (Functional System)
 
 ---
 
 ## Next Tasks (STRICT ORDER)
-
-14. Add Basic Timeline Logic
-    - Each module contributes to delivery estimate
-    - Summary panel reflects timeline
 
 15. Improve Summary Panel Clarity
     - Better hierarchy for:
@@ -49,16 +47,21 @@ Phase 2 — Proto Configurator (Interactive System)
     - Reduce visual noise
 
 16. Add Subtle System Feedback
-    - Price change transitions
-    - Selection feedback refinement
+    - Smooth transitions for:
+      - price changes
+      - selection changes
+
+17. Improve Module UX
+    - Better selection states
+    - clearer affordances
 
 ---
 
 ## Later (Do NOT touch yet)
 
-17. Full configurator system (3-column layout)
-18. Backend integration
-19. Checkout flow
-20. Advanced UX polish
-21. 3D hero (only if aligned with system feel)
-22. Branding refinement layer
+18. Full configurator system (3-column layout)
+19. Backend integration
+20. Checkout flow
+21. Advanced UX polish
+22. 3D hero (only if aligned with system feel)
+23. Branding refinement layer

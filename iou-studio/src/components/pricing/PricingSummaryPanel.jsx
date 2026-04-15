@@ -64,6 +64,7 @@ function SummarySection({
 }) {
   return (
     <section
+      aria-atomic={live ? "true" : undefined}
       aria-live={live ? "polite" : undefined}
       className="border-t border-[color:var(--border-subtle)] px-5 py-5 sm:px-6"
     >

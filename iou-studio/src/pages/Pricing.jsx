@@ -195,8 +195,6 @@ export default function Pricing() {
       } selected`
     : "Select modules to begin";
 
-  const selectedCustomSummaryItems = customBuildPricing.summaryItems;
-
   const summaryPanelData = useMemo(() => {
     if (isPackagesMode) {
       return {
@@ -246,13 +244,13 @@ export default function Pricing() {
         ? "Review the live module total with us and turn it into a scoped build."
         : "Add modules to prepare a custom build summary and next step.",
       description:
-        "Monitor the active module selection and base total while the custom build takes shape.",
+        "Monitor the active module selection, base total, and delivery estimate while the custom build takes shape.",
       emptyState: {
         title: "No modules selected yet.",
         detail: "Add modules to start building your custom setup.",
       },
       isActionDisabled: !selectedCustomModules.length,
-      items: selectedCustomSummaryItems,
+      items: customBuildPricing.summaryItems,
       modeLabel: "Build Your Own",
       selectionHint: selectedCustomModules.length
         ? "Selected modules stay synchronized here in real time."
@@ -261,15 +259,7 @@ export default function Pricing() {
       statusLabel: selectedCustomModules.length
         ? `${selectedCustomModules.length} active`
         : "Awaiting selection",
-      timeline: {
-        description: selectedCustomModules.length
-          ? "Timeline stays pending until the active module set is reviewed."
-          : "Choose modules to prepare the build for scope review.",
-        label: "Timeline",
-        value: selectedCustomModules.length
-          ? "Pending scope review"
-          : "Not yet configured",
-      },
+      timeline: customBuildPricing.timeline,
       total: {
         description: selectedCustomModules.length
           ? "Base total for the current module selection."
@@ -287,7 +277,6 @@ export default function Pricing() {
     activeBillingLabel,
     customBuildPricing,
     isPackagesMode,
-    selectedCustomSummaryItems,
     selectedCustomModules,
     selectedPlan,
   ]);
@@ -672,7 +661,8 @@ export default function Pricing() {
                         </h2>
                         <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
                           Select services to start building your system. The base
-                          total updates immediately as modules are added or removed.
+                          total and delivery estimate update immediately as modules
+                          are added or removed.
                         </p>
                       </div>
 
