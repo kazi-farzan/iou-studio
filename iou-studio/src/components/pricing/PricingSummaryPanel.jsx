@@ -10,7 +10,20 @@ function SummaryList({ items }) {
           key={item.id}
         >
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-[var(--text-primary)]">
+            {item.eyebrow ? (
+              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+                {item.eyebrow}
+              </p>
+            ) : null}
+
+            <p
+              className={[
+                "text-sm font-medium text-[var(--text-primary)]",
+                item.eyebrow ? "mt-2" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
               {item.title}
             </p>
 
@@ -36,7 +49,9 @@ function EmptyState({ detail, title }) {
   return (
     <div className="rounded-[20px] border border-dashed border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-4">
       <p className="text-sm font-medium text-[var(--text-primary)]">{title}</p>
-      <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">{detail}</p>
+      <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+        {detail}
+      </p>
     </div>
   );
 }

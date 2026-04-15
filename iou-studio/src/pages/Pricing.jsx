@@ -52,24 +52,28 @@ const customBuildModules = [
   {
     id: "branding",
     title: "Branding",
+    category: "Identity",
     description: "Identity direction, visual language, and core brand assets.",
     startingPrice: 12000,
   },
   {
     id: "website",
     title: "Website",
+    category: "Web Surface",
     description: "Responsive website setup shaped around your offer and content flow.",
     startingPrice: 18000,
   },
   {
     id: "ordering-system",
     title: "Ordering System",
+    category: "Commerce Flow",
     description: "Digital ordering structure with operational handoff points in place.",
     startingPrice: 26000,
   },
   {
     id: "customer-capture",
     title: "Customer Capture",
+    category: "Lead Intake",
     description: "Lead capture, WhatsApp routing, and inquiry collection entry points.",
     startingPrice: 9000,
   },
@@ -116,22 +120,6 @@ function getPackageTimeline(planId) {
     packageTimelineEstimates[planId] ||
     "Estimated delivery: timeline will be confirmed during scope review"
   );
-}
-
-function getCustomTimeline(selectedModules) {
-  if (!selectedModules.length) {
-    return "Timeline will update as you build";
-  }
-
-  if (selectedModules.length === 1) {
-    return "Estimated delivery: 2-4 weeks";
-  }
-
-  if (selectedModules.length === 2) {
-    return "Estimated delivery: 4-6 weeks";
-  }
-
-  return "Estimated delivery: 6-8 weeks";
 }
 
 function getPackageTotalSummary(plan) {
@@ -230,20 +218,21 @@ export default function Pricing() {
     [selectedCustomModuleIds],
   );
 
-  const customBuildTotal = useMemo(
-    () =>
-      selectedCustomModules.reduce(
-        (total, module) => total + module.startingPrice,
-        0,
-      ),
-    [selectedCustomModules],
-  );
-
   const selectedCustomModulesLabel = selectedCustomModules.length
     ? `${selectedCustomModules.length} module${
         selectedCustomModules.length === 1 ? "" : "s"
       } selected`
     : "Select modules to begin";
+
+  const selectedCustomSummaryItems = useMemo(
+    () =>
+      selectedCustomModules.map((module) => ({
+        eyebrow: module.category,
+        id: module.id,
+        title: module.title,
+      })),
+    [selectedCustomModules],
+  );
 
   const summaryPanelData = useMemo(() => {
     if (isPackagesMode) {
@@ -291,24 +280,19 @@ export default function Pricing() {
     return {
       ctaLabel: "Continue",
       ctaNote: selectedCustomModules.length
-        ? "Review the selection with us and turn it into a scoped build."
+        ? "Review the live module selection with us and turn it into a scoped build."
         : "Add modules to prepare a custom build summary and next step.",
       description:
-        "Track the active module selection, running total, and delivery window as the build takes shape.",
+        "Monitor the active module selection while the custom build takes shape.",
       emptyState: {
         title: "No modules selected yet.",
         detail: "Add modules to start building your custom setup.",
       },
       isActionDisabled: !selectedCustomModules.length,
-      items: selectedCustomModules.map((module) => ({
-        id: module.id,
-        title: module.title,
-        detail: module.description,
-        value: `from ${formatInr(module.startingPrice)}`,
-      })),
+      items: selectedCustomSummaryItems,
       modeLabel: "Build Your Own",
       selectionHint: selectedCustomModules.length
-        ? "Module pricing is a starting scope signal and stays ready for deeper estimation."
+        ? "Selected modules stay synchronized here in real time."
         : "Module selections will appear here as soon as you start building.",
       selectionLabel: "Selected modules",
       statusLabel: selectedCustomModules.length
@@ -316,28 +300,30 @@ export default function Pricing() {
         : "Awaiting selection",
       timeline: {
         description: selectedCustomModules.length
-          ? "The estimate expands as scope and integration needs increase."
-          : "Choose modules to generate a starting delivery window.",
-        label: "Estimated timeline",
-        value: getCustomTimeline(selectedCustomModules),
+          ? "Timeline stays pending until the active module set is reviewed."
+          : "Choose modules to prepare the build for scope review.",
+        label: "Timeline",
+        value: selectedCustomModules.length
+          ? "Pending scope review"
+          : "Not yet configured",
       },
       total: {
         description: selectedCustomModules.length
-          ? "The running total uses current module starting prices and stays ready for deeper pricing integration."
-          : "Totals will update as you add modules to the custom build.",
-        label: "Running total",
+          ? "Pricing remains in scope review mode until the module set is confirmed."
+          : "Select modules to prepare the custom build for pricing review.",
+        label: "Pricing",
         meta: selectedCustomModules.length
-          ? "Starting price based on the active module selection"
+          ? "Exact pricing is confirmed after scope review."
           : "",
         value: selectedCustomModules.length
-          ? `from ${formatInr(customBuildTotal)}`
+          ? "Scope review required"
           : "Not yet configured",
       },
     };
   }, [
     activeBillingLabel,
-    customBuildTotal,
     isPackagesMode,
+    selectedCustomSummaryItems,
     selectedCustomModules,
     selectedPlan,
   ]);
