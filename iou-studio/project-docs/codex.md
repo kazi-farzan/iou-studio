@@ -39,3 +39,17 @@ Avoid:
 - generic agency layouts
 - marketing-heavy sections
 - unnecessary visual clutter
+
+## Execution Mode (IMPORTANT)
+
+Development is being done in small, sequential tasks.
+
+Rules:
+- Only implement ONE task at a time
+- Do NOT refactor unrelated sections
+- Do NOT redesign existing working components unless explicitly asked
+- Preserve layout and structure unless task requires change
+- Assume future tasks will build on current structure
+
+Goal:
+Avoid breaking the system while gradually evolving into a configurator interface.

@@ -46,8 +46,18 @@ It should feel like a control panel or configurator.
 ## Current Progress
 
 * Base React + Vite setup active
-* Theme system completed
-* Theme persists with localStorage
-* Global theme updates across pages/components
-* Navbar includes theme toggle
-* No flicker on theme switch
+* Theme system completed (light/dark with persistence)
+* Navbar implemented with theme toggle
+* System-first Hero implemented
+  - Replaced marketing-style hero with system-entry UX
+  - Clear messaging: build → price → launch
+  - Primary CTA: “Start Building”
+  - Secondary CTA: “See How It Works”
+* Transition from marketing site → system interface initiated
+
+## Current Phase
+
+Phase 1 — Behavioral Shift (System over brochure)
+
+Goal:
+Convert the site from a marketing-style layout into an interactive system where users begin configuring services immediately.

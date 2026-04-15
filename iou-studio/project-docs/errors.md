@@ -13,7 +13,8 @@
 
 ## Watchlist
 
-* Check all pages/components for theme token consistency
-* Avoid hardcoded colors outside the theme system
-* Verify future sections inherit theme correctly
-* Re-test theme persistence after adding routing
+* Ensure new sections follow system-interface direction (not marketing UI)
+* Maintain consistency between hero and upcoming sections (How It Works, Pricing)
+* Avoid reintroducing generic agency patterns in new components
+* Verify responsiveness after layout changes
+* Ensure theme consistency in newly added sections

@@ -1,6 +1,7 @@
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
+import HowItWorks from "../components/home/HowItWorks.jsx";
 import SystemEntryHero from "../components/home/SystemEntryHero.jsx";
 
 const services = [
@@ -38,34 +39,11 @@ const services = [
   },
 ];
 
-const process = [
-  {
-    step: "01",
-    title: "Choose your foundation",
-    description:
-      "Start with the core service or package that matches your current stage and primary goal.",
-    note: "A clear starting point removes friction before any custom work begins.",
-  },
-  {
-    step: "02",
-    title: "Refine the scope",
-    description:
-      "Add the right features, creative support, or marketing layers without overcomplicating the build.",
-    note: "The system is designed to stay simple while still feeling tailored.",
-  },
-  {
-    step: "03",
-    title: "Submit with confidence",
-    description:
-      "Send a structured request so the project starts with better context, faster alignment, and less back-and-forth.",
-    note: "That means quicker decisions and stronger execution from day one.",
-  },
-];
-
 export default function Home() {
   return (
     <div className="w-full">
       <SystemEntryHero />
+      <HowItWorks />
 
       <Section className="pt-4" width="full">
         <div className="space-y-8">
@@ -115,52 +93,6 @@ export default function Home() {
           </div>
         </div>
       </Section>
-
-      <div className="scroll-mt-28" id="how-it-works">
-        <Section width="full">
-          <div className="space-y-8">
-            <div className="max-w-3xl space-y-4">
-              <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
-                How It Works
-              </p>
-              <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-                A guided flow that keeps decisions clear from day one.
-              </h2>
-              <p className="text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
-                Instead of guessing what to ask for, clients move through a simple
-                system that narrows the right solution before the project even starts.
-              </p>
-            </div>
-
-            <div className="grid gap-5 lg:grid-cols-3">
-              {process.map((step) => (
-                <Card
-                  key={step.step}
-                  className="group h-full p-7"
-                  interactive
-                >
-                  <div className="flex h-full flex-col">
-                    <span className="theme-chip-strong flex h-12 w-12 items-center justify-center rounded-2xl text-sm font-semibold transition-all duration-300 group-hover:shadow-[0_0_0_8px_var(--accent-soft)]">
-                      {step.step}
-                    </span>
-
-                    <h3 className="mt-7 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
-                      {step.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                      {step.description}
-                    </p>
-
-                    <p className="mt-auto pt-8 text-sm text-[var(--text-muted)]">
-                      {step.note}
-                    </p>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </Section>
-      </div>
 
       <Section
         align="center"

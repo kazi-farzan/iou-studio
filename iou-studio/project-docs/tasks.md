@@ -12,33 +12,60 @@
    - No flicker
    - Global update across pages
 
-## Next Priority
+4. Replace Hero with System Entry
+   - Removed marketing-style hero
+   - Added system-first messaging
+   - Introduced “Start Building” CTA
+   - Introduced “See How It Works” CTA
+   - Established system interface direction
 
-4. Build base layout sections
-   - Navbar
-   - Hero
-   - Footer
+---
 
-5. Build pricing system
-   - Service tiers
-   - Feature comparison
-   - CTA structure
+## Current Phase
 
-6. UI polish
-   - Premium spacing
-   - Better shadows
-   - Glass surfaces
-   - Image direction
+Phase 1 — Behavioral Shift (System Interface)
 
-7. Portfolio section
-   - Featured work cards
-   - Categories
-   - Case-study style previews
+---
 
-## Later
+## Next Tasks (STRICT ORDER)
 
-8. 3D hero section
-9. Branding refinement
-10. Backend planning
-11. Forms + validation
-12. Privacy Policy / Terms / cookie notice
+5. Add “How It Works” Section
+   - 3-step system explanation
+   - Horizontal structured layout
+
+6. Add Persistent “Start Building” CTA
+   - Sticky or floating CTA
+   - Always accessible entry to system
+
+7. Reframe Pricing Page Header
+   - Shift from “Pricing” → system-oriented language
+   - Align copy with configurator model
+
+8. Add Toggle: Packages vs Build Your Own
+   - Top-level mode switch
+
+9. Adapt Existing Pricing → “Packages”
+   - Rename to “Starting Configurations”
+   - Update CTAs
+
+10. Add Basic “Build Your Own” Section (Proto)
+   - Service categories
+   - Add/remove interaction
+   - Simple pricing hooks
+
+11. Add Sticky Summary Panel
+   - Selected items
+   - Total price
+   - Timeline (basic)
+   - Primary CTA
+
+---
+
+## Later (Do NOT touch yet)
+
+12. Full configurator system (3-column)
+13. Backend integration
+14. Checkout flow
+15. Advanced UX polish
+16. 3D hero (only if aligned with system feel)
+17. Branding refinement layer
