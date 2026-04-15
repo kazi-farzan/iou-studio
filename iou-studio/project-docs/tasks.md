@@ -13,48 +13,46 @@
 8. Add Toggle: Packages vs Build Your Own
 9. Adapt Existing Pricing → “Packages”
    - Converted plans → starting configurations
-   - Updated CTAs to “Customize” / “Start with this”
-   - Removed SaaS-style pricing perception
+   - Updated CTAs
+   - Removed SaaS-style perception
+
+10. Add Basic “Build Your Own” Section (Proto)
+   - Service categories implemented
+   - Select/deselect interaction added
+   - First level of configurator behavior introduced
 
 ---
 
 ## Current Phase
 
-Phase 1 — Behavioral Shift (System Interface)
+Phase 2 — Proto Configurator
 
 ---
 
 ## Next Tasks (STRICT ORDER)
 
-10. Add Basic “Build Your Own” Section (Proto)
-   - Service categories
-   - Add/remove interaction
-   - Initial configurator behavior
-
 11. Add Sticky Summary Panel
    - Selected items
    - Total price
-   - Timeline
+   - Timeline (basic)
    - Primary action CTA
 
----
+12. Connect Build Your Own → Summary
+   - Selections reflected in summary panel
 
-## Later (Do NOT touch yet)
+13. Introduce Basic Pricing Logic (Modules)
+   - Each module contributes to total price
 
-12. Full configurator system (3-column)
-13. Backend integration
-14. Checkout flow
-15. Advanced UX polish
-16. 3D hero (only if aligned with system feel)
-17. Branding refinement layer
+14. Add Visual Feedback for Price Changes
+   - Subtle updates when selections change
 
 ---
 
 ## Later (Do NOT touch yet)
 
-12. Full configurator system (3-column)
-13. Backend integration
-14. Checkout flow
-15. Advanced UX polish
-16. 3D hero (only if aligned with system feel)
-17. Branding refinement layer
+15. Full configurator system (3-column layout)
+16. Backend integration
+17. Checkout flow
+18. Advanced UX polish
+19. 3D hero (only if aligned with system feel)
+20. Branding refinement layer

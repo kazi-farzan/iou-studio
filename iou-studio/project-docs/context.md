@@ -13,11 +13,15 @@ Users should be able to:
 This is NOT a marketing website.
 It should feel like a control panel or configurator.
 
+---
+
 ## Services
 
 * Web & App Development
 * Branding & Identity
 * Digital systems (restaurants focus)
+
+---
 
 ## Design Direction
 
@@ -28,12 +32,16 @@ It should feel like a control panel or configurator.
 * Glassmorphism + soft shadows
 * Smooth animations (GSAP)
 
+---
+
 ## Tech Stack
 
 * React (Vite)
 * Tailwind CSS
 * GSAP (planned/day 2)
 * Three.js (planned later)
+
+---
 
 ## Goals
 
@@ -42,6 +50,8 @@ It should feel like a control panel or configurator.
 * Custom-generated visuals
 * 3D homepage section
 * Smooth scroll interactions
+
+---
 
 ## Current Progress
 
@@ -60,38 +70,31 @@ It should feel like a control panel or configurator.
 
 * Persistent “Start Building” CTA implemented
   - Always accessible system entry point
-  - Reinforces interaction-first behavior
 
 * Pricing page reframed as system interface
-  - Removed traditional “pricing page” perception
-  - Updated copy and structure
+  - Removed traditional pricing perception
+  - Updated copy and hierarchy
 
-* Mode-based interaction introduced
+* Mode-based interaction implemented
   - Toggle: Packages vs Build Your Own
-  - Packages represent starting configurations (not plans)
-  - Build Your Own acts as proto-configurator entry
+  - Packages = starting configurations (not plans)
 
-* Transition from marketing site → system interface is actively implemented
+* Proto configurator introduced (Build Your Own)
+  - Users can select/deselect service modules
+  - Basic interactive system behavior established
+
+* Transition from marketing site → system interface actively implemented
 
 ---
 
 ## Current Phase
 
-Phase 1 — Behavioral Shift (System Interface)
+Phase 2 — Proto Configurator
 
 Goal:
-Shift from a static pricing/marketing structure into a mode-driven, interactive system.
+Introduce real interaction where users begin building their system through selections.
 
 Current Focus:
-- Enabling user control
-- Introducing configuration entry points
-- Preparing for modular build system
-
-Phase 1 — Behavioral Shift (System over brochure)
-
-Goal:
-Convert the site into an interactive system where users understand the flow and begin configuring services immediately.
-
-Current Focus:
-- Reinforcing system behavior through UI
-- Guiding users toward interaction, not passive reading
+- Module selection behavior
+- Preparing for live summary + pricing feedback
+- Maintaining clarity and control in UI
