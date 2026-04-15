@@ -35,7 +35,7 @@ function SummaryList({ items }) {
           </div>
 
           {item.value ? (
-            <p className="shrink-0 text-sm font-medium text-[var(--text-primary)]">
+            <p className="max-w-[9.5rem] shrink-0 break-words text-right text-sm font-medium leading-6 text-[var(--text-primary)]">
               {item.value}
             </p>
           ) : null}
@@ -141,7 +141,7 @@ export default function PricingSummaryPanel({ summary }) {
 
         <SummarySection description={total.description} label={total.label} live>
           <div className="theme-panel-contrast rounded-[22px] p-5">
-            <p className="text-3xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] sm:text-4xl">
+            <p className="break-words text-3xl font-semibold tracking-[-0.05em] text-[var(--text-primary)] sm:text-4xl">
               {total.value}
             </p>
 

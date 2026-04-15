@@ -60,46 +60,44 @@ It should feel like a control panel or configurator.
 * Navbar implemented with theme toggle
 
 * System-first Hero implemented
-  - Clear entry into build flow
-  - Primary CTA: “Start Building”
-  - Secondary CTA: “See How It Works”
-
 * “How It Works” section implemented
-  - 3-step structured system explanation
-  - Reinforces user journey (select → customize → review)
-
 * Persistent “Start Building” CTA implemented
-  - Always accessible system entry point
 
-* Pricing page reframed as system interface
-  - Traditional pricing-page tone removed
-  - Header and copy shifted toward configuration language
+* Pricing page transformed into system interface
+  - Header reframed
+  - Language shifted from pricing → configuration
 
 * Mode-based interaction implemented
-  - Toggle: Packages vs Build Your Own
-  - Packages = starting configurations (not SaaS plans)
+  - Packages vs Build Your Own
 
-* Proto configurator introduced
-  - Build Your Own mode now contains selectable service modules
-  - Users can select and deselect modules
-  - First meaningful configurator interaction is in place
+* Packages redefined as starting configurations
 
-* Summary layer introduced
-  - Sticky Summary Panel planned/added as the main control surface for the build flow
-  - Next step is making custom selections reflect live inside the summary
+* Proto configurator implemented
+  - Users can select/deselect modules
+  - Modules represent real system components
 
-* Transition from marketing site → system interface actively implemented
+* Summary Panel implemented
+  - Acts as system control surface
+  - Shows current build state
+
+* Live pricing logic implemented (Build Your Own)
+  - Module selection updates total instantly
+  - Pricing logic centralized
+  - System now responds to user input in real time
 
 ---
 
 ## Current Phase
 
-Phase 2 — Proto Configurator
+Phase 2 — Proto Configurator (Interactive System)
 
 Goal:
-Turn the pricing area into a real configuration surface where users can make selections and see the current build state clearly.
+Create a working system where:
+- users select modules
+- system responds instantly
+- build state is visible and understandable
 
 Current Focus:
-- Summary panel behavior
-- Live reflection of user selections
-- Preparing pricing + timeline logic without breaking structure
+- timeline logic
+- refinement of system feedback
+- strengthening clarity and trust

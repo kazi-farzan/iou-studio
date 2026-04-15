@@ -49,10 +49,10 @@ export default function CustomBuildModuleCard({
       <div className="mt-6 flex items-end justify-between gap-4 border-t border-[color:var(--border-subtle)] pt-5">
         <div>
           <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-            Starting price
+            Base price
           </p>
           <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
-            from {formatInr(module.startingPrice)}
+            {formatInr(module.basePrice)}
           </p>
         </div>
 
@@ -62,7 +62,7 @@ export default function CustomBuildModuleCard({
           onClick={() => onToggle(module.id)}
           type="button"
         >
-          {isSelected ? "Added" : "Add"}
+          {isSelected ? "Remove" : "Add"}
         </button>
       </div>
     </div>

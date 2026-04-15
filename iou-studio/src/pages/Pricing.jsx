@@ -8,6 +8,10 @@ import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
 import {
+  customBuildModules,
+  getCustomBuildPricing,
+} from "../data/customBuildPricing.js";
+import {
   BILLING_MODE_MONTHLY,
   billingOptions,
   formatInr,
@@ -45,37 +49,6 @@ const configurationModes = [
     id: "custom",
     label: "Build Your Own",
     detail: "Move into a custom system build.",
-  },
-];
-
-const customBuildModules = [
-  {
-    id: "branding",
-    title: "Branding",
-    category: "Identity",
-    description: "Identity direction, visual language, and core brand assets.",
-    startingPrice: 12000,
-  },
-  {
-    id: "website",
-    title: "Website",
-    category: "Web Surface",
-    description: "Responsive website setup shaped around your offer and content flow.",
-    startingPrice: 18000,
-  },
-  {
-    id: "ordering-system",
-    title: "Ordering System",
-    category: "Commerce Flow",
-    description: "Digital ordering structure with operational handoff points in place.",
-    startingPrice: 26000,
-  },
-  {
-    id: "customer-capture",
-    title: "Customer Capture",
-    category: "Lead Intake",
-    description: "Lead capture, WhatsApp routing, and inquiry collection entry points.",
-    startingPrice: 9000,
   },
 ];
 
@@ -210,29 +183,19 @@ export default function Pricing() {
     billingOptions.find((option) => option.id === billingMode)?.label || "Pricing";
   const isPackagesMode = mode === "packages";
 
-  const selectedCustomModules = useMemo(
-    () =>
-      customBuildModules.filter((module) =>
-        selectedCustomModuleIds.includes(module.id),
-      ),
+  const customBuildPricing = useMemo(
+    () => getCustomBuildPricing(selectedCustomModuleIds),
     [selectedCustomModuleIds],
   );
 
+  const selectedCustomModules = customBuildPricing.selectedModules;
   const selectedCustomModulesLabel = selectedCustomModules.length
     ? `${selectedCustomModules.length} module${
         selectedCustomModules.length === 1 ? "" : "s"
       } selected`
     : "Select modules to begin";
 
-  const selectedCustomSummaryItems = useMemo(
-    () =>
-      selectedCustomModules.map((module) => ({
-        eyebrow: module.category,
-        id: module.id,
-        title: module.title,
-      })),
-    [selectedCustomModules],
-  );
+  const selectedCustomSummaryItems = customBuildPricing.summaryItems;
 
   const summaryPanelData = useMemo(() => {
     if (isPackagesMode) {
@@ -280,10 +243,10 @@ export default function Pricing() {
     return {
       ctaLabel: "Continue",
       ctaNote: selectedCustomModules.length
-        ? "Review the live module selection with us and turn it into a scoped build."
+        ? "Review the live module total with us and turn it into a scoped build."
         : "Add modules to prepare a custom build summary and next step.",
       description:
-        "Monitor the active module selection while the custom build takes shape.",
+        "Monitor the active module selection and base total while the custom build takes shape.",
       emptyState: {
         title: "No modules selected yet.",
         detail: "Add modules to start building your custom setup.",
@@ -309,19 +272,20 @@ export default function Pricing() {
       },
       total: {
         description: selectedCustomModules.length
-          ? "Pricing remains in scope review mode until the module set is confirmed."
-          : "Select modules to prepare the custom build for pricing review.",
-        label: "Pricing",
+          ? "Base total for the current module selection."
+          : "Select services to begin pricing.",
+        label: "Total",
         meta: selectedCustomModules.length
-          ? "Exact pricing is confirmed after scope review."
+          ? `${selectedCustomModules.length} module${
+              selectedCustomModules.length === 1 ? "" : "s"
+            } included`
           : "",
-        value: selectedCustomModules.length
-          ? "Scope review required"
-          : "Not yet configured",
+        value: formatInr(customBuildPricing.total),
       },
     };
   }, [
     activeBillingLabel,
+    customBuildPricing,
     isPackagesMode,
     selectedCustomSummaryItems,
     selectedCustomModules,
@@ -707,7 +671,8 @@ export default function Pricing() {
                           Build your custom setup
                         </h2>
                         <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-                          Select services to start building your system.
+                          Select services to start building your system. The base
+                          total updates immediately as modules are added or removed.
                         </p>
                       </div>
 

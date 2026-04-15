@@ -12,54 +12,53 @@
 7. Reframe Pricing Page Header
 8. Add Toggle: Packages vs Build Your Own
 9. Adapt Existing Pricing → “Packages”
-   - Converted plans → starting configurations
-   - Updated CTAs
-   - Removed SaaS-style perception
 
 10. Add Basic “Build Your Own” Section (Proto)
-   - Service categories/modules implemented
-   - Select/deselect interaction added
-   - Proto configurator behavior established
+    - Module selection UI implemented
 
 11. Add Sticky Summary Panel
-   - Summary control surface added
-   - Desktop sticky + mobile stacked behavior planned/implemented
-   - Structure for selected items, total, timeline, and CTA established
+    - Summary acts as system control surface
+
+12. Connect Build Your Own → Summary
+    - Selected modules appear live
+
+13. Implement Module Pricing Logic
+    - Each module contributes to total
+    - Live updates working
+    - Pricing logic centralized
 
 ---
 
 ## Current Phase
 
-Phase 2 — Proto Configurator
+Phase 2 — Proto Configurator (Interactive System)
 
 ---
 
-## In Progress / Immediate Next
+## Next Tasks (STRICT ORDER)
 
-12. Connect Build Your Own → Summary
-   - Selected modules reflected live in Summary Panel
-   - Empty state handled cleanly
-   - Preserve Packages mode behavior
+14. Add Basic Timeline Logic
+    - Each module contributes to delivery estimate
+    - Summary panel reflects timeline
 
-13. Introduce Basic Pricing Logic (Modules)
-   - Each selected module contributes to total price
-   - Keep logic centralized and simple
+15. Improve Summary Panel Clarity
+    - Better hierarchy for:
+      - line items
+      - total
+      - timeline
+    - Reduce visual noise
 
-14. Introduce Basic Timeline Logic
-   - Each selected module contributes to estimated timeline
-   - Summary reflects changes clearly
-
-15. Add Visual Feedback for Price / Summary Changes
-   - Subtle transitions only
-   - No flashy motion
+16. Add Subtle System Feedback
+    - Price change transitions
+    - Selection feedback refinement
 
 ---
 
 ## Later (Do NOT touch yet)
 
-16. Full configurator system (3-column layout)
-17. Backend integration
-18. Checkout flow
-19. Advanced UX polish
-20. 3D hero (only if aligned with system feel)
-21. Branding refinement layer
+17. Full configurator system (3-column layout)
+18. Backend integration
+19. Checkout flow
+20. Advanced UX polish
+21. 3D hero (only if aligned with system feel)
+22. Branding refinement layer
