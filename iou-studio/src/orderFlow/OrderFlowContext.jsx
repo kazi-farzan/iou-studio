@@ -1,4 +1,8 @@
 import { useMemo, useState } from "react";
+import {
+  getConfiguratorModule,
+  getConfiguratorPackage,
+} from "../data/configuratorSchema.js";
 import { BILLING_MODE_MONTHLY } from "../data/pricing.js";
 import { OrderFlowContext } from "./OrderFlowState.js";
 import {
@@ -6,8 +10,13 @@ import {
   createSubmittedOrder,
   getDefaultContactDraft,
   getDefaultPlanId,
+  ORDER_FLOW_MODE_CUSTOM,
   ORDER_FLOW_MODE_PACKAGES,
 } from "./orderFlow.js";
+
+function getValidUniqueModuleIds(moduleIds = []) {
+  return [...new Set(moduleIds.filter((moduleId) => getConfiguratorModule(moduleId)))];
+}
 
 export function OrderFlowProvider({ children }) {
   const [mode, setMode] = useState(ORDER_FLOW_MODE_PACKAGES);
@@ -21,6 +30,29 @@ export function OrderFlowProvider({ children }) {
   );
   const [contactDraft, setContactDraft] = useState(getDefaultContactDraft());
   const [lastSubmittedOrder, setLastSubmittedOrder] = useState(null);
+
+  function startCustomBuild(moduleIds = []) {
+    const requestedModuleIds = Array.isArray(moduleIds) ? moduleIds : [moduleIds];
+    const validModuleIds = getValidUniqueModuleIds(requestedModuleIds);
+
+    if (!validModuleIds.length) {
+      return;
+    }
+
+    setMode(ORDER_FLOW_MODE_CUSTOM);
+    setSelectedCustomModuleIds((current) =>
+      getValidUniqueModuleIds([...current, ...validModuleIds]),
+    );
+  }
+
+  function startPackageBuild(packageId) {
+    if (!getConfiguratorPackage(packageId)) {
+      return;
+    }
+
+    setMode(ORDER_FLOW_MODE_PACKAGES);
+    setSelectedPlanId(packageId);
+  }
 
   const draftConfiguration = useMemo(
     () =>
@@ -78,6 +110,8 @@ export function OrderFlowProvider({ children }) {
     setSelectedCustomModuleIds,
     setSelectedCustomModuleOptions,
     setSelectedPlanId,
+    startCustomBuild,
+    startPackageBuild,
     submitOrder,
   };
 

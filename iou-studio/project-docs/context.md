@@ -1,114 +1,113 @@
-# PROJECT CONTEXT — IOU Labs
+# Project Context - IOU Labs
 
 ## Overview
 
-IOU Labs is a productized service platform designed as an interactive system.
+IOU Labs is a productized service platform presented as an interactive build system.
 
 Users can:
-- browse services through a structured system
-- configure what they need
-- customize modules and options
-- see pricing and timelines instantly
-- review a structured build specification
+- browse module groups through a structured system menu
+- enter the configurator from modules or starting setups
+- customize modules and nested options
+- see pricing and timelines update live
+- review a grouped build specification
 - submit a request
 - receive confirmation
 
-This is NOT a marketing website.
+This is not a marketing website.
 It is a system interface.
 
 ---
 
-## Product Direction (CRITICAL)
+## Product Direction (Critical)
 
 IOU Labs is:
 - a modular service system
 - a transparent pricing platform
 - a configurator-driven product
+- a guided order flow with persistent state
 
-NOT:
+It is not:
 - a creative agency website
-- a marketing-heavy landing page
+- a gallery of disconnected offerings
+- a landing-page-first experience
 
 ---
 
 ## System Flow
 
-1. Configure
-2. Review (Line-item summary)
-3. Submit
-4. Confirm
+1. Services page acts as the system menu and pre-configuration layer
+2. Configure
+3. Review
+4. Submit
+5. Confirm
 
 ---
 
-## Navigation Model (NEW)
+## Navigation Model
 
-Navigation is now system-driven:
-
+Navigation is system-first:
 - Services
 - Case Studies
 - How It Works
-- Start Build (primary action)
+- Start Build
 
-Navigation reflects:
-→ user intent and system flow
-
-NOT:
-→ exploratory browsing or agency hierarchy
+Navigation reflects user intent and flow entry, not agency hierarchy.
 
 ---
 
 ## System Architecture
 
-Unified configuration schema:
-
-- categories → modules → options
+Unified configuration schema drives:
+- categories -> modules -> options
 - packages mapped to modules
-- pricing derived from schema
-- timeline derived from schema
-- summary derived as structured output
+- Services page module menu
+- pricing and timeline calculation
+- grouped summary output
+
+Shared order-flow state now supports:
+- module preselection from Services
+- package preselection from Services
+- persistence across Configure -> Review -> Submit -> Confirm
 
 ---
 
 ## System Output
 
 The system generates:
-
 - grouped module breakdown
+- included modules for starting setups
 - selected options per module
 - module-level subtotals
 - timeline contributions
 - final total and timeline
 
-This output acts as:
-→ a build specification
+This output acts as a build specification.
 
 ---
 
 ## Product State
 
-The system is now:
-
+The product is now:
 - interactive
 - configurable
 - transparent
 - actionable
-- structurally scalable
-- operationally clear
-- navigation-aligned as a unified product
+- navigation-aligned
+- schema-driven across browse and build surfaces
+- consistent from entry layer to submission
 
 ---
 
 ## Current Phase
 
-Phase 7 — Platform Alignment (Active)
+Phase 8 - Trust Realization (Active)
 
-Goal:
-Make the entire platform feel like one cohesive system, not separate pages.
+Phase 7 - Platform Alignment is complete through Task 28.
 
 ---
 
 ## Immediate Focus
 
-- copy consistency (system-first tone)
-- services → system menu transformation
-- real proof assets
+- Task 29: replace placeholder case studies with real proof
+- Task 30 planning: clarify deliverables across modules and summaries
+- QA Services -> Configurator entry persistence on desktop and mobile

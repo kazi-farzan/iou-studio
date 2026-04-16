@@ -1,4 +1,4 @@
-# CURRENT ERRORS
+# Current Errors
 
 ## Active (Critical)
 
@@ -8,24 +8,23 @@
 
 ## Medium
 
-* Copy inconsistency across pages (agency vs system tone)
-* Services page still partially card-based (not yet a full system menu)
-* Case studies lack real proof assets
+* Case studies still use placeholder proof content
+* Repeated Services -> Configure entry needs regression QA across package and custom modes
+* Dense custom configurations can feel heavy on smaller screens
 
 ---
 
 ## Low
 
-* Minor visual inconsistencies across sections
-* Edge-case formatting for nested options
-* Slight density in summary when many options selected
+* Minor visual inconsistencies across secondary sections
+* Edge-case formatting for nested option summaries under heavy selections
 
 ---
 
 ## Watchlist
 
-* Ensure navigation changes did not break internal linking
-* Ensure all CTAs point to configurator (no dead flows)
-* Validate route consistency after IA cleanup
-* Ensure user always has a clear next step
-* Maintain summary readability under heavy configurations
+* Validate Services -> Pricing handoff keeps module or setup state after repeat navigation
+* Keep system-first copy consistent as Trust Realization work adds proof content
+* Ensure every CTA still points to a live step in the build flow
+* Maintain summary readability when many modules and options are active
+* Confirm starting setup labels stay aligned with future schema changes

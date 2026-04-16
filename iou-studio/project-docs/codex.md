@@ -1,31 +1,35 @@
-# CURRENT ERRORS
+# Codex Working Notes
 
-## Active (Critical)
+## Latest Completed Task
 
-* None blocking product usage
+Task 28 - Services -> System Menu
+
+Delivered:
+- Services page now reads from the unified configuration schema
+- Module rows are grouped by category instead of card grids
+- Modules can seed custom build state through Add to Build
+- Starting setups can seed package state through Use this setup
+- Services now functions as a system entry layer, not passive browsing
 
 ---
 
-## Medium
+## Phase Status
 
-* Copy inconsistency across pages (agency vs system tone)
-* Services page still partially card-based (not yet a full system menu)
-* Case studies lack real proof assets
+- Phase 7 - Platform Alignment: complete
+- Phase 8 - Trust Realization: active
 
 ---
 
-## Low
+## Next Active Task
 
-* Minor visual inconsistencies across sections
-* Edge-case formatting for nested options
-* Slight density in summary when many options selected
+29. Real Case Studies
+- replace placeholders with real outputs
+- add proof context, timelines, and deliverables
 
 ---
 
 ## Watchlist
 
-* Ensure navigation changes did not break internal linking
-* Ensure all CTAs point to configurator (no dead flows)
-* Validate route consistency after IA cleanup
-* Ensure user always has a clear next step
-* Maintain summary readability under heavy configurations
+- Regression test Services -> Pricing entry persistence
+- Keep case study content aligned with system-first tone
+- Avoid duplicating module or package definitions outside the shared schema
