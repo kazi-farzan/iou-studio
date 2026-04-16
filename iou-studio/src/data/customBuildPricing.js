@@ -1,68 +1,36 @@
+import {
+  configuratorModules,
+  formatTimelineRange,
+  getConfiguratorModules,
+  groupModulesByCategory,
+  sumTimelineRanges,
+} from "./configuratorSchema.js";
 import { formatInr } from "./pricing.js";
 
 const EMPTY_TIMELINE_SUMMARY = {
   description: "Select modules to generate a live delivery estimate.",
   label: "Estimated delivery",
+  rangeDays: null,
   value: "Timeline updates as you build",
 };
 
-export const customBuildModules = [
-  {
-    id: "branding",
-    title: "Branding",
-    category: "Identity",
-    description: "Identity direction, visual language, and core brand assets.",
-    basePrice: 12000,
-    timelineDays: {
-      minimum: 3,
-      maximum: 5,
-    },
-  },
-  {
-    id: "website",
-    title: "Website",
-    category: "Web Surface",
-    description: "Responsive website setup shaped around your offer and content flow.",
-    basePrice: 18000,
-    timelineDays: {
-      minimum: 6,
-      maximum: 9,
-    },
-  },
-  {
-    id: "ordering-system",
-    title: "Ordering System",
-    category: "Commerce Flow",
-    description: "Digital ordering structure with operational handoff points in place.",
-    basePrice: 26000,
-    timelineDays: {
-      minimum: 8,
-      maximum: 12,
-    },
-  },
-  {
-    id: "customer-capture",
-    title: "Customer Capture",
-    category: "Lead Intake",
-    description: "Lead capture, WhatsApp routing, and inquiry collection entry points.",
-    basePrice: 9000,
-    timelineDays: {
-      minimum: 2,
-      maximum: 4,
-    },
-  },
-];
+export const customBuildModules = configuratorModules;
 
-function formatTimelineValue({ maximum, minimum }) {
-  if (!minimum || !maximum) {
-    return EMPTY_TIMELINE_SUMMARY.value;
-  }
-
-  if (minimum === maximum) {
-    return `${minimum} day${minimum === 1 ? "" : "s"}`;
-  }
-
-  return `${minimum}-${maximum} days`;
+function buildModuleLineItem(module) {
+  return {
+    category: module.category,
+    categoryId: module.categoryId,
+    deliverables: module.deliverables,
+    description: module.description,
+    id: module.id,
+    kind: "module",
+    options: module.options,
+    price: module.basePrice,
+    priceLabel: formatInr(module.basePrice),
+    tags: module.tags,
+    timelineDays: module.baseTimelineDays,
+    title: module.title,
+  };
 }
 
 export function getCustomBuildTimeline(selectedModules = []) {
@@ -70,47 +38,39 @@ export function getCustomBuildTimeline(selectedModules = []) {
     return EMPTY_TIMELINE_SUMMARY;
   }
 
-  const totalTimelineDays = selectedModules.reduce(
-    (runningTotal, module) => ({
-      maximum: runningTotal.maximum + module.timelineDays.maximum,
-      minimum: runningTotal.minimum + module.timelineDays.minimum,
-    }),
-    { maximum: 0, minimum: 0 },
-  );
+  const totalTimelineDays = sumTimelineRanges(selectedModules);
 
   return {
     description: "Live estimate based on the currently selected module set.",
     label: "Estimated delivery",
-    value: formatTimelineValue(totalTimelineDays),
+    rangeDays: totalTimelineDays,
+    value: formatTimelineRange(totalTimelineDays, EMPTY_TIMELINE_SUMMARY.value),
   };
 }
 
 export function getCustomBuildModules(moduleIds = []) {
-  if (!moduleIds.length) {
-    return [];
-  }
-
-  const selectedIds = new Set(moduleIds);
-
-  return customBuildModules.filter((module) => selectedIds.has(module.id));
+  return getConfiguratorModules(moduleIds);
 }
 
 export function getCustomBuildPricing(moduleIds = []) {
   const selectedModules = getCustomBuildModules(moduleIds);
-  const total = selectedModules.reduce(
-    (runningTotal, module) => runningTotal + module.basePrice,
+  const lineItems = selectedModules.map(buildModuleLineItem);
+  const total = lineItems.reduce(
+    (runningTotal, item) => runningTotal + item.price,
     0,
   );
 
   return {
+    groupedModules: groupModulesByCategory(selectedModules),
+    lineItems,
     selectedModules,
+    summaryItems: lineItems.map((item) => ({
+      id: item.id,
+      eyebrow: item.category,
+      title: item.title,
+      value: item.priceLabel,
+    })),
     timeline: getCustomBuildTimeline(selectedModules),
     total,
-    summaryItems: selectedModules.map((module) => ({
-      id: module.id,
-      eyebrow: module.category,
-      title: module.title,
-      value: formatInr(module.basePrice),
-    })),
   };
 }

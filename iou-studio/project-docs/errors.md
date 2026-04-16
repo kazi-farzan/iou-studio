@@ -2,7 +2,7 @@
 
 ## Active (Critical)
 
-* None blocking core product usage
+* None blocking product usage
 
 ---
 
@@ -25,11 +25,12 @@
 
 ## Watchlist
 
-* Ensure mobile summary does not obscure content
-* Maintain performance with sticky elements
-* Ensure state consistency across:
+* Ensure unified schema does not introduce edge-case pricing bugs
+* Validate price/timeline consistency across:
   - configurator
   - order summary
-  - confirmation
-* Prevent duplication between desktop and mobile summary logic
-* Validate UX under rapid interactions
+  - mobile summary
+* Ensure selection state maps correctly to schema
+* Maintain performance as schema grows
+* Avoid tightly coupling UI to schema structure
+* Keep schema flexible for nested options (Task 24)

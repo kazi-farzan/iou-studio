@@ -14,11 +14,9 @@ import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
 import {
   customBuildModules,
-  getCustomBuildPricing,
 } from "../data/customBuildPricing.js";
 import {
   billingOptions,
-  formatInr,
   getCouponByCode,
   getCouponFeedback,
   getPlanPricing,
@@ -30,8 +28,6 @@ import {
 import { useOrderFlow } from "../orderFlow/useOrderFlow.js";
 import {
   buildOrderFlowSteps,
-  getPackageTimeline,
-  getPackageTotalSummary,
   ORDER_FLOW_MODE_CUSTOM,
   ORDER_FLOW_MODE_PACKAGES,
 } from "../orderFlow/orderFlow.js";
@@ -103,6 +99,7 @@ export default function Pricing() {
     appliedCouponCode,
     billingMode,
     couponInput,
+    draftConfiguration,
     mode,
     selectedCustomModuleIds,
     selectedPlanId,
@@ -136,21 +133,14 @@ export default function Pricing() {
     [appliedCoupon, billingMode],
   );
 
-  const selectedPlan = useMemo(
-    () => plans.find((plan) => plan.id === selectedPlanId) || null,
-    [plans, selectedPlanId],
-  );
-
-  const activeBillingLabel =
-    billingOptions.find((option) => option.id === billingMode)?.label || "Pricing";
   const isPackagesMode = mode === ORDER_FLOW_MODE_PACKAGES;
 
   const customBuildPricing = useMemo(
-    () => getCustomBuildPricing(selectedCustomModuleIds),
-    [selectedCustomModuleIds],
+    () => draftConfiguration.customSelection,
+    [draftConfiguration.customSelection],
   );
 
-  const selectedCustomModules = customBuildPricing.selectedModules;
+  const selectedCustomModules = customBuildPricing?.modules ?? [];
   const selectedCustomModulesCount = selectedCustomModules.length;
   const selectedCustomModulesLabel = selectedCustomModulesCount
     ? `${selectedCustomModulesCount} module${
@@ -158,99 +148,10 @@ export default function Pricing() {
       } selected`
     : "Select modules to begin";
 
-  const summaryPanelData = useMemo(() => {
-    if (isPackagesMode) {
-      return {
-        ctaLabel: "Continue to Order Summary",
-        ctaNote: selectedPlan
-          ? "Move into a structured review and submission surface with the current package state intact."
-          : "Choose a starting configuration to unlock the order summary.",
-        ctaTo: "/order-summary",
-        description:
-          "Monitor the active starting configuration, current pricing, and delivery window while you configure.",
-        emptyState: {
-          title: "No starting configuration selected yet.",
-          detail: "Choose a package to review the current price and timeline.",
-        },
-        isActionDisabled: !selectedPlan,
-        items: selectedPlan
-          ? [
-              {
-                id: selectedPlan.id,
-                title: selectedPlan.name,
-                detail: selectedPlan.description,
-                value: selectedPlan.audience,
-              },
-            ]
-          : [],
-        modeLabel: "Packages",
-        selectionHint: selectedPlan
-          ? "This starting configuration can still be customized before handoff."
-          : "The summary will lock onto the package you activate.",
-        selectionLabel: "Selected setup",
-        statusLabel: activeBillingLabel,
-        timeline: {
-          description: selectedPlan
-            ? "Final delivery depends on scope confirmation and content readiness."
-            : "Select a package to view the baseline delivery window.",
-          label: "Estimated timeline",
-          value: selectedPlan
-            ? getPackageTimeline(selectedPlan.id)
-            : "Timeline pending",
-        },
-        total: getPackageTotalSummary(selectedPlan),
-        validationNote:
-          "Select a package before continuing into the order summary.",
-      };
-    }
-
-    return {
-      ctaLabel: "Continue to Order Summary",
-      ctaNote: selectedCustomModulesCount
-        ? "Review the active module selection, then submit the custom build request from the next screen."
-        : "Add modules to prepare a valid custom build summary.",
-      ctaTo: "/order-summary",
-      description:
-        "Monitor the active module selection, base total, and delivery estimate while the custom build takes shape.",
-      emptyState: {
-        title: "No modules selected yet.",
-        detail: "Add modules to start building your custom setup.",
-      },
-      isActionDisabled: !selectedCustomModulesCount,
-      items: customBuildPricing.summaryItems,
-      modeLabel: "Build Your Own",
-      selectionHint: selectedCustomModulesCount
-        ? "Selected modules stay synchronized here in real time."
-        : "Module selections will appear here as soon as you start building.",
-      selectionLabel: "Selected modules",
-      statusLabel: selectedCustomModulesCount
-        ? `${selectedCustomModulesCount} active`
-        : "Awaiting selection",
-      timeline: customBuildPricing.timeline,
-      total: {
-        description: selectedCustomModulesCount
-          ? "Base total for the current module selection."
-          : "Add modules to generate a live base total.",
-        label: "Total",
-        meta: selectedCustomModulesCount
-          ? `${selectedCustomModulesCount} module${
-              selectedCustomModulesCount === 1 ? "" : "s"
-            } included`
-          : "",
-        value: selectedCustomModulesCount
-          ? formatInr(customBuildPricing.total)
-          : "Awaiting selection",
-      },
-      validationNote:
-        "Select at least one custom module before continuing into the order summary.",
-    };
-  }, [
-    activeBillingLabel,
-    customBuildPricing,
-    isPackagesMode,
-    selectedCustomModulesCount,
-    selectedPlan,
-  ]);
+  const summaryPanelData = useMemo(
+    () => draftConfiguration.summaryPanel,
+    [draftConfiguration.summaryPanel],
+  );
 
   const stepFlowSteps = useMemo(
     () =>

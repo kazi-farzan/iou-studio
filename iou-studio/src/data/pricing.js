@@ -1,3 +1,9 @@
+import {
+  configuratorPackages,
+  getPackageIncludedModules,
+  groupModulesByCategory,
+} from "./configuratorSchema.js";
+
 export const BILLING_MODE_MONTHLY = "monthly";
 export const BILLING_MODE_YEARLY = "yearly";
 
@@ -16,66 +22,8 @@ export const billingOptions = [
   },
 ];
 
-export const pricingPlans = [
-  {
-    id: "starter",
-    name: "Starter",
-    audience: "Local businesses",
-    description:
-      "A polished digital foundation for service brands that need credibility, faster inquiries, and a premium first impression.",
-    pricing: {
-      monthly: 18000,
-      yearly: 180000,
-    },
-    features: [
-      "Conversion-focused structure for local lead generation",
-      "Responsive visual design tuned for mobile-first browsing",
-      "Lead forms, WhatsApp handoff, and contact setup",
-      "Basic SEO, analytics, and launch performance checks",
-      "Two structured revision rounds for a sharper finish",
-    ],
-    ctaLabel: "Start with Starter",
-  },
-  {
-    id: "growth",
-    name: "Growth",
-    audience: "Growing brands and startups",
-    description:
-      "A stronger multi-page system built for brands that are validating offers, running campaigns, and scaling with more intention.",
-    pricing: {
-      monthly: 33000,
-      yearly: 330000,
-    },
-    features: [
-      "Multi-page website or campaign system with strategic page hierarchy",
-      "Conversion sections for launches, offers, and paid traffic support",
-      "CMS-ready content blocks for services, case studies, or updates",
-      "Advanced analytics events, SEO structure, and funnel thinking",
-      "Monthly iteration support for ongoing refinements and experiments",
-    ],
-    ctaLabel: "Choose Growth",
-    isMostPopular: true,
-  },
-  {
-    id: "premium",
-    name: "Premium",
-    audience: "Custom product and flagship builds",
-    description:
-      "High-touch custom execution for ambitious launches, complex user journeys, and premium digital products that need senior direction.",
-    pricing: {
-      monthly: 72000,
-      yearly: 720000,
-    },
-    features: [
-      "Custom UX, product, or premium brand experience planning",
-      "Advanced interactions, platform flows, and integration-ready architecture",
-      "Design system thinking for scalable implementation consistency",
-      "Performance, accessibility, and quality review baked into delivery",
-      "Dedicated sprint planning for deeper collaboration and scope flexibility",
-    ],
-    ctaLabel: "Request Custom Scope",
-  },
-];
+export const pricingPackages = configuratorPackages;
+export const pricingPlans = pricingPackages;
 
 export const couponCatalog = {
   FIRST3: {
@@ -361,6 +309,7 @@ export function getPlanPricing(plan, billingMode, coupon) {
   const base = buildBasePricing(plan, billingMode);
   const couponEffect = buildCouponEffect(base, coupon);
   const effective = buildEffectivePricing(base, couponEffect);
+  const includedModules = getPackageIncludedModules(plan);
 
   return {
     ...plan,
@@ -368,8 +317,12 @@ export function getPlanPricing(plan, billingMode, coupon) {
     coupon: couponEffect,
     effective,
     callout: buildPlanCallout(base, couponEffect),
+    includedModuleGroups: groupModulesByCategory(includedModules),
+    includedModules,
   };
 }
+
+export const getPackagePricing = getPlanPricing;
 
 export function getPlanSnapshot(planPricing) {
   const { base, coupon, effective } = planPricing;
@@ -456,6 +409,8 @@ export function getPlanSnapshot(planPricing) {
     ],
   };
 }
+
+export const getPackageSnapshot = getPlanSnapshot;
 
 export function getPlanSummaryRows(planPricing) {
   const { base, coupon, effective } = planPricing;
@@ -563,6 +518,8 @@ export function getPlanSummaryRows(planPricing) {
   ];
 }
 
+export const getPackageSummaryRows = getPlanSummaryRows;
+
 export function getSelectedPlanSummary(planPricing) {
   const { base, coupon, effective } = planPricing;
 
@@ -614,3 +571,5 @@ export function getSelectedPlanSummary(planPricing) {
     footer: "Monthly billing keeps the first invoice lighter and leaves room to upgrade into yearly pricing later.",
   };
 }
+
+export const getSelectedPackageSummary = getSelectedPlanSummary;

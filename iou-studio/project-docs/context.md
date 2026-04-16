@@ -73,34 +73,46 @@ Users can:
 - move into Order Summary
 - submit structured request
 - receive confirmation
-
-NEW:
-- persistent mobile summary bar
-- always-visible price + timeline + action
-- expandable mobile summary view
+- always see price/timeline via mobile persistent summary
 
 ---
 
 ## System Flow
 
 1. Configure
-2. Review (Order Summary)
+2. Review
 3. Submit
 4. Confirm
 
 ---
 
+## System Architecture (NEW)
+
+The configurator now uses a unified configuration schema:
+
+- single source of truth for:
+  - categories
+  - modules
+  - packages
+- pricing derived from schema
+- timeline derived from schema
+- state structured for scalability
+
+This replaces fragmented pricing/module logic.
+
+---
+
 ## Current Phase
 
-Phase 5 — Conversion System (Complete)
+Phase 6 — System Structure (Active)
 
 Goal:
-Deliver a fully usable product loop across all devices.
+Make the system scalable, extensible, and backend-ready.
 
 ---
 
 ## Immediate Focus
 
-- system scalability (config schema)
-- deeper configurator capabilities
-- removing remaining ambiguity in outputs
+- nested options (deeper configurator)
+- structured summary output
+- reducing ambiguity in scope definition

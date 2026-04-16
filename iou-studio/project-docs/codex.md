@@ -21,7 +21,8 @@
 System now includes:
 
 - configurator (modules + packages)
-- live pricing + timeline
+- unified configuration schema
+- live pricing + timeline (derived from schema)
 - product-grade summary panel
 - mobile persistent summary
 - trust layers (process, proof, metrics)
@@ -35,7 +36,7 @@ System now includes:
 
 ## CURRENT PRIORITY
 
-Transition from working product → scalable system
+Deepen the system without breaking structure
 
 ---
 
@@ -50,36 +51,35 @@ Users:
 
 ---
 
-## Conversion Flow (COMPLETE)
+## System Architecture Principle (NEW)
 
-1. Configure
-2. Review
-3. Submit
-4. Confirm
+- single source of truth for configuration
+- derived values (price, timeline)
+- modular and extensible structure
 
-System must:
-- preserve state across steps
-- maintain clarity at all times
-- work seamlessly on mobile + desktop
+Avoid:
+- duplicated pricing logic
+- fragmented data definitions
+- tightly coupled UI + data
 
 ---
 
 ## Next Evolution
 
-System must become:
+System must now become:
 
-- scalable → unified schema
 - deeper → nested options
 - clearer → line-item breakdown
-- consistent → IA + copy
+- aligned → IA + copy
+- realistic → real proof and outputs
 
 ---
 
 ## Execution Mode
 
 - one task at a time
-- preserve working logic
-- expand safely
+- preserve working system
+- extend safely
 
 Goal:
-Turn system into a scalable, production-ready platform
+Build a scalable, production-ready service platform

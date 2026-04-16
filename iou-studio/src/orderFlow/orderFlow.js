@@ -3,19 +3,20 @@ import {
   billingOptions,
   formatInr,
   getCouponByCode,
-  getPlanPricing,
-  getPlanSummaryRows,
-  getSelectedPlanSummary,
-  pricingPlans,
+  getPackagePricing,
+  getPackageSummaryRows,
+  getSelectedPackageSummary,
+  pricingPackages,
 } from "../data/pricing.js";
 
 export const ORDER_FLOW_MODE_PACKAGES = "packages";
 export const ORDER_FLOW_MODE_CUSTOM = "custom";
 
-const packageTimelineEstimates = {
-  starter: "Estimated delivery: 3-4 weeks",
-  growth: "Estimated delivery: 4-6 weeks",
-  premium: "Estimated delivery: 6-8 weeks",
+const EMPTY_PACKAGE_TIMELINE = {
+  description: "Select a package to view the baseline delivery window.",
+  label: "Estimated timeline",
+  rangeDays: null,
+  value: "Timeline pending",
 };
 
 function formatModuleTimelineHint(timelineDays) {
@@ -38,9 +39,259 @@ function getBillingLabel(billingMode) {
   );
 }
 
-export function getDefaultPlanId() {
-  return pricingPlans.find((plan) => plan.isMostPopular)?.id || pricingPlans[0]?.id || null;
+function getPackageTimelineRecord(planId) {
+  return pricingPackages.find((plan) => plan.id === planId)?.timelineEstimate || null;
 }
+
+function buildPackageTimeline(plan) {
+  const timelineEstimate = getPackageTimelineRecord(plan?.id);
+
+  if (!plan || !timelineEstimate) {
+    return EMPTY_PACKAGE_TIMELINE;
+  }
+
+  return {
+    description: "Final delivery depends on scope confirmation and content readiness.",
+    label: "Estimated timeline",
+    rangeDays: {
+      maximum: timelineEstimate.maximumDays,
+      minimum: timelineEstimate.minimumDays,
+    },
+    value: timelineEstimate.label,
+  };
+}
+
+function buildModuleReviewLineItem(module) {
+  return {
+    detail: module.description,
+    eyebrow: module.category,
+    id: module.id,
+    timeline: formatModuleTimelineHint(
+      module.baseTimelineDays ?? module.timelineDays,
+    ),
+    title: module.title,
+    value: formatInr(module.basePrice),
+  };
+}
+
+function buildPackageSelection(plan) {
+  const includedModules = plan.includedModules ?? [];
+  const totalSummary = getPackageTotalSummary(plan);
+
+  return {
+    groupedModules: plan.includedModuleGroups ?? [],
+    includedModules,
+    lineItems: [
+      {
+        audience: plan.audience,
+        billingMode: plan.base.billingMode,
+        id: `${plan.id}-package`,
+        includedModuleIds: includedModules.map((module) => module.id),
+        kind: "package",
+        price: plan.effective.todayCharge,
+        priceLabel: totalSummary.value,
+        title: plan.name,
+      },
+      ...includedModules.map((module) => ({
+        category: module.category,
+        categoryId: module.categoryId,
+        deliverables: module.deliverables,
+        description: module.description,
+        id: module.id,
+        included: true,
+        kind: "module",
+        price: module.basePrice,
+        priceLabel: "Included",
+        tags: module.tags,
+        timelineDays: module.baseTimelineDays,
+        title: module.title,
+      })),
+    ],
+    plan,
+    pricingRows: getPackageSummaryRows(plan),
+    selectedSummary: getSelectedPackageSummary(plan),
+  };
+}
+
+function buildPackageSummaryPanel({ billingLabel, plan, timeline, total }) {
+  if (!plan) {
+    return {
+      ctaLabel: "Continue to Order Summary",
+      ctaNote: "Choose a starting configuration to unlock the order summary.",
+      ctaTo: "/order-summary",
+      description:
+        "Monitor the active starting configuration, current pricing, and delivery window while you configure.",
+      emptyState: {
+        detail: "Choose a package to review the current price and timeline.",
+        title: "No starting configuration selected yet.",
+      },
+      isActionDisabled: true,
+      items: [],
+      modeLabel: "Packages",
+      selectionHint: "The summary will lock onto the package you activate.",
+      selectionLabel: "Selected setup",
+      statusLabel: billingLabel,
+      timeline,
+      total,
+      validationNote: "Select a package before continuing into the order summary.",
+    };
+  }
+
+  return {
+    ctaLabel: "Continue to Order Summary",
+    ctaNote:
+      "Move into a structured review and submission surface with the current package state intact.",
+    ctaTo: "/order-summary",
+    description:
+      "Monitor the active starting configuration, current pricing, and delivery window while you configure.",
+    emptyState: {
+      detail: "Choose a package to review the current price and timeline.",
+      title: "No starting configuration selected yet.",
+    },
+    isActionDisabled: false,
+    items: [
+      {
+        id: plan.id,
+        title: plan.name,
+        detail: plan.description,
+        value: plan.audience,
+      },
+    ],
+    modeLabel: "Packages",
+    selectionHint: "This starting configuration can still be customized before handoff.",
+    selectionLabel: "Selected setup",
+    statusLabel: billingLabel,
+    timeline,
+    total,
+    validationNote: "Select a package before continuing into the order summary.",
+  };
+}
+
+function buildCustomSummaryPanel({ customBuildPricing, moduleCount }) {
+  return {
+    ctaLabel: "Continue to Order Summary",
+    ctaNote: moduleCount
+      ? "Review the active module selection, then submit the custom build request from the next screen."
+      : "Add modules to prepare a valid custom build summary.",
+    ctaTo: "/order-summary",
+    description:
+      "Monitor the active module selection, base total, and delivery estimate while the custom build takes shape.",
+    emptyState: {
+      detail: "Add modules to start building your custom setup.",
+      title: "No modules selected yet.",
+    },
+    isActionDisabled: !moduleCount,
+    items: customBuildPricing.summaryItems,
+    modeLabel: "Build Your Own",
+    selectionHint: moduleCount
+      ? "Selected modules stay synchronized here in real time."
+      : "Module selections will appear here as soon as you start building.",
+    selectionLabel: "Selected modules",
+    statusLabel: moduleCount ? `${moduleCount} active` : "Awaiting selection",
+    timeline: customBuildPricing.timeline,
+    total: {
+      description: moduleCount
+        ? "Base total for the current module selection."
+        : "Add modules to generate a live base total.",
+      label: "Total",
+      meta: moduleCount
+        ? `${moduleCount} module${moduleCount === 1 ? "" : "s"} included`
+        : "",
+      value: moduleCount
+        ? formatInr(customBuildPricing.total)
+        : "Awaiting selection",
+    },
+    validationNote:
+      "Select at least one custom module before continuing into the order summary.",
+  };
+}
+
+function buildPackageSubmissionPayload({
+  appliedCoupon,
+  billingMode,
+  packageSelection,
+  timeline,
+  total,
+}) {
+  const { plan } = packageSelection;
+
+  return {
+    billingMode,
+    coupon: appliedCoupon
+      ? {
+          code: appliedCoupon.code,
+          status: plan.coupon?.status ?? "pending",
+        }
+      : null,
+    mode: ORDER_FLOW_MODE_PACKAGES,
+    package: {
+      audience: plan.audience,
+      id: plan.id,
+      includedModuleIds: packageSelection.includedModules.map((module) => module.id),
+      name: plan.name,
+    },
+    pricing: {
+      annualPrice: plan.base.annualPrice,
+      billingLine: plan.base.billingLine,
+      currency: "INR",
+      displayValue: total.value,
+      monthlyEquivalent: plan.base.monthlyEquivalent,
+      monthlyPrice: plan.base.monthlyPrice,
+      recurringCharge: plan.effective.recurringCharge,
+      recurringLabel: plan.effective.recurringLabel,
+      todayCharge: plan.effective.todayCharge,
+      yearOneSpend: plan.effective.yearOneSpend,
+      yearlySavings: plan.base.yearlySavings,
+    },
+    selection: {
+      groupedModules: packageSelection.groupedModules,
+      lineItems: packageSelection.lineItems,
+    },
+    timeline: {
+      displayValue: timeline.value,
+      maximumDays: timeline.rangeDays?.maximum ?? null,
+      minimumDays: timeline.rangeDays?.minimum ?? null,
+    },
+  };
+}
+
+function buildCustomSubmissionPayload(customBuildPricing) {
+  if (!customBuildPricing.selectedModules.length) {
+    return null;
+  }
+
+  return {
+    billingMode: null,
+    coupon: null,
+    mode: ORDER_FLOW_MODE_CUSTOM,
+    package: null,
+    pricing: {
+      currency: "INR",
+      displayValue: formatInr(customBuildPricing.total),
+      total: customBuildPricing.total,
+    },
+    selection: {
+      groupedModules: customBuildPricing.groupedModules,
+      lineItems: customBuildPricing.lineItems,
+      moduleIds: customBuildPricing.selectedModules.map((module) => module.id),
+    },
+    timeline: {
+      displayValue: customBuildPricing.timeline.value,
+      maximumDays: customBuildPricing.timeline.rangeDays?.maximum ?? null,
+      minimumDays: customBuildPricing.timeline.rangeDays?.minimum ?? null,
+    },
+  };
+}
+
+export function getDefaultPlanId() {
+  return (
+    pricingPackages.find((plan) => plan.isMostPopular)?.id ||
+    pricingPackages[0]?.id ||
+    null
+  );
+}
+
+export const getDefaultPackageId = getDefaultPlanId;
 
 export function getDefaultContactDraft() {
   return {
@@ -54,7 +305,7 @@ export function getDefaultContactDraft() {
 
 export function getPackageTimeline(planId) {
   return (
-    packageTimelineEstimates[planId] ||
+    getPackageTimelineRecord(planId)?.label ||
     "Estimated delivery: timeline will be confirmed during scope review"
   );
 }
@@ -119,20 +370,24 @@ export function buildOrderConfiguration({
     const customStatusLabel = moduleCount
       ? `${moduleCount} active`
       : "Awaiting selection";
+    const total = {
+      description: moduleCount
+        ? "Base total for the current module selection."
+        : "Select services to begin pricing.",
+      label: "Base total",
+      meta: moduleCount
+        ? `${moduleCount} module${moduleCount === 1 ? "" : "s"} included`
+        : "",
+      value: formatInr(customBuildPricing.total),
+    };
 
     return {
       billingLabel: customStatusLabel,
       billingMode,
       coupon: null,
       customSelection: {
-        lineItems: customBuildPricing.selectedModules.map((module) => ({
-          detail: module.description,
-          eyebrow: module.category,
-          id: module.id,
-          timeline: formatModuleTimelineHint(module.timelineDays),
-          title: module.title,
-          value: formatInr(module.basePrice),
-        })),
+        groupedModules: customBuildPricing.groupedModules,
+        lineItems: customBuildPricing.selectedModules.map(buildModuleReviewLineItem),
         modules: customBuildPricing.selectedModules,
       },
       description: moduleCount
@@ -144,32 +399,47 @@ export function buildOrderConfiguration({
       note: "You can still adjust this before submitting.",
       packageSelection: null,
       reviewItems: customBuildPricing.summaryItems,
+      selection: {
+        billingMode: null,
+        couponCode: null,
+        customModuleIds: customBuildPricing.selectedModules.map((module) => module.id),
+        mode,
+        packageId: null,
+      },
       selectionLabel: "Selected modules",
       selectionNote: moduleCount
         ? "Selected modules stay tied to this request."
         : "Module selections appear here once you start building.",
       statusLabel: customStatusLabel,
+      structuredSelection: {
+        groupedModules: customBuildPricing.groupedModules,
+        lineItems: customBuildPricing.lineItems,
+        modules: customBuildPricing.selectedModules,
+        type: ORDER_FLOW_MODE_CUSTOM,
+      },
+      submissionPayload: buildCustomSubmissionPayload(customBuildPricing),
+      summaryPanel: buildCustomSummaryPanel({
+        customBuildPricing,
+        moduleCount,
+      }),
       timeline: customBuildPricing.timeline,
       title: moduleCount
         ? `Custom build with ${moduleCount} active module${
             moduleCount === 1 ? "" : "s"
           }`
         : "Custom build pending",
-      total: {
-        description: moduleCount
-          ? "Base total for the current module selection."
-          : "Select services to begin pricing.",
-        label: "Base total",
-        meta: moduleCount
-          ? `${moduleCount} module${moduleCount === 1 ? "" : "s"} included`
-          : "",
-        value: formatInr(customBuildPricing.total),
-      },
+      total,
     };
   }
 
   const selectedPlanRecord =
-    pricingPlans.find((plan) => plan.id === selectedPlanId) || null;
+    pricingPackages.find((plan) => plan.id === selectedPlanId) || null;
+  const emptyTotal = {
+    description: "Pricing appears here as soon as a starting configuration is active.",
+    label: "Current total",
+    meta: "",
+    value: "Select a package",
+  };
 
   if (!selectedPlanRecord) {
     return {
@@ -184,30 +454,44 @@ export function buildOrderConfiguration({
       note: "You can still adjust this before submitting.",
       packageSelection: null,
       reviewItems: [],
+      selection: {
+        billingMode,
+        couponCode: appliedCouponCode || null,
+        customModuleIds: [],
+        mode,
+        packageId: null,
+      },
       selectionLabel: "Selected setup",
       selectionNote: "Choose a package to continue into review.",
       statusLabel: billingLabel,
-      timeline: {
-        description: "Select a package to view the baseline delivery window.",
-        label: "Estimated timeline",
-        value: "Timeline pending",
+      structuredSelection: {
+        groupedModules: [],
+        lineItems: [],
+        modules: [],
+        type: ORDER_FLOW_MODE_PACKAGES,
       },
+      submissionPayload: null,
+      summaryPanel: buildPackageSummaryPanel({
+        billingLabel,
+        plan: null,
+        timeline: EMPTY_PACKAGE_TIMELINE,
+        total: emptyTotal,
+      }),
+      timeline: EMPTY_PACKAGE_TIMELINE,
       title: "No starting configuration selected",
-      total: {
-        description: "Pricing appears here as soon as a starting configuration is active.",
-        label: "Current total",
-        meta: "",
-        value: "Select a package",
-      },
+      total: emptyTotal,
     };
   }
 
   const appliedCoupon = getCouponByCode(appliedCouponCode);
-  const selectedPlan = getPlanPricing(
+  const selectedPlan = getPackagePricing(
     selectedPlanRecord,
     billingMode,
     appliedCoupon,
   );
+  const packageSelection = buildPackageSelection(selectedPlan);
+  const timeline = buildPackageTimeline(selectedPlan);
+  const total = getPackageTotalSummary(selectedPlan);
 
   return {
     billingLabel,
@@ -219,11 +503,7 @@ export function buildOrderConfiguration({
     mode,
     modeLabel: "Packages",
     note: "You can still adjust this before submitting.",
-    packageSelection: {
-      plan: selectedPlan,
-      pricingRows: getPlanSummaryRows(selectedPlan),
-      selectedSummary: getSelectedPlanSummary(selectedPlan),
-    },
+    packageSelection,
     reviewItems: [
       {
         detail: selectedPlan.audience,
@@ -233,16 +513,39 @@ export function buildOrderConfiguration({
         value: selectedPlan.base.billingLine,
       },
     ],
+    selection: {
+      billingMode,
+      couponCode: appliedCoupon?.code ?? null,
+      customModuleIds: [],
+      includedModuleIds: packageSelection.includedModules.map((module) => module.id),
+      mode,
+      packageId: selectedPlan.id,
+    },
     selectionLabel: "Selected setup",
     selectionNote: "This starting configuration can still be refined before handoff.",
     statusLabel: billingLabel,
-    timeline: {
-      description: "Final delivery depends on scope confirmation and content readiness.",
-      label: "Estimated timeline",
-      value: getPackageTimeline(selectedPlan.id),
+    structuredSelection: {
+      groupedModules: packageSelection.groupedModules,
+      lineItems: packageSelection.lineItems,
+      modules: packageSelection.includedModules,
+      type: ORDER_FLOW_MODE_PACKAGES,
     },
+    submissionPayload: buildPackageSubmissionPayload({
+      appliedCoupon,
+      billingMode,
+      packageSelection,
+      timeline,
+      total,
+    }),
+    summaryPanel: buildPackageSummaryPanel({
+      billingLabel,
+      plan: selectedPlan,
+      timeline,
+      total,
+    }),
+    timeline,
     title: selectedPlan.name,
-    total: getPackageTotalSummary(selectedPlan),
+    total,
   };
 }
 

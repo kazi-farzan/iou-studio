@@ -1,10 +1,11 @@
 # CURRENT TASKS
 
-## Completed (Phase 1–5)
+## Completed (Phase 1–6)
 
 1–20: System foundation, configurator, trust, refinement  
 21: Real Order Flow  
-22: Mobile Persistent Summary
+22: Mobile Persistent Summary  
+23: Unified Config Schema
 
 ---
 
@@ -16,20 +17,10 @@ Phase 6 — System Structure
 
 ## Active Tasks (STRICT ORDER)
 
-### 23. Unified Config Schema (CRITICAL)
-- merge pricing + custom module data
-- single configuration structure
-- support:
-  - categories
-  - modules
-  - options
-  - add-ons
-
----
-
-### 24. Nested Options + Add-ons
-- add module-level configuration depth
-- dynamic pricing/timeline updates
+### 24. Nested Options + Add-ons (CRITICAL)
+- module-level configuration depth
+- add toggles / selections inside modules
+- dynamic price + timeline updates
 
 ---
 
@@ -38,7 +29,8 @@ Phase 6 — System Structure
   - modules
   - options
   - subtotals
-- improve clarity for users + providers
+- timeline contribution clarity
+- improve provider-facing clarity
 
 ---
 
@@ -57,8 +49,8 @@ Phase 7 — Platform Alignment
 ---
 
 ### 27. Copy System Alignment
-- remove agency-style language
-- unify system tone
+- remove agency language
+- unify system-first tone
 
 ---
 
