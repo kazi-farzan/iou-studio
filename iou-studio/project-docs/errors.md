@@ -1,27 +1,34 @@
 # CURRENT ERRORS
 
-## Resolved
+## Active (Critical)
 
-* White screen on startup
-* Tailwind setup verification
-* Theme persistence
-* Theme flicker removed
+* No real submission flow (blocking product completion)
+* No order summary page
+* No confirmation state
+* Mobile summary not persistent
 
 ---
 
-## Active
+## Medium
 
-* None currently blocking development
+* Navigation too broad (agency-style IA)
+* Copy inconsistency (agency vs system tone)
+* Services page not aligned with system structure
+* Case studies lack real proof assets
+
+---
+
+## Low
+
+* Minor visual inconsistencies across sections
+* Pricing formatting edge cases
+* Overuse of card-grid layouts
 
 ---
 
 ## Watchlist
 
-* Ensure Step Flow Indicator aligns correctly with user state
-* Avoid misleading progression (do not fake step completion)
-* Maintain consistency between flow indicator and actual UI state
-* Prevent UI clutter with added guidance layers
-* Ensure mobile layout handles step indicator cleanly
-* Maintain performance with increasing UI complexity
-* Preserve system-first feel (avoid turning into wizard flow)
-* Keep UI calm and not overly instructional
+* Ensure order flow state is preserved across routes
+* Prevent breaking pricing/timeline logic during refactor
+* Maintain mobile usability while adding new flow
+* Avoid reintroducing marketing-style patterns

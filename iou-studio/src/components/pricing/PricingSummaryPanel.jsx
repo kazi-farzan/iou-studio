@@ -441,6 +441,7 @@ export default function PricingSummaryPanel({ summary }) {
   const {
     ctaLabel,
     ctaNote,
+    ctaTo,
     description,
     emptyState,
     isActionDisabled,
@@ -451,6 +452,7 @@ export default function PricingSummaryPanel({ summary }) {
     statusLabel,
     timeline,
     total,
+    validationNote,
   } = summary;
   const prefersReducedMotion = usePrefersReducedMotion();
   const stagedItems = useStagedSummaryItems(items, !prefersReducedMotion);
@@ -556,6 +558,14 @@ export default function PricingSummaryPanel({ summary }) {
         </SummarySection>
 
         <SummarySection description={ctaNote} label="Next step">
+          {isActionDisabled && validationNote ? (
+            <div className="mb-4 rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-3">
+              <p className="text-sm leading-6 text-[var(--text-secondary)]">
+                {validationNote}
+              </p>
+            </div>
+          ) : null}
+
           {isActionDisabled ? (
             <Button
               className={ctaButtonClassName}
@@ -569,7 +579,7 @@ export default function PricingSummaryPanel({ summary }) {
             <Button
               className={ctaButtonClassName}
               size="lg"
-              to="/contact"
+              to={ctaTo}
               variant="secondary"
             >
               {ctaLabel}

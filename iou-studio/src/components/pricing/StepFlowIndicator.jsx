@@ -46,9 +46,11 @@ function getStepClasses(status) {
 }
 
 export default function StepFlowIndicator({
-  description = "Build your setup, review the outcome, then continue.",
+  description = "Configure the build, review it, submit the request, then confirm the handoff.",
   steps,
 }) {
+  const mobileColumns = steps.length >= 4 ? 2 : Math.max(steps.length, 1);
+
   return (
     <div className="theme-panel rounded-[28px] border border-[color:var(--border-subtle)] px-4 py-4 sm:px-5 sm:py-5">
       <div className="space-y-4">
@@ -66,7 +68,11 @@ export default function StepFlowIndicator({
 
         <ol
           aria-label="Configurator step flow"
-          className="grid grid-cols-3 gap-3 sm:gap-4"
+          className="grid gap-3 sm:gap-4 [grid-template-columns:repeat(var(--step-columns-mobile),minmax(0,1fr))] lg:[grid-template-columns:repeat(var(--step-columns-desktop),minmax(0,1fr))]"
+          style={{
+            "--step-columns-desktop": String(Math.max(steps.length, 1)),
+            "--step-columns-mobile": String(mobileColumns),
+          }}
         >
           {steps.map((step, index) => {
             const classes = getStepClasses(step.status);
@@ -85,7 +91,7 @@ export default function StepFlowIndicator({
                   <span
                     aria-hidden="true"
                     className={[
-                      "absolute left-[calc(50%+1.4rem)] right-[-0.75rem] top-[1.25rem] h-px sm:right-[-1rem]",
+                      "absolute left-[calc(50%+1.4rem)] right-[-1rem] top-[1.25rem] hidden h-px lg:block",
                       connectorClasses,
                     ].join(" ")}
                   />

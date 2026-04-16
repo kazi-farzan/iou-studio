@@ -16,7 +16,6 @@ import {
   getCustomBuildPricing,
 } from "../data/customBuildPricing.js";
 import {
-  BILLING_MODE_MONTHLY,
   billingOptions,
   formatInr,
   getCouponByCode,
@@ -27,6 +26,14 @@ import {
   pricingPlans,
   validateCouponCode,
 } from "../data/pricing.js";
+import { useOrderFlow } from "../orderFlow/useOrderFlow.js";
+import {
+  buildOrderFlowSteps,
+  getPackageTimeline,
+  getPackageTotalSummary,
+  ORDER_FLOW_MODE_CUSTOM,
+  ORDER_FLOW_MODE_PACKAGES,
+} from "../orderFlow/orderFlow.js";
 
 const pricingNotes = [
   {
@@ -45,22 +52,16 @@ const pricingNotes = [
 
 const configurationModes = [
   {
-    id: "packages",
+    id: ORDER_FLOW_MODE_PACKAGES,
     label: "Packages",
     detail: "Start from preset configurations.",
   },
   {
-    id: "custom",
+    id: ORDER_FLOW_MODE_CUSTOM,
     label: "Build Your Own",
     detail: "Move into a custom system build.",
   },
 ];
-
-const packageTimelineEstimates = {
-  starter: "Estimated delivery: 3-4 weeks",
-  growth: "Estimated delivery: 4-6 weeks",
-  premium: "Estimated delivery: 6-8 weeks",
-};
 
 function getSurfaceClasses(tone) {
   if (tone === "accent") {
@@ -92,70 +93,23 @@ function getToggleClasses(isActive) {
   ].join(" ");
 }
 
-function getPackageTimeline(planId) {
-  return (
-    packageTimelineEstimates[planId] ||
-    "Estimated delivery: timeline will be confirmed during scope review"
-  );
-}
-
-function getPackageTotalSummary(plan) {
-  if (!plan) {
-    return {
-      description: "Pricing appears here as soon as a starting configuration is active.",
-      label: "Current total",
-      meta: "",
-      value: "Select a package",
-    };
-  }
-
-  if (plan.base.isYearly) {
-    return {
-      description: `Effective monthly rate: ${formatInr(plan.base.monthlyEquivalent)}/month.`,
-      label: "Current total",
-      meta: plan.base.billingLine,
-      value: formatInr(plan.effective.todayCharge),
-    };
-  }
-
-  if (plan.coupon?.status === "active" && plan.coupon.code === "FIRST3") {
-    return {
-      description: "Intro pricing is active for the first 3 months of monthly billing.",
-      label: "Current total",
-      meta: `Then ${formatInr(plan.coupon.recurringCharge)}/month from month 4`,
-      value: `${formatInr(plan.coupon.todayCharge)}/month`,
-    };
-  }
-
-  if (plan.coupon?.status === "active" && plan.coupon.code === "TRYONCE") {
-    return {
-      description: "The first monthly invoice is removed before standard billing resumes.",
-      label: "Current total",
-      meta: `Then ${formatInr(plan.coupon.recurringCharge)}/month from month 2`,
-      value: "Free",
-    };
-  }
-
-  return {
-    description: `Switch to yearly for ${formatInr(plan.base.monthlyEquivalent)}/month effective.`,
-    label: "Current total",
-    meta: plan.base.billingLine,
-    value: `${formatInr(plan.effective.todayCharge)}/month`,
-  };
-}
-
-const defaultPlanId =
-  pricingPlans.find((plan) => plan.isMostPopular)?.id || pricingPlans[0].id;
-
 export default function Pricing() {
   const location = useLocation();
-  const [mode, setMode] = useState("packages");
-  const [billingMode, setBillingMode] = useState(BILLING_MODE_MONTHLY);
-  const [couponInput, setCouponInput] = useState("");
-  const [appliedCouponCode, setAppliedCouponCode] = useState("");
+  const {
+    appliedCouponCode,
+    billingMode,
+    couponInput,
+    mode,
+    selectedCustomModuleIds,
+    selectedPlanId,
+    setAppliedCouponCode,
+    setBillingMode,
+    setCouponInput,
+    setMode,
+    setSelectedCustomModuleIds,
+    setSelectedPlanId,
+  } = useOrderFlow();
   const [couponError, setCouponError] = useState("");
-  const [selectedPlanId, setSelectedPlanId] = useState(defaultPlanId);
-  const [selectedCustomModuleIds, setSelectedCustomModuleIds] = useState([]);
 
   const appliedCoupon = useMemo(
     () => getCouponByCode(appliedCouponCode),
@@ -185,7 +139,7 @@ export default function Pricing() {
 
   const activeBillingLabel =
     billingOptions.find((option) => option.id === billingMode)?.label || "Pricing";
-  const isPackagesMode = mode === "packages";
+  const isPackagesMode = mode === ORDER_FLOW_MODE_PACKAGES;
 
   const customBuildPricing = useMemo(
     () => getCustomBuildPricing(selectedCustomModuleIds),
@@ -202,10 +156,11 @@ export default function Pricing() {
   const summaryPanelData = useMemo(() => {
     if (isPackagesMode) {
       return {
-        ctaLabel: "Continue",
+        ctaLabel: "Continue to Order Summary",
         ctaNote: selectedPlan
-          ? "Move into scope review and confirm the next step."
-          : "Choose a starting configuration to unlock the next step.",
+          ? "Move into a structured review and submission surface with the current package state intact."
+          : "Choose a starting configuration to unlock the order summary.",
+        ctaTo: "/order-summary",
         description:
           "Monitor the active starting configuration, current pricing, and delivery window while you configure.",
         emptyState: {
@@ -239,14 +194,17 @@ export default function Pricing() {
             : "Timeline pending",
         },
         total: getPackageTotalSummary(selectedPlan),
+        validationNote:
+          "Select a package before continuing into the order summary.",
       };
     }
 
     return {
-      ctaLabel: "Continue",
+      ctaLabel: "Continue to Order Summary",
       ctaNote: selectedCustomModules.length
-        ? "Review the live module total with us and turn it into a scoped build."
-        : "Add modules to prepare a custom build summary and next step.",
+        ? "Review the active module selection, then submit the custom build request from the next screen."
+        : "Add modules to prepare a valid custom build summary.",
+      ctaTo: "/order-summary",
       description:
         "Monitor the active module selection, base total, and delivery estimate while the custom build takes shape.",
       emptyState: {
@@ -276,37 +234,24 @@ export default function Pricing() {
           : "",
         value: formatInr(customBuildPricing.total),
       },
+      validationNote:
+        "Select at least one custom module before continuing into the order summary.",
     };
   }, [
     activeBillingLabel,
     customBuildPricing,
     isPackagesMode,
-    selectedCustomModules,
+    selectedCustomModules.length,
     selectedPlan,
   ]);
 
-  const stepFlowSteps = useMemo(() => {
-    const hasReviewState = summaryPanelData.items.length > 0;
-    const canProceed = !summaryPanelData.isActionDisabled;
-
-    if (!hasReviewState) {
-      return [
-        { id: "select", label: "Select", status: "current" },
-        { id: "review", label: "Review", status: "upcoming" },
-        { id: "proceed", label: "Proceed", status: "upcoming" },
-      ];
-    }
-
-    return [
-      { id: "select", label: "Select", status: "complete" },
-      { id: "review", label: "Review", status: "current" },
-      {
-        id: "proceed",
-        label: "Proceed",
-        status: canProceed ? "available" : "upcoming",
-      },
-    ];
-  }, [summaryPanelData.isActionDisabled, summaryPanelData.items.length]);
+  const stepFlowSteps = useMemo(
+    () =>
+      buildOrderFlowSteps("configure", {
+        hasSelection: !summaryPanelData.isActionDisabled,
+      }),
+    [summaryPanelData.isActionDisabled],
+  );
 
   useEffect(() => {
     if (location.hash !== "#builder") {
@@ -388,7 +333,10 @@ export default function Pricing() {
             </p>
           </div>
 
-          <StepFlowIndicator steps={stepFlowSteps} />
+          <StepFlowIndicator
+            description="Configure the active build, move into review, submit the request, then land on confirmation."
+            steps={stepFlowSteps}
+          />
 
           <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start xl:gap-8">
             <div className="min-w-0 space-y-10 sm:space-y-8">

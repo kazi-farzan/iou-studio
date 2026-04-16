@@ -18,112 +18,84 @@
 
 ## Project State
 
-* Setup phase completed
-* Theme system completed
-* System-entry UX established
+System is fully built up to:
+- configurator
+- pricing logic
+- summary panel
+- trust layers
+- step flow
 
-* Mode-based interaction implemented
-* Proto configurator implemented
+Now transitioning into:
+→ real product behavior
 
-* Summary panel implemented and refined
-* Live pricing logic implemented
-* Live timeline logic implemented
+---
 
-* System feedback refined
-* Module UX improved
-* Mobile UX improved
+## CURRENT PRIORITY
 
-* Trust layer completed
-* Proof layer implemented
-* Metrics layer implemented
+Convert system into a real product:
 
-* Step Flow Indicator implemented
-* System now includes user progression awareness
-
-* Moving into:
-  - conversion flow refinement
-  - system scalability
-  - backend preparation
+Configure → Review → Submit → Confirm
 
 ---
 
 ## Product Direction (CRITICAL)
 
-This project is NOT a traditional agency website.
+This is NOT a marketing website.
 
-It is a productized service system where:
-- users configure services
-- pricing is transparent
-- interaction replaces marketing
+It is:
+- a system interface
+- a configurator-driven product
+- a self-serve service platform
 
 ---
 
 ## Interaction Principle
 
-Every section must answer:
-“What is the user doing next?”
+User must always know:
+- what they selected
+- what it costs
+- how long it takes
+- what happens next
+- what to do next
 
 ---
 
-## Mode System
+## Conversion Principle
 
-- Packages → starting configurations
-- Build Your Own → custom system builder
+Primary flow must be:
 
----
+1. Configure
+2. Review (Order Summary)
+3. Submit
+4. Confirmation
 
-## Summary Principle
-
-Summary Panel = system control surface
-
-Must:
-- reflect current state clearly
-- update instantly
-- show price and timeline clearly
-- guide next action
+Avoid:
+- contact-first flows
+- vague CTAs
+- dead-end interactions
 
 ---
 
-## Flow Principle (NEW)
+## System Behavior Principle
 
-Users must always know:
-- where they are
-- what step they are on
-- what comes next
-
-The system should feel:
-- guided, not forced
-- structured, not restrictive
+System must:
+- pass data between steps
+- preserve state
+- produce structured output
 
 ---
 
-## Product Interface Principle
+## UI Principle
 
-The UI should feel like:
-- a product interface
-- a decision tool
-- a system panel
+Design must feel:
+- calm
+- structured
+- product-like
 
 NOT:
-- a landing page
-- a wizard
-- a marketing funnel
-
----
-
-## System Maturity
-
-The system now includes:
-
-- Interaction → module selection
-- Feedback → price + timeline
-- Visibility → summary panel
-- Clarity → what happens next
-- Proof → recent builds
-- Credibility → metrics
-- Guidance → step flow indicator
-
-This forms a complete, conversion-ready system.
+- agency
+- marketing-heavy
+- decorative
 
 ---
 
@@ -131,28 +103,8 @@ This forms a complete, conversion-ready system.
 
 - One task at a time
 - No unnecessary refactors
-- Preserve structure
-- Build incrementally
+- Preserve working logic
+- Expand carefully
 
 Goal:
-Evolve into a scalable, production-grade configurator
-
----
-
-## System Direction Block
-
-SYSTEM DIRECTION (CRITICAL):
-
-This is NOT a marketing website.
-This is a system interface.
-
-Design must reflect:
-- configuration, not browsing
-- clarity over persuasion
-- structure over decoration
-- visible system state
-
-Avoid:
-- SaaS templates
-- marketing-heavy UI
-- fluff
+Turn current system into a real, usable product

@@ -5,13 +5,14 @@
 IOU Labs is a productized service platform designed as an interactive system.
 
 Users should be able to:
-- explore services like a menu
+- browse services like a menu
 - configure what they need
 - see pricing and timelines instantly
-- proceed without needing a call
+- review their setup
+- submit a build request without needing a call
 
 This is NOT a marketing website.
-It should feel like a control panel or configurator.
+It is a system interface.
 
 ---
 
@@ -27,10 +28,11 @@ It should feel like a control panel or configurator.
 
 * Premium, minimal
 * Deep navy / charcoal / gold accents
-* Light theme: soft cream with subtle warm tones
-* Dark theme: charcoal with soft violet accents
-* Glassmorphism + soft shadows
-* Smooth, subtle system-aligned animations
+* Light theme: soft cream
+* Dark theme: charcoal with subtle violet
+* Glassmorphism used subtly
+* Soft shadows, thin borders
+* Calm, structured UI
 
 ---
 
@@ -38,98 +40,61 @@ It should feel like a control panel or configurator.
 
 * React (Vite)
 * Tailwind CSS
-* GSAP (planned, minimal use)
-* Three.js (planned later if aligned)
+* GSAP (minimal, optional)
+* Three.js (planned, controlled use)
 
 ---
 
-## Goals
+## Product Direction (CRITICAL)
 
-* Light/Dark theme toggle
-* Premium UI polish
-* Smooth system interactions
-* Clear configuration flow
-* Strong trust through clarity
+IOU Labs is:
+- a modular service system
+- transparent pricing platform
+- configurator-based UX
+
+NOT:
+- a creative agency website
+- a marketing-heavy landing page
 
 ---
 
-## Current Progress
+## Current System Capabilities
 
-* Base React + Vite setup active
-* Theme system completed (light/dark with persistence)
-* Navbar implemented with theme toggle
+Users can:
+- select services (modules or packages)
+- see live pricing
+- see timeline estimates
+- review selections in a structured summary
+- understand process via “What Happens Next”
+- see outputs via Recent Builds
+- trust system via Metrics
+- understand progression via Step Flow Indicator
 
-* System-first Hero implemented
-* “How It Works” section implemented
-* Persistent “Start Building” CTA implemented
+---
 
-* Pricing page transformed into system interface
-  - Header reframed
-  - Language shifted from pricing → configuration
+## Current Limitation
 
-* Mode-based interaction implemented
-  - Packages vs Build Your Own
-  - Packages = starting configurations
-
-* Proto configurator implemented
-  - Module selection (add/remove)
-  - Interaction-first system established
-
-* Summary Panel implemented and upgraded
-  - Acts as system control surface
-  - Optimized for scanning and decision clarity
-
-* Live system feedback implemented
-  - Pricing updates instantly
-  - Timeline updates instantly
-
-* System feedback refined
-  - smooth transitions
-  - responsive interaction feel
-
-* Module UX improved
-  - clearer selection states
-  - better affordance
-
-* Mobile experience refined
-  - spacing and tap usability improved
-
-* Post-action clarity added
-  - “What Happens Next” section implemented
-
-* Proof layer added
-  - “Recent Builds” section implemented
-
-* Metrics layer added
-  - Metrics Strip implemented
-
-* Flow guidance added
-  - Step Flow Indicator implemented
-  - users understand progression (Select → Review → Proceed)
-
-* Users can now:
-  - configure systems confidently
-  - understand cost and timeline instantly
-  - understand what happens next
-  - see real outputs
-  - trust the system through data
-  - understand where they are in the process
-  - proceed without confusion
+The system is NOT yet complete because:
+- no real submission flow exists
+- no order summary page exists
+- no confirmation state exists
+- providers do not yet receive structured output
 
 ---
 
 ## Current Phase
 
-Phase 4 — Product-Level Refinement (Complete)
+Phase 5 — Conversion System
 
 Goal:
-Deliver a system that is:
-- premium
-- intuitive
-- trustworthy
-- guided
-- conversion-ready
+Turn the configurator into a real product pipeline:
 
-Current Focus:
-- preparing for deeper system expansion
-- preserving clarity as complexity increases
+Configure → Review → Submit → Confirm
+
+---
+
+## Immediate Focus
+
+- real order flow
+- structured output for providers
+- persistent pricing visibility (mobile)
