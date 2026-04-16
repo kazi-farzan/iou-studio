@@ -2,14 +2,13 @@
 
 ## Latest Completed Task
 
-Task 28 - Services -> System Menu
+Task 29 - Real Case Studies
 
 Delivered:
-- Services page now reads from the unified configuration schema
-- Module rows are grouped by category instead of card grids
-- Modules can seed custom build state through Add to Build
-- Starting setups can seed package state through Use this setup
-- Services now functions as a system entry layer, not passive browsing
+- Case Studies now reads as documented build proof instead of placeholder portfolio content
+- Structured case study data records business context, build summary, modules, configured details, deliverables, timeline, and outcome
+- Visual proof surfaces now render believable system outputs for each study
+- Recent Builds has been reframed as a lighter proof layer so it does not duplicate Case Studies
 
 ---
 
@@ -22,14 +21,15 @@ Delivered:
 
 ## Next Active Task
 
-29. Real Case Studies
-- replace placeholders with real outputs
-- add proof context, timelines, and deliverables
+30. Deliverable Clarity Layer
+- show what the user actually receives inside modules and summaries
+- keep deliverables aligned with the shared schema and case study proof
 
 ---
 
 ## Watchlist
 
 - Regression test Services -> Pricing entry persistence
-- Keep case study content aligned with system-first tone
+- Keep case study content aligned with system-first tone and live schema terminology
+- Replace representative proof surfaces with live captures when project assets are available
 - Avoid duplicating module or package definitions outside the shared schema

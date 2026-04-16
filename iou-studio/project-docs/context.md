@@ -83,6 +83,11 @@ The system generates:
 
 This output acts as a build specification.
 
+Trust proof now includes:
+- Recent Build Log for fast proof on the Pricing surface
+- Case Studies structured as documented builds
+- business context, modules used, delivery timeline, deliverables, visual proof, and outcome per study
+
 ---
 
 ## Product State
@@ -103,11 +108,12 @@ The product is now:
 Phase 8 - Trust Realization (Active)
 
 Phase 7 - Platform Alignment is complete through Task 28.
+Task 29 is complete.
 
 ---
 
 ## Immediate Focus
 
-- Task 29: replace placeholder case studies with real proof
-- Task 30 planning: clarify deliverables across modules and summaries
+- Task 30: clarify deliverables across modules and summaries
 - QA Services -> Configurator entry persistence on desktop and mobile
+- Keep case study records aligned with shared schema terminology as modules evolve

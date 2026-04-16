@@ -336,7 +336,7 @@ function BuildCard({ build }) {
 
         <div className="flex items-center justify-between gap-3 border-t border-[color:var(--border-subtle)] pt-4">
           <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
-            Configured Output
+            Quick scope
           </span>
           <span className="text-sm font-medium text-[var(--text-primary)]">
             {build.scope}
@@ -354,10 +354,11 @@ export default function RecentBuilds() {
         <div className="mx-auto max-w-6xl space-y-8">
           <div className="max-w-3xl space-y-3">
             <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-3xl">
-              Recent Builds
+              Recent Build Log
             </h2>
             <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-              Examples of systems built using this process.
+              Quick proof from recent configured outputs. Case Studies holds the
+              deeper records with scope, modules, delivery timelines, and results.
             </p>
           </div>
 

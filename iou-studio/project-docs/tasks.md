@@ -1,6 +1,6 @@
 # Current Tasks
 
-## Completed (Phase 1-7)
+## Completed
 
 1-20: System foundation, configurator, trust, refinement
 21: Real Order Flow
@@ -12,6 +12,8 @@
 27: Copy System Alignment
 28: Services -> System Menu
    Replaced the Services card grid with schema-driven module groups and direct configurator entry actions.
+29: Real Case Studies
+   Replaced placeholder proof with documented build records that show business context, configured modules, deliverables, timelines, outcomes, and visual proof surfaces.
 
 ---
 
@@ -24,11 +26,6 @@ Phase 7 - Platform Alignment is complete.
 ---
 
 ## Active Tasks (Strict Order)
-
-29. Real Case Studies
-- replace placeholders
-- show real outputs
-- add timeline, deliverables, and proof context
 
 30. Deliverable Clarity Layer
 - show what the user actually receives

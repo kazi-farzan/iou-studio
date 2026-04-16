@@ -1,86 +1,191 @@
+import CaseStudyVisual from "../components/caseStudies/CaseStudyVisual.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
+import {
+  caseStudies,
+  getCaseStudyOverview,
+} from "../data/caseStudies.js";
 
-const caseStudies = [
-  {
-    id: "01",
-    output: "Launch platform",
-    title: "Premium digital launch system for a modern consumer brand",
-    summary:
-      "A structured web platform designed to make the offer clearer, reduce friction, and support faster iteration after launch.",
-    result: "Clearer conversion flow with a stronger base for ongoing rollout.",
-  },
-  {
-    id: "02",
-    output: "Brand system",
-    title: "Identity framework for a service business moving upmarket",
-    summary:
-      "A tighter visual system used to align presentation, content, and trust signals across every public touchpoint.",
-    result: "Sharper positioning and more consistent delivery across channels.",
-  },
-  {
-    id: "03",
-    output: "Content delivery",
-    title: "Repeatable campaign system for recurring marketing execution",
-    summary:
-      "A content structure that reduced production friction while keeping brand continuity intact across ongoing releases.",
-    result: "Faster asset production without losing clarity or quality.",
-  },
-  {
-    id: "04",
-    output: "Client workflow",
-    title: "Custom interface direction for a high-clarity internal process",
-    summary:
-      "A modular UI concept focused on decision speed, better hierarchy, and cleaner handoff across a complex workflow.",
-    result: "A more durable product foundation with clearer next-step logic.",
-  },
-];
+function OverviewCard({ item }) {
+  return (
+    <div className="theme-panel rounded-[24px] p-4 sm:p-5">
+      <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-[var(--text-muted)]">
+        {item.label}
+      </p>
+      <p className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)] sm:text-3xl">
+        {item.value}
+      </p>
+      <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+        {item.detail}
+      </p>
+    </div>
+  );
+}
+
+function DetailBlock({ children, label, tone = "default" }) {
+  const toneClasses =
+    tone === "accent"
+      ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)]"
+      : "border-[color:var(--border-subtle)] bg-[var(--surface-muted)]";
+
+  return (
+    <div className={["rounded-[24px] border p-4 sm:p-5", toneClasses].join(" ")}>
+      <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-[var(--text-muted)]">
+        {label}
+      </p>
+      <div className="mt-3">{children}</div>
+    </div>
+  );
+}
+
+function StudyToken({ item, tone = "default" }) {
+  const toneClasses =
+    tone === "accent"
+      ? "theme-chip"
+      : "border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] text-[var(--text-secondary)]";
+
+  return (
+    <span
+      className={[
+        "rounded-full px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em]",
+        toneClasses,
+      ].join(" ")}
+    >
+      {item}
+    </span>
+  );
+}
+
+function DeliverableRow({ item }) {
+  return (
+    <div className="rounded-[18px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-3 py-3 text-sm text-[var(--text-secondary)] sm:px-4">
+      {item}
+    </div>
+  );
+}
+
+function CaseStudyRecord({ study }) {
+  return (
+    <Card as="article" className="overflow-hidden p-4 sm:p-6 lg:p-7">
+      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[color:var(--border-subtle)] pb-5">
+        <div className="min-w-0">
+          <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--text-muted)]">
+            {study.id}
+          </p>
+          <h2 className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-3xl">
+            {study.title}
+          </h2>
+          <p className="mt-2 text-sm text-[var(--text-secondary)] sm:text-base">
+            {study.businessType}
+          </p>
+        </div>
+
+        <div className="theme-panel-contrast rounded-[20px] px-4 py-3 text-left sm:min-w-[220px]">
+          <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
+            Delivery timeline
+          </p>
+          <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">
+            {study.timeline}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)]">
+        <div className="space-y-4">
+          <div className="rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-4 sm:p-5">
+            <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-[var(--text-muted)]">
+              Problem / context
+            </p>
+            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+              {study.summary}
+            </p>
+          </div>
+
+          <CaseStudyVisual visual={study.visual} />
+        </div>
+
+        <div className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+            <DetailBlock label="Configured for">
+              <p className="text-sm leading-7 text-[var(--text-secondary)]">
+                {study.configuredFor}
+              </p>
+            </DetailBlock>
+
+            <DetailBlock label="Scope summary">
+              <p className="text-sm leading-7 text-[var(--text-secondary)]">
+                {study.scopeSummary}
+              </p>
+            </DetailBlock>
+          </div>
+
+          <DetailBlock label="What was built">
+            <p className="text-sm leading-7 text-[var(--text-secondary)]">
+              {study.buildSummary}
+            </p>
+          </DetailBlock>
+
+          <DetailBlock label="Modules used">
+            <div className="flex flex-wrap gap-2">
+              {study.modulesUsed.map((item) => (
+                <StudyToken item={item} key={item} tone="accent" />
+              ))}
+            </div>
+          </DetailBlock>
+
+          <DetailBlock label="Configured details">
+            <div className="flex flex-wrap gap-2">
+              {study.configuredDetails.map((item) => (
+                <StudyToken item={item} key={item} />
+              ))}
+            </div>
+          </DetailBlock>
+
+          <DetailBlock label="Deliverables">
+            <div className="grid gap-2.5">
+              {study.deliverables.map((item) => (
+                <DeliverableRow item={item} key={item} />
+              ))}
+            </div>
+          </DetailBlock>
+
+          <DetailBlock label="Outcome" tone="accent">
+            <p className="text-sm leading-7 text-[var(--text-primary)]">
+              {study.outcome}
+            </p>
+          </DetailBlock>
+        </div>
+      </div>
+    </Card>
+  );
+}
 
 export default function CaseStudies() {
+  const overview = getCaseStudyOverview();
+
   return (
     <div className="w-full">
       <Section
         animated={false}
         className="pt-4 sm:pt-8"
-        description="These case studies represent the kind of configured outputs the IOU system is designed to produce: clear scope, practical delivery decisions, and measurable operational value."
+        description="Each case study is logged as a build record: business context, configured modules, delivery timeline, output, and result. This page is meant to read like evidence of execution, not a gallery."
         eyebrow="Case Studies"
-        title="System outputs shaped for clarity, speed, and follow-through."
+        title="Documented builds from the same system users configure."
         width="full"
       >
-        <div className="grid gap-5 md:grid-cols-2">
-          {caseStudies.map((study) => (
-            <Card key={study.id} className="group h-full p-7" interactive>
-              <div className="flex h-full flex-col">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
-                    {study.id}
-                  </span>
-                  <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)] transition-all duration-300 group-hover:border-[color:var(--border-accent)] group-hover:bg-[var(--surface-accent)] group-hover:text-[var(--accent-contrast-text)]">
-                    {study.output}
-                  </span>
-                </div>
+        <div className="space-y-8 lg:space-y-10">
+          <div className="grid gap-3 md:grid-cols-3">
+            {overview.map((item) => (
+              <OverviewCard item={item} key={item.label} />
+            ))}
+          </div>
 
-                <h2 className="mt-8 max-w-xl text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
-                  {study.title}
-                </h2>
-                <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-                  {study.summary}
-                </p>
-
-                <div className="mt-auto pt-8">
-                  <div className="theme-panel-contrast rounded-2xl p-4">
-                    <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
-                      System Result
-                    </p>
-                    <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                      {study.result}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          ))}
+          <div className="space-y-6 lg:space-y-7">
+            {caseStudies.map((study) => (
+              <CaseStudyRecord key={study.id} study={study} />
+            ))}
+          </div>
         </div>
       </Section>
 
@@ -88,9 +193,9 @@ export default function CaseStudies() {
         align="center"
         animated={false}
         className="pb-10 sm:pb-14"
-        description="Use the same build flow to map your own requirements into a structured setup before any handoff begins."
+        description="Use the same build flow to configure your own scope before any handoff begins."
         eyebrow="Start Build"
-        title="Turn your own requirements into a configured setup."
+        title="Configure your system with the same module logic shown above."
       >
         <div className="flex flex-wrap justify-center gap-3">
           <Button size="lg" to="/pricing">
