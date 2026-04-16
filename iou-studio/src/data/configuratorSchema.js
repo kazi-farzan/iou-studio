@@ -1,6 +1,16 @@
 const OPTION_TYPE_BOOLEAN = "boolean";
 const OPTION_TYPE_SINGLE_CHOICE = "single-choice";
 const OPTION_TYPE_SELECT = "select";
+const DEFAULT_DELIVERABLE_SECTION_ID = "outputs";
+
+const DELIVERABLE_SECTION_LABELS = {
+  outputs: "Outputs",
+  pages: "Pages included",
+  integrations: "Integrations included",
+  assets: "Assets included",
+  modules: "Modules included",
+  addOns: "Add-ons selected",
+};
 
 const configuratorCategoriesList = [
   {
@@ -36,12 +46,154 @@ function cloneTimelineDays(timelineDays = {}) {
   };
 }
 
+function getUniqueStringValues(values = []) {
+  return [...new Set(
+    values
+      .map((value) => (typeof value === "string" ? value.trim() : ""))
+      .filter(Boolean),
+  )];
+}
+
+function buildDeliverableSection(section, index = 0) {
+  if (typeof section === "string") {
+    const item = section.trim();
+
+    if (!item) {
+      return null;
+    }
+
+    return {
+      id: `${DEFAULT_DELIVERABLE_SECTION_ID}-${index}`,
+      key: DEFAULT_DELIVERABLE_SECTION_ID,
+      label: DELIVERABLE_SECTION_LABELS[DEFAULT_DELIVERABLE_SECTION_ID],
+      items: [item],
+    };
+  }
+
+  if (!section) {
+    return null;
+  }
+
+  const key =
+    section.key ?? section.id ?? `${DEFAULT_DELIVERABLE_SECTION_ID}-${index}`;
+  const items = getUniqueStringValues(section.items ?? []);
+
+  if (!items.length) {
+    return null;
+  }
+
+  return {
+    id: section.id ?? key,
+    key,
+    label:
+      section.label ??
+      DELIVERABLE_SECTION_LABELS[key] ??
+      DELIVERABLE_SECTION_LABELS[DEFAULT_DELIVERABLE_SECTION_ID],
+    items,
+  };
+}
+
+export function mergeDeliverableSections(...sectionCollections) {
+  const mergedSections = new Map();
+  const orderedSections = [];
+
+  sectionCollections
+    .flat()
+    .filter(Boolean)
+    .forEach((section, index) => {
+      const normalizedSection = buildDeliverableSection(section, index);
+
+      if (!normalizedSection) {
+        return;
+      }
+
+      const sectionKey =
+        normalizedSection.key ??
+        normalizedSection.id ??
+        normalizedSection.label ??
+        `${DEFAULT_DELIVERABLE_SECTION_ID}-${index}`;
+
+      if (!mergedSections.has(sectionKey)) {
+        const nextSection = {
+          id: normalizedSection.id ?? sectionKey,
+          key: sectionKey,
+          label:
+            normalizedSection.label ??
+            DELIVERABLE_SECTION_LABELS[sectionKey] ??
+            DELIVERABLE_SECTION_LABELS[DEFAULT_DELIVERABLE_SECTION_ID],
+          items: [],
+        };
+
+        mergedSections.set(sectionKey, nextSection);
+        orderedSections.push(nextSection);
+      }
+
+      const targetSection = mergedSections.get(sectionKey);
+
+      normalizedSection.items.forEach((item) => {
+        if (!targetSection.items.includes(item)) {
+          targetSection.items.push(item);
+        }
+      });
+    });
+
+  return orderedSections.filter((section) => section.items.length);
+}
+
+export function flattenDeliverableSections(sections = []) {
+  return getUniqueStringValues(
+    mergeDeliverableSections(sections).flatMap((section) => section.items),
+  );
+}
+
+export function formatDeliverableSummary(
+  sections = [],
+  limit = 3,
+  emptyValue = "",
+) {
+  const deliverableItems = flattenDeliverableSections(sections);
+
+  if (!deliverableItems.length) {
+    return emptyValue;
+  }
+
+  return deliverableItems.slice(0, limit).join(" / ");
+}
+
+function buildDeliverableCollection(definition) {
+  const sourceSections = Array.isArray(definition)
+    ? definition
+    : definition?.sections ?? [];
+  const sections = mergeDeliverableSections(sourceSections);
+
+  return {
+    items: flattenDeliverableSections(sections),
+    sections,
+    summary: formatDeliverableSummary(sections),
+  };
+}
+
+function resolveDeliverableSelection(...sectionCollections) {
+  const sections = mergeDeliverableSections(...sectionCollections);
+
+  return {
+    items: flattenDeliverableSections(sections),
+    sections,
+    summary: formatDeliverableSummary(sections),
+  };
+}
+
 function hasTimelineImpact(timelineDays = {}) {
   return Boolean(timelineDays.minimum || timelineDays.maximum);
 }
 
 function buildOptionChoice(definition) {
+  const deliverables = buildDeliverableCollection(definition.deliverables);
+
   return {
+    deliverableSections: deliverables.sections,
+    deliverableSummary: deliverables.summary,
+    deliverables: deliverables.items,
     description: definition.description ?? "",
     id: definition.id,
     label: definition.label,
@@ -51,9 +203,14 @@ function buildOptionChoice(definition) {
 }
 
 function buildModuleOption(definition) {
+  const optionDeliverables = buildDeliverableCollection(definition.deliverables);
+
   if (definition.type === OPTION_TYPE_BOOLEAN) {
     return {
       defaultValue: Boolean(definition.defaultValue),
+      deliverableSections: optionDeliverables.sections,
+      deliverableSummary: optionDeliverables.summary,
+      deliverables: optionDeliverables.items,
       description: definition.description ?? "",
       display: "checkbox",
       id: definition.id,
@@ -72,6 +229,9 @@ function buildModuleOption(definition) {
   return {
     choices,
     defaultValue: hasDefaultChoice ? definition.defaultValue : choices[0]?.id ?? null,
+    deliverableSections: optionDeliverables.sections,
+    deliverableSummary: optionDeliverables.summary,
+    deliverables: optionDeliverables.items,
     description: definition.description ?? "",
     display:
       definition.display ??
@@ -85,15 +245,23 @@ function buildModuleOption(definition) {
 function buildModule(definition) {
   const resolvedCategory = categoryById.get(definition.categoryId);
   const baseTimelineDays = cloneTimelineDays(definition.baseTimelineDays);
+  const baseDeliverables = buildDeliverableCollection(
+    definition.baseDeliverables ?? definition.deliverables,
+  );
 
   return {
     addOns: definition.addOns ?? [],
+    baseDeliverableSections: baseDeliverables.sections,
+    baseDeliverableSummary: baseDeliverables.summary,
+    baseDeliverables: baseDeliverables.items,
     basePrice: definition.basePrice,
     baseTimelineDays,
     category: resolvedCategory?.title ?? definition.categoryId,
     categoryDescription: resolvedCategory?.description ?? "",
     categoryId: definition.categoryId,
-    deliverables: definition.deliverables ?? [],
+    deliverableSections: baseDeliverables.sections,
+    deliverableSummary: baseDeliverables.summary,
+    deliverables: baseDeliverables.items,
     description: definition.description,
     id: definition.id,
     metadata: definition.metadata ?? {},
@@ -105,6 +273,10 @@ function buildModule(definition) {
 }
 
 function buildPackage(definition) {
+  const packageDeliverables = buildDeliverableCollection(
+    definition.packageDeliverables ?? definition.deliverables,
+  );
+
   return {
     audience: definition.audience,
     ctaLabel: definition.ctaLabel,
@@ -116,6 +288,9 @@ function buildPackage(definition) {
     metadata: definition.metadata ?? {},
     name: definition.name,
     options: definition.options ?? [],
+    packageDeliverableSections: packageDeliverables.sections,
+    packageDeliverableSummary: packageDeliverables.summary,
+    packageDeliverables: packageDeliverables.items,
     pricing: definition.pricing,
     timelineEstimate: definition.timelineEstimate,
   };
@@ -123,6 +298,21 @@ function buildPackage(definition) {
 
 function getConfiguredOptionChoice(option, value) {
   return option.choices?.find((choice) => choice.id === value) ?? null;
+}
+
+function getOptionSelectionDeliverables(option) {
+  if (option.type === OPTION_TYPE_BOOLEAN) {
+    if (!option.value) {
+      return resolveDeliverableSelection();
+    }
+
+    return resolveDeliverableSelection(option.deliverableSections);
+  }
+
+  return resolveDeliverableSelection(
+    option.deliverableSections,
+    option.selectedChoice?.deliverableSections ?? [],
+  );
 }
 
 function buildBooleanSelection(option) {
@@ -133,7 +323,11 @@ function buildBooleanSelection(option) {
     };
   }
 
+  const selectedDeliverables = getOptionSelectionDeliverables(option);
   const selection = {
+    deliverableSections: selectedDeliverables.sections,
+    deliverableSummary: selectedDeliverables.summary,
+    deliverables: selectedDeliverables.items,
     description: option.description,
     groupLabel: option.label,
     id: `${option.id}:enabled`,
@@ -166,7 +360,11 @@ function buildChoiceSelection(option) {
     };
   }
 
+  const selectedDeliverables = getOptionSelectionDeliverables(option);
   const selection = {
+    deliverableSections: selectedDeliverables.sections,
+    deliverableSummary: selectedDeliverables.summary,
+    deliverables: selectedDeliverables.items,
     description: option.selectedChoice.description || option.description,
     groupLabel: option.label,
     id: `${option.id}:${option.selectedChoice.id}`,
@@ -250,11 +448,25 @@ export const configuratorModules = [
       maximum: 5,
     },
     tags: ["Identity", "Visual Language"],
-    deliverables: [
-      "Identity direction",
-      "Visual language system",
-      "Core brand assets",
-    ],
+    baseDeliverables: {
+      sections: [
+        {
+          key: "outputs",
+          items: [
+            "Visual identity system",
+            "Brand direction aligned to the approved offer",
+          ],
+        },
+        {
+          key: "assets",
+          items: [
+            "Core logo lockup set",
+            "Color and typography direction",
+            "Brand-use foundation assets",
+          ],
+        },
+      ],
+    },
     options: [
       {
         id: "social-kit",
@@ -268,6 +480,18 @@ export const configuratorModules = [
           maximum: 2,
         },
         defaultValue: false,
+        deliverables: {
+          sections: [
+            {
+              key: "assets",
+              items: [
+                "Profile image set",
+                "Story template set",
+                "Post-ready social assets",
+              ],
+            },
+          ],
+        },
       },
       {
         id: "menu-design",
@@ -281,6 +505,17 @@ export const configuratorModules = [
           maximum: 1,
         },
         defaultValue: false,
+        deliverables: {
+          sections: [
+            {
+              key: "assets",
+              items: [
+                "Menu layout file",
+                "Brand-aligned menu presentation asset",
+              ],
+            },
+          ],
+        },
       },
     ],
   }),
@@ -295,11 +530,23 @@ export const configuratorModules = [
       maximum: 9,
     },
     tags: ["Responsive", "Conversion"],
-    deliverables: [
-      "Responsive page structure",
-      "Content flow setup",
-      "Conversion-focused web surface",
-    ],
+    baseDeliverables: {
+      sections: [
+        {
+          key: "outputs",
+          items: [
+            "Mobile-responsive website",
+            "Production-ready content structure",
+          ],
+        },
+        {
+          key: "pages",
+          items: [
+            "Core website page set tied to offer, proof, and contact flow",
+          ],
+        },
+      ],
+    },
     options: [
       {
         id: "page-count",
@@ -318,6 +565,14 @@ export const configuratorModules = [
               minimum: 0,
               maximum: 0,
             },
+            deliverables: {
+              sections: [
+                {
+                  key: "pages",
+                  items: ["Up to 5 production pages"],
+                },
+              ],
+            },
           },
           {
             id: "expanded",
@@ -329,6 +584,14 @@ export const configuratorModules = [
               minimum: 2,
               maximum: 3,
             },
+            deliverables: {
+              sections: [
+                {
+                  key: "pages",
+                  items: ["6-10 production pages"],
+                },
+              ],
+            },
           },
           {
             id: "extended",
@@ -339,6 +602,14 @@ export const configuratorModules = [
             timelineImpact: {
               minimum: 4,
               maximum: 5,
+            },
+            deliverables: {
+              sections: [
+                {
+                  key: "pages",
+                  items: ["11-16 production pages"],
+                },
+              ],
             },
           },
         ],
@@ -355,6 +626,18 @@ export const configuratorModules = [
           maximum: 2,
         },
         defaultValue: false,
+        deliverables: {
+          sections: [
+            {
+              key: "outputs",
+              items: ["Booking or contact form"],
+            },
+            {
+              key: "integrations",
+              items: ["Inquiry routing into the website intake flow"],
+            },
+          ],
+        },
       },
     ],
   }),
@@ -369,11 +652,21 @@ export const configuratorModules = [
       maximum: 12,
     },
     tags: ["Commerce", "Operations"],
-    deliverables: [
-      "Ordering flow structure",
-      "Operational handoff points",
-      "Commerce system baseline",
-    ],
+    baseDeliverables: {
+      sections: [
+        {
+          key: "outputs",
+          items: [
+            "QR or link-based ordering flow",
+            "Operational order intake setup",
+          ],
+        },
+        {
+          key: "integrations",
+          items: ["Order handoff structure for fulfillment follow-through"],
+        },
+      ],
+    },
     options: [
       {
         id: "whatsapp-handoff",
@@ -387,6 +680,14 @@ export const configuratorModules = [
           maximum: 1,
         },
         defaultValue: false,
+        deliverables: {
+          sections: [
+            {
+              key: "integrations",
+              items: ["WhatsApp order handoff"],
+            },
+          ],
+        },
       },
       {
         id: "payment-integration",
@@ -406,6 +707,14 @@ export const configuratorModules = [
               minimum: 0,
               maximum: 0,
             },
+            deliverables: {
+              sections: [
+                {
+                  key: "integrations",
+                  items: ["Manual payment handoff after order submission"],
+                },
+              ],
+            },
           },
           {
             id: "payment-link",
@@ -417,6 +726,14 @@ export const configuratorModules = [
               minimum: 1,
               maximum: 2,
             },
+            deliverables: {
+              sections: [
+                {
+                  key: "integrations",
+                  items: ["Payment link handoff after order submission"],
+                },
+              ],
+            },
           },
           {
             id: "integrated-checkout",
@@ -427,6 +744,14 @@ export const configuratorModules = [
             timelineImpact: {
               minimum: 2,
               maximum: 3,
+            },
+            deliverables: {
+              sections: [
+                {
+                  key: "integrations",
+                  items: ["Integrated checkout inside the ordering flow"],
+                },
+              ],
             },
           },
         ],
@@ -444,11 +769,18 @@ export const configuratorModules = [
       maximum: 4,
     },
     tags: ["Lead Intake", "Routing"],
-    deliverables: [
-      "Lead capture entry points",
-      "WhatsApp routing",
-      "Inquiry collection setup",
-    ],
+    baseDeliverables: {
+      sections: [
+        {
+          key: "outputs",
+          items: ["Lead capture flow", "Inquiry collection setup"],
+        },
+        {
+          key: "integrations",
+          items: ["WhatsApp intake routing"],
+        },
+      ],
+    },
   }),
 ];
 
@@ -469,12 +801,26 @@ export const configuratorPackages = [
       maximumDays: 28,
       minimumDays: 21,
     },
+    packageDeliverables: {
+      sections: [
+        {
+          key: "outputs",
+          items: [
+            "Brand foundation across core digital touchpoints",
+            "Responsive website with inquiry capture",
+          ],
+        },
+        {
+          key: "integrations",
+          items: ["Contact and WhatsApp intake routing"],
+        },
+      ],
+    },
     features: [
-      "Conversion-focused structure for local lead generation",
-      "Responsive visual design tuned for mobile-first browsing",
-      "Lead forms, WhatsApp handoff, and contact setup",
-      "Basic SEO, analytics, and launch performance checks",
-      "Two structured revision rounds for a sharper finish",
+      "Core brand system and responsive website scope",
+      "Lead capture routes tied to contact and WhatsApp intake",
+      "Basic SEO, analytics, and launch checks",
+      "Two revision rounds inside the agreed scope",
     ],
     ctaLabel: "Start with Starter",
   }),
@@ -494,12 +840,26 @@ export const configuratorPackages = [
       maximumDays: 42,
       minimumDays: 28,
     },
+    packageDeliverables: {
+      sections: [
+        {
+          key: "outputs",
+          items: [
+            "Expanded website system for services, campaigns, or proof content",
+            "Brand and intake scope sized for a broader content structure",
+          ],
+        },
+        {
+          key: "pages",
+          items: ["Multi-page implementation scope"],
+        },
+      ],
+    },
     features: [
-      "Multi-page website or campaign system with strategic page hierarchy",
-      "Conversion sections for launches, offers, and paid traffic support",
-      "CMS-ready content blocks for services, case studies, or updates",
-      "Advanced analytics events, SEO structure, and funnel thinking",
-      "Monthly iteration support for ongoing refinements and experiments",
+      "Broader page structure for services, campaigns, or updates",
+      "CMS-ready content planning and conversion-focused layout scope",
+      "Analytics events, SEO structure, and iteration support",
+      "Monthly refinement room within the selected build direction",
     ],
     ctaLabel: "Choose Growth",
     isMostPopular: true,
@@ -525,12 +885,26 @@ export const configuratorPackages = [
       maximumDays: 56,
       minimumDays: 42,
     },
+    packageDeliverables: {
+      sections: [
+        {
+          key: "outputs",
+          items: [
+            "Brand, website, ordering, and customer intake system",
+            "Implementation-ready scope for deeper operational flows",
+          ],
+        },
+        {
+          key: "integrations",
+          items: ["Ordering and intake handoff infrastructure"],
+        },
+      ],
+    },
     features: [
-      "Custom UX, product, or premium brand experience planning",
-      "Advanced interactions, platform flows, and integration-ready architecture",
-      "Design system thinking for scalable implementation consistency",
-      "Performance, accessibility, and quality review baked into delivery",
-      "Dedicated sprint planning for deeper collaboration and scope flexibility",
+      "Custom UX and system planning for more complex delivery scope",
+      "Ordering flow and intake stack included in the starting configuration",
+      "Integration-ready architecture and quality review inside delivery",
+      "Sprint-based collaboration for higher-touch implementation decisions",
     ],
     ctaLabel: "Request Custom Scope",
   }),
@@ -651,16 +1025,32 @@ export function getConfiguredModule(moduleOrId, optionSelections = {}) {
     },
     {},
   );
+  const selectedOptionDeliverables = selectedOptions
+    .filter((option) => option.deliverableSections.length)
+    .map((option) => ({
+      id: option.id,
+      label: option.summaryLabel,
+      sections: option.deliverableSections,
+      summary: option.deliverableSummary,
+    }));
+  const resolvedDeliverables = resolveDeliverableSelection(
+    module.baseDeliverableSections,
+    selectedOptionDeliverables.flatMap((option) => option.sections),
+  );
 
   return {
     ...module,
     activeOptions,
     configuredPrice,
     configuredTimelineDays,
+    deliverableSections: resolvedDeliverables.sections,
+    deliverableSummary: resolvedDeliverables.summary,
+    deliverables: resolvedDeliverables.items,
     hasActiveOptions: activeOptions.length > 0,
     optionSelections: normalizedOptionSelections,
     options: resolvedOptions,
     selectedOptionCount: activeOptions.length,
+    selectedOptionDeliverables,
     selectedOptionSummary: selectedOptions
       .map((option) => option.summaryLabel)
       .join(" / "),

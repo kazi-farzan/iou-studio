@@ -1,4 +1,7 @@
-import { formatTimelineRange } from "../data/configuratorSchema.js";
+import {
+  formatDeliverableSummary,
+  formatTimelineRange,
+} from "../data/configuratorSchema.js";
 import { formatInr } from "../data/pricing.js";
 
 function formatTimelineContribution(timelineDays) {
@@ -17,6 +20,7 @@ function buildModuleBaseRow(module) {
     id: `${module.id}-base`,
     kind: "base",
     label: "Base scope",
+    outputSummary: module.baseDeliverableSummary,
     priceLabel: formatInr(module.basePrice),
     timelineLabel: formatTimelineWindow(module.baseTimelineDays),
   };
@@ -28,6 +32,7 @@ function buildModuleOptionRow(module, option) {
     id: `${module.id}-${option.id}`,
     kind: "option",
     label: option.summaryLabel || option.label,
+    outputSummary: option.deliverableSummary,
     priceLabel: option.priceImpact > 0 ? `+ ${formatInr(option.priceImpact)}` : "Included",
     timelineLabel: formatTimelineContribution(option.timelineImpact),
   };
@@ -40,6 +45,7 @@ function buildPackageModuleRow(module) {
     id: module.id,
     kind: "included-module",
     label: module.title,
+    outputSummary: module.baseDeliverableSummary,
     priceLabel: "Included",
     timelineLabel: "",
   };
@@ -47,7 +53,11 @@ function buildPackageModuleRow(module) {
 
 function buildCustomModuleGroup(module) {
   return {
-    description: "",
+    deliverables: {
+      label: "Deliverables",
+      sections: module.deliverableSections,
+    },
+    description: module.description,
     eyebrow: module.category,
     id: module.id,
     rows: [
@@ -102,6 +112,10 @@ export function buildPackageSummaryBreakdown({
     },
     groups: [
       {
+        deliverables: {
+          label: "Deliverables",
+          sections: plan.packageDeliverableSections ?? [],
+        },
         description: plan.description,
         eyebrow: "Selected package",
         id: plan.id,
@@ -128,9 +142,13 @@ export function buildReviewItemsFromBreakdown(summaryBreakdown) {
       .map((row) => row.label)
       .filter(Boolean)
       .join(" / ");
+    const deliverableSummary = formatDeliverableSummary(
+      group.deliverables?.sections ?? [],
+      3,
+    );
 
     return {
-      detail: rowLabels || group.description || "",
+      detail: deliverableSummary || rowLabels || group.description || "",
       eyebrow: group.eyebrow,
       id: group.id,
       title: group.title,

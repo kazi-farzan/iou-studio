@@ -41,6 +41,7 @@ function getSummaryGroupSignal(group) {
     group.title,
     group.description,
     group.rowsLabel,
+    group.deliverables?.label,
     group.subtotal?.label,
     group.subtotal?.value,
     group.timeline?.label,
@@ -51,10 +52,16 @@ function getSummaryGroupSignal(group) {
         row.eyebrow,
         row.label,
         row.detail,
+        row.outputSummary,
         row.priceLabel,
         row.timelineLabel,
       ]),
     ),
+    ...(group.deliverables?.sections ?? []).flatMap((section) => [
+      section.id,
+      section.label,
+      ...(section.items ?? []),
+    ]),
   ]);
 }
 

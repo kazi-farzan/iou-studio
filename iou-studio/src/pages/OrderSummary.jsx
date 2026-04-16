@@ -1,5 +1,6 @@
 import { startTransition, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DeliverableList from "../components/pricing/DeliverableList.jsx";
 import StepFlowIndicator from "../components/pricing/StepFlowIndicator.jsx";
 import StructuredSummaryBreakdown from "../components/pricing/StructuredSummaryBreakdown.jsx";
 import Button from "../components/ui/Button.jsx";
@@ -85,7 +86,7 @@ function CommercialTerms({ pricingRows, selectedSummary }) {
         </p>
         <p className="text-sm leading-6 text-[var(--text-secondary)]">
           Pricing context stays visible here while the grouped scope below keeps the
-          requested build explicit.
+          requested build and its deliverables explicit.
         </p>
       </div>
 
@@ -141,6 +142,21 @@ function getScopeSummary(configuration) {
   }`;
 }
 
+function getOutputSummary(configuration) {
+  const deliverableSummary =
+    configuration.structuredSelection?.deliverableSummary?.trim() ?? "";
+
+  if (deliverableSummary) {
+    return deliverableSummary;
+  }
+
+  if (configuration.packageSelection) {
+    return "Package deliverables appear after selection.";
+  }
+
+  return "Deliverables update with module selections.";
+}
+
 export default function OrderSummary() {
   const navigate = useNavigate();
   const { contactDraft, draftConfiguration, setContactDraft, submitOrder } =
@@ -153,6 +169,12 @@ export default function OrderSummary() {
     () => getScopeSummary(draftConfiguration),
     [draftConfiguration],
   );
+  const outputSummary = useMemo(
+    () => getOutputSummary(draftConfiguration),
+    [draftConfiguration],
+  );
+  const outputSections =
+    draftConfiguration.structuredSelection?.deliverableSections ?? [];
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -211,8 +233,8 @@ export default function OrderSummary() {
               Review your configured setup
             </h1>
             <p className="max-w-3xl text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-              Confirm the active configuration as a grouped scope breakdown, then
-              submit a structured request tied to the reviewed build.
+              Confirm the active configuration as a build specification with
+              explicit scope, output, pricing, and timing before submission.
             </p>
           </div>
 
@@ -281,15 +303,36 @@ export default function OrderSummary() {
                       />
                     ) : null}
 
+                    {outputSections.length ? (
+                      <div className="rounded-[26px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-5 sm:p-6">
+                        <div className="max-w-3xl space-y-2">
+                          <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                            Requested output
+                          </p>
+                          <p className="text-sm leading-6 text-[var(--text-secondary)]">
+                            This is the concrete output attached to the current build.
+                            It stays grouped below as the working delivery readout.
+                          </p>
+                        </div>
+
+                        <DeliverableList
+                          className="mt-5"
+                          label="Deliverables"
+                          sections={outputSections}
+                          surface="contrast"
+                        />
+                      </div>
+                    ) : null}
+
                     <div className="space-y-4">
                       <div className="max-w-3xl space-y-2">
                         <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                           Build specification
                         </p>
                         <p className="text-sm leading-6 text-[var(--text-secondary)]">
-                          Each group below shows the requested scope, selected nested
-                          options, subtotal, and timeline contribution in a reviewable
-                          format.
+                          Each group below shows the requested scope, selected
+                          options, deliverables, subtotal, and timeline contribution
+                          in a reviewable format.
                         </p>
                       </div>
 
@@ -448,6 +491,7 @@ export default function OrderSummary() {
                     <ReviewMetaRow label="Mode" value={draftConfiguration.modeLabel} />
                     <ReviewMetaRow label="Billing" value={draftConfiguration.billingLabel} />
                     <ReviewMetaRow label="Scope" value={scopeSummary} />
+                    <ReviewMetaRow label="Output" value={outputSummary} />
                   </div>
 
                   <p className="text-sm leading-6 text-[var(--text-secondary)]">

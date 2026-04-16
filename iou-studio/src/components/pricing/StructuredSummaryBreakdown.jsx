@@ -1,3 +1,5 @@
+import DeliverableList from "./DeliverableList.jsx";
+
 function getGroupClasses(presenceState, variant) {
   return [
     "overflow-hidden border transition-[opacity,transform,background-color,border-color,box-shadow] duration-200 ease-out motion-reduce:transition-none",
@@ -79,6 +81,15 @@ function BreakdownRow({ row }) {
             {row.detail}
           </p>
         ) : null}
+
+        {row.outputSummary ? (
+          <p className="mt-2 max-w-[56ch] text-sm leading-6 text-[var(--text-secondary)]">
+            <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--text-muted)]">
+              Output
+            </span>{" "}
+            {row.outputSummary}
+          </p>
+        ) : null}
       </div>
 
       <div className="flex flex-wrap gap-2 sm:justify-end">
@@ -146,6 +157,17 @@ function BreakdownGroup({ group, variant }) {
             <BreakdownRow key={row.id} row={row} />
           ))}
         </div>
+
+        {group.deliverables?.sections?.length ? (
+          <DeliverableList
+            className="mt-4"
+            compact={variant !== "page"}
+            label={group.deliverables.label || "Deliverables"}
+            maxItemsPerSection={variant === "page" ? null : 3}
+            sections={group.deliverables.sections}
+            surface="contrast"
+          />
+        ) : null}
 
         {group.note ? (
           <p className="mt-4 text-sm leading-6 text-[var(--text-secondary)]">

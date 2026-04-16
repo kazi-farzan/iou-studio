@@ -1,5 +1,9 @@
 import { getCustomBuildPricing } from "../data/customBuildPricing.js";
 import {
+  formatDeliverableSummary,
+  mergeDeliverableSections,
+} from "../data/configuratorSchema.js";
+import {
   billingOptions,
   formatInr,
   getCouponByCode,
@@ -91,14 +95,25 @@ function buildPackageTimeline(plan) {
 function buildPackageSelection(plan) {
   const includedModules = plan.includedModules ?? [];
   const totalSummary = getPackageTotalSummary(plan);
+  const deliverableSections = mergeDeliverableSections(
+    plan.packageDeliverableSections ?? [],
+    includedModules.flatMap(
+      (module) => module.baseDeliverableSections ?? module.deliverableSections ?? [],
+    ),
+  );
 
   return {
+    deliverableSections,
+    deliverableSummary: formatDeliverableSummary(deliverableSections),
     groupedModules: plan.includedModuleGroups ?? [],
     includedModules,
     lineItems: [
       {
         audience: plan.audience,
         billingMode: plan.base.billingMode,
+        deliverableSections: plan.packageDeliverableSections ?? [],
+        deliverableSummary: plan.packageDeliverableSummary,
+        deliverables: plan.packageDeliverables ?? [],
         id: `${plan.id}-package`,
         includedModuleIds: includedModules.map((module) => module.id),
         kind: "package",
@@ -109,6 +124,10 @@ function buildPackageSelection(plan) {
       ...includedModules.map((module) => ({
         category: module.category,
         categoryId: module.categoryId,
+        deliverableSections:
+          module.baseDeliverableSections ?? module.deliverableSections ?? [],
+        deliverableSummary:
+          module.baseDeliverableSummary ?? module.deliverableSummary ?? "",
         deliverables: module.deliverables,
         description: module.description,
         id: module.id,
@@ -149,7 +168,7 @@ function buildPackageSummaryPanel({
       isActionDisabled: true,
       modeLabel: "Packages",
       selectionHint:
-        "The selected package will expand into a grouped scope breakdown here.",
+        "The selected package will expand into a grouped specification with included modules and deliverables.",
       selectionLabel: "Build specification",
       statusLabel: billingLabel,
       timeline,
@@ -173,7 +192,7 @@ function buildPackageSummaryPanel({
     isActionDisabled: false,
     modeLabel: "Packages",
     selectionHint:
-      "The package scope is grouped below with included modules, package subtotal, and timeline.",
+      "The package scope is grouped below with included modules, deliverables, package subtotal, and timeline.",
     selectionLabel: "Build specification",
     statusLabel: billingLabel,
     timeline,
@@ -205,8 +224,8 @@ function buildCustomSummaryPanel({
     modeLabel: "Custom Build",
     selectionHint: moduleCount
       ? optionCount
-        ? "Each selected module is grouped with its active scope, subtotal, and timeline contribution."
-        : "Each selected module appears as a grouped scope block with its live subtotal and timeline."
+        ? "Each selected module is grouped with its active scope, selected option output, subtotal, and timeline contribution."
+        : "Each selected module appears as a grouped specification block with its deliverables, subtotal, and timeline."
       : "Module selections will appear here as soon as you start building.",
     selectionLabel: "Build specification",
     statusLabel: getCustomStatusLabel(moduleCount, optionCount),
@@ -268,6 +287,8 @@ function buildPackageSubmissionPayload({
     },
     selection: {
       breakdownGroups: summaryBreakdown.groups,
+      deliverableSections: packageSelection.deliverableSections,
+      deliverableSummary: packageSelection.deliverableSummary,
       groupedModules: packageSelection.groupedModules,
       lineItems: packageSelection.lineItems,
     },
@@ -296,6 +317,8 @@ function buildCustomSubmissionPayload(customBuildPricing, summaryBreakdown) {
     },
     selection: {
       breakdownGroups: summaryBreakdown.groups,
+      deliverableSections: customBuildPricing.deliverableSections,
+      deliverableSummary: customBuildPricing.deliverableSummary,
       groupedModules: customBuildPricing.groupedModules,
       lineItems: customBuildPricing.lineItems,
       moduleIds: customBuildPricing.selectedModules.map((module) => module.id),
@@ -422,6 +445,8 @@ export function buildOrderConfiguration({
       billingMode,
       coupon: null,
       customSelection: {
+        deliverableSections: customBuildPricing.deliverableSections,
+        deliverableSummary: customBuildPricing.deliverableSummary,
         groupedModules: customBuildPricing.groupedModules,
         lineItems: customBuildPricing.lineItems,
         modules: customBuildPricing.selectedModules,
@@ -429,8 +454,8 @@ export function buildOrderConfiguration({
       },
       description: moduleCount
         ? optionCount
-          ? "Review the selected modules, nested options, configured total, and delivery estimate before you submit."
-          : "Review the selected modules, configured total, and delivery estimate before you submit."
+          ? "Review the selected modules, selected option output, configured total, and delivery estimate before you submit."
+          : "Review the selected modules, deliverables, configured total, and delivery estimate before you submit."
         : "Select modules on the configurator to build a valid order request.",
       hasSelection: moduleCount > 0,
       mode,
@@ -455,13 +480,15 @@ export function buildOrderConfiguration({
       selectionLabel: "Selected modules",
       selectionNote: moduleCount
         ? optionCount
-          ? "Selected modules and nested choices stay tied to this request."
-          : "Selected modules stay tied to this request."
+          ? "Selected modules, selected options, and deliverables stay tied to this request."
+          : "Selected modules and deliverables stay tied to this request."
         : "Module selections appear here once you start building.",
       summaryBreakdown,
       statusLabel: customStatusLabel,
       structuredSelection: {
         breakdownGroups: summaryBreakdown.groups,
+        deliverableSections: customBuildPricing.deliverableSections,
+        deliverableSummary: customBuildPricing.deliverableSummary,
         groupedModules: customBuildPricing.groupedModules,
         lineItems: customBuildPricing.lineItems,
         modules: customBuildPricing.selectedModules,
@@ -531,6 +558,8 @@ export function buildOrderConfiguration({
       statusLabel: billingLabel,
       structuredSelection: {
         breakdownGroups: summaryBreakdown.groups,
+        deliverableSections: [],
+        deliverableSummary: "",
         groupedModules: [],
         lineItems: [],
         modules: [],
@@ -587,11 +616,14 @@ export function buildOrderConfiguration({
       packageId: selectedPlan.id,
     },
     selectionLabel: "Selected setup",
-    selectionNote: "This starting configuration can still be refined before handoff.",
+    selectionNote:
+      "This starting configuration, its included modules, and its deliverables stay attached to the request.",
     summaryBreakdown,
     statusLabel: billingLabel,
     structuredSelection: {
       breakdownGroups: summaryBreakdown.groups,
+      deliverableSections: packageSelection.deliverableSections,
+      deliverableSummary: packageSelection.deliverableSummary,
       groupedModules: packageSelection.groupedModules,
       lineItems: packageSelection.lineItems,
       modules: packageSelection.includedModules,

@@ -14,30 +14,26 @@
    Replaced the Services card grid with schema-driven module groups and direct configurator entry actions.
 29: Real Case Studies
    Replaced placeholder proof with documented build records that show business context, configured modules, deliverables, timelines, outcomes, and visual proof surfaces.
+30: Deliverable Clarity Layer
+   Added structured deliverables to the shared schema and surfaced them across package cards, custom modules, grouped summaries, and Order Summary so the flow reads more like a build specification.
 
 ---
 
 ## Current Phase
 
-Phase 8 - Trust Realization (Active)
+Phase 9 - Identity + Wow (Active)
 
-Phase 7 - Platform Alignment is complete.
+Phase 8 - Trust Realization is complete.
 
 ---
 
 ## Active Tasks (Strict Order)
 
-30. Deliverable Clarity Layer
-- show what the user actually receives
-- reflect deliverables in summary and modules
+31. Controlled 3D Layer
 
 ---
 
 ## Upcoming
-
-Phase 9 - Identity + Wow
-
-31. Controlled 3D Layer
 
 32. Visual Polish Pass
 

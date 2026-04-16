@@ -1,6 +1,7 @@
 import Button from "../ui/Button.jsx";
 import Card from "../ui/Card.jsx";
 import { formatInr } from "../../data/pricing.js";
+import DeliverableList from "./DeliverableList.jsx";
 
 function getCardClasses({ isMostPopular, isSelected }) {
   return [
@@ -26,6 +27,31 @@ function getCalloutClasses(tone) {
   }
 
   return "border-[color:var(--border-subtle)] bg-[var(--surface-contrast)]";
+}
+
+function IncludedModules({ modules = [] }) {
+  if (!modules.length) {
+    return null;
+  }
+
+  return (
+    <div className="rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5">
+      <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+        Modules included
+      </p>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        {modules.map((module) => (
+          <span
+            className="rounded-full border border-[color:var(--border-subtle)] bg-[var(--surface)] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--text-secondary)]"
+            key={module.id}
+          >
+            {module.title}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function PricingPlanCard({
@@ -118,6 +144,18 @@ export default function PricingPlanCard({
           <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
             {plan.callout.detail}
           </p>
+        </div>
+
+        <div className="mt-6 space-y-4">
+          <IncludedModules modules={plan.includedModules} />
+
+          <DeliverableList
+            compact
+            label="Deliverables"
+            maxItemsPerSection={2}
+            sections={plan.packageDeliverableSections}
+            surface="contrast"
+          />
         </div>
 
         <div className="mt-7 space-y-4 border-t border-[color:var(--border-subtle)] pt-6">

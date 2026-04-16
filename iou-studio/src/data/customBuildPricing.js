@@ -1,8 +1,10 @@
 import {
   configuratorModules,
+  formatDeliverableSummary,
   formatTimelineRange,
   getConfiguredModules,
   groupModulesByCategory,
+  mergeDeliverableSections,
   sumTimelineRanges,
 } from "./configuratorSchema.js";
 import { formatInr } from "./pricing.js";
@@ -36,6 +38,8 @@ function buildModuleLineItem(module) {
     category: module.category,
     categoryId: module.categoryId,
     configuredTimelineDays: module.configuredTimelineDays,
+    deliverableSections: module.deliverableSections,
+    deliverableSummary: module.deliverableSummary,
     deliverables: module.deliverables,
     description: module.description,
     id: module.id,
@@ -86,6 +90,9 @@ export function getCustomBuildPricing(
     optionSelectionsByModule,
   );
   const lineItems = selectedModules.map(buildModuleLineItem);
+  const deliverableSections = mergeDeliverableSections(
+    selectedModules.flatMap((module) => module.deliverableSections ?? []),
+  );
   const total = lineItems.reduce(
     (runningTotal, item) => runningTotal + item.price,
     0,
@@ -96,6 +103,9 @@ export function getCustomBuildPricing(
   );
 
   return {
+    deliverableSections,
+    deliverableSummary: formatDeliverableSummary(deliverableSections),
+    deliverables: deliverableSections.flatMap((section) => section.items),
     groupedModules: groupModulesByCategory(selectedModules),
     lineItems,
     selectedOptionCount,

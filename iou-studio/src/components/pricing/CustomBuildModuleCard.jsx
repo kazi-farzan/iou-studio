@@ -3,6 +3,7 @@ import {
   getModuleOptionDefaultValue,
 } from "../../data/configuratorSchema.js";
 import { formatInr } from "../../data/pricing.js";
+import DeliverableList from "./DeliverableList.jsx";
 
 function formatTimelineHint(timelineDays) {
   if (!timelineDays?.minimum || !timelineDays?.maximum) {
@@ -96,6 +97,21 @@ function getChoiceClasses(isChecked) {
   ].join(" ");
 }
 
+function OptionOutputLine({ summary }) {
+  if (!summary) {
+    return null;
+  }
+
+  return (
+    <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+      <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--text-muted)]">
+        Output
+      </span>{" "}
+      {summary}
+    </p>
+  );
+}
+
 function ModuleBooleanOption({ moduleId, onOptionChange, option }) {
   const checkboxId = `${moduleId}-${option.id}`;
 
@@ -127,6 +143,10 @@ function ModuleBooleanOption({ moduleId, onOptionChange, option }) {
         <span className="mt-1 block text-sm leading-6 text-[var(--text-secondary)]">
           {option.description}
         </span>
+
+        {option.value ? (
+          <OptionOutputLine summary={option.deliverableSummary} />
+        ) : null}
 
         <span className="mt-3 block text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--text-muted)]">
           {formatImpactLabel(option.priceImpact, option.timelineImpact, "Optional")}
@@ -176,6 +196,8 @@ function ModuleChoiceOption({ moduleId, onOptionChange, option }) {
                   <span className="mt-1 block text-sm leading-6 text-[var(--text-secondary)]">
                     {choice.description}
                   </span>
+
+                  <OptionOutputLine summary={choice.deliverableSummary} />
                 </span>
 
                 <span className="shrink-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--text-muted)]">
@@ -241,6 +263,8 @@ function ModuleSelectOption({ moduleId, onOptionChange, option }) {
           {selectedChoice.description}
         </p>
       ) : null}
+
+      <OptionOutputLine summary={selectedChoice?.deliverableSummary} />
     </div>
   );
 }
@@ -298,6 +322,8 @@ export default function CustomBuildModuleCard({
     isSelected ? configuredModule.configuredTimelineDays : module.timelineDays,
   );
   const activeOptionCount = configuredModule.selectedOptionCount ?? 0;
+  const baseDeliverableSummary =
+    module.baseDeliverableSummary || module.deliverableSummary;
 
   return (
     <article className={getModuleClasses(isSelected)}>
@@ -375,6 +401,17 @@ export default function CustomBuildModuleCard({
           >
             {module.description}
           </p>
+
+          {baseDeliverableSummary ? (
+            <div className="rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-3">
+              <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                Includes
+              </p>
+              <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                {baseDeliverableSummary}
+              </p>
+            </div>
+          ) : null}
 
           {hasOptions ? (
             <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--text-muted)]">
@@ -474,6 +511,15 @@ export default function CustomBuildModuleCard({
                   : "Defaults active"}
               </div>
             </div>
+
+            <DeliverableList
+              className="mt-5"
+              compact
+              label="Current output"
+              maxItemsPerSection={2}
+              sections={configuredModule.deliverableSections}
+              surface="contrast"
+            />
 
             <div className="mt-5">
               <ModuleOptions

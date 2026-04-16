@@ -8,7 +8,7 @@ Users can:
 - browse module groups through a structured system menu
 - enter the configurator from modules or starting setups
 - customize modules and nested options
-- see pricing and timelines update live
+- see pricing, timelines, and deliverables update live
 - review a grouped build specification
 - submit a request
 - receive confirmation
@@ -25,6 +25,7 @@ IOU Labs is:
 - a transparent pricing platform
 - a configurator-driven product
 - a guided order flow with persistent state
+- a deliverable-explicit request interface
 
 It is not:
 - a creative agency website
@@ -63,11 +64,13 @@ Unified configuration schema drives:
 - Services page module menu
 - pricing and timeline calculation
 - grouped summary output
+- structured deliverable definitions for modules, options, and packages
 
 Shared order-flow state now supports:
 - module preselection from Services
 - package preselection from Services
 - persistence across Configure -> Review -> Submit -> Confirm
+- deliverable-aware build specifications across pricing and order review
 
 ---
 
@@ -77,11 +80,12 @@ The system generates:
 - grouped module breakdown
 - included modules for starting setups
 - selected options per module
+- module and package deliverables
 - module-level subtotals
 - timeline contributions
 - final total and timeline
 
-This output acts as a build specification.
+This output acts as a build specification and is now closer to a provider-readable request document.
 
 Trust proof now includes:
 - Recent Build Log for fast proof on the Pricing surface
@@ -99,21 +103,21 @@ The product is now:
 - actionable
 - navigation-aligned
 - schema-driven across browse and build surfaces
+- deliverable-explicit in configure and review flows
 - consistent from entry layer to submission
 
 ---
 
 ## Current Phase
 
-Phase 8 - Trust Realization (Active)
+Phase 9 - Identity + Wow (Active)
 
-Phase 7 - Platform Alignment is complete through Task 28.
-Task 29 is complete.
+Phase 8 - Trust Realization is complete through Task 30.
 
 ---
 
 ## Immediate Focus
 
-- Task 30: clarify deliverables across modules and summaries
-- QA Services -> Configurator entry persistence on desktop and mobile
-- Keep case study records aligned with shared schema terminology as modules evolve
+- Task 31: Controlled 3D Layer
+- QA deliverable readability across dense mobile and desktop build states
+- Keep case study records and future schema changes aligned with deliverable terminology
