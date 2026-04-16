@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Button from "../ui/Button.jsx";
+import StructuredSummaryBreakdown from "./StructuredSummaryBreakdown.jsx";
 import { getSummaryActionLabel } from "./pricingSummaryHelpers.js";
 
 const SUMMARY_LIST_TRANSITION_MS = 180;
@@ -9,17 +10,6 @@ const DEFAULT_CTA_BUTTON_CLASSNAME =
 
 function getSummarySignal(values = []) {
   return values.map((value) => String(value ?? "")).join("||");
-}
-
-function getSummaryItemClasses(presenceState) {
-  return [
-    "grid gap-x-4 gap-y-3 border-b border-[color:var(--border-subtle)] py-4 first:pt-0 last:border-b-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-x-6 sm:gap-y-2 transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none",
-    presenceState === "entering"
-      ? "translate-y-1 opacity-60"
-      : presenceState === "exiting"
-        ? "-translate-y-1 opacity-0"
-        : "translate-y-0 opacity-100",
-  ].join(" ");
 }
 
 function getSettlingClasses(isSettling) {
@@ -42,6 +32,30 @@ function getTotalValueClasses(value) {
   return String(value ?? "").length > 18
     ? "text-[1.65rem] tracking-[-0.04em] sm:text-[2rem]"
     : "text-[2.2rem] tracking-[-0.06em] sm:text-[2.8rem]";
+}
+
+function getSummaryGroupSignal(group) {
+  return getSummarySignal([
+    group.id,
+    group.eyebrow,
+    group.title,
+    group.description,
+    group.rowsLabel,
+    group.subtotal?.label,
+    group.subtotal?.value,
+    group.timeline?.label,
+    group.timeline?.value,
+    ...(group.rows ?? []).map((row) =>
+      getSummarySignal([
+        row.id,
+        row.eyebrow,
+        row.label,
+        row.detail,
+        row.priceLabel,
+        row.timelineLabel,
+      ]),
+    ),
+  ]);
 }
 
 function toStableSummaryItems(items) {
@@ -149,18 +163,7 @@ function useSettlingChange(signal, enabled) {
 
 function useStagedSummaryItems(items, enabled) {
   const itemsSignature = useMemo(
-    () =>
-      items
-        .map((item) =>
-          getSummarySignal([
-            item.id,
-            item.eyebrow,
-            item.title,
-            item.detail,
-            item.value,
-          ]),
-        )
-        .join("::"),
+    () => items.map(getSummaryGroupSignal).join("::"),
     [items],
   );
   const stableItems = useMemo(() => toStableSummaryItems(items), [items]);
@@ -252,49 +255,6 @@ function useStagedSummaryItems(items, enabled) {
   }, [enabled, items, itemsSignature, stableItems]);
 
   return enabled ? stagedItems : stableItems;
-}
-
-function SummaryList({ items }) {
-  return (
-    <div className="rounded-[24px] bg-[var(--surface-contrast)] px-4 sm:px-5">
-      <ul>
-        {items.map((item) => (
-          <li className={getSummaryItemClasses(item.presenceState)} key={item.id}>
-            <div className="min-w-0">
-              {item.eyebrow ? (
-                <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                  {item.eyebrow}
-                </p>
-              ) : null}
-
-              <p
-                className={[
-                  "text-sm font-medium leading-6 text-[var(--text-primary)]",
-                  item.eyebrow ? "mt-1.5" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-              >
-                {item.title}
-              </p>
-
-              {item.detail ? (
-                <p className="mt-1.5 max-w-[34ch] text-sm leading-6 text-[var(--text-secondary)]">
-                  {item.detail}
-                </p>
-              ) : null}
-            </div>
-
-            {item.value ? (
-              <p className="max-w-full break-words text-sm font-medium leading-6 text-[var(--text-primary)] sm:max-w-[11rem] sm:justify-self-end sm:text-right">
-                {item.value}
-              </p>
-            ) : null}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
 }
 
 function EmptyState({ detail, title }) {
@@ -483,8 +443,8 @@ export default function PricingSummarySurface({
   ctaButtonClassName = DEFAULT_CTA_BUTTON_CLASSNAME,
   ctaButtonLabel,
   headerAction = null,
-  headerEyebrow = "Build Summary",
-  headerTitle = "Current setup",
+  headerEyebrow = "Build Specification",
+  headerTitle = "Current build",
   onInvalidAction,
   summary,
   titleId,
@@ -495,8 +455,8 @@ export default function PricingSummarySurface({
     ctaTo,
     description,
     emptyState,
+    groups = [],
     isActionDisabled,
-    items,
     modeLabel,
     selectionHint,
     selectionLabel,
@@ -506,21 +466,10 @@ export default function PricingSummarySurface({
     validationNote,
   } = summary;
   const prefersReducedMotion = usePrefersReducedMotion();
-  const stagedItems = useStagedSummaryItems(items, !prefersReducedMotion);
+  const stagedItems = useStagedSummaryItems(groups, !prefersReducedMotion);
   const itemSignal = useMemo(
-    () =>
-      items
-        .map((item) =>
-          getSummarySignal([
-            item.id,
-            item.eyebrow,
-            item.title,
-            item.detail,
-            item.value,
-          ]),
-        )
-        .join("::"),
-    [items],
+    () => groups.map(getSummaryGroupSignal).join("::"),
+    [groups],
   );
   const totalSignal = useMemo(
     () =>
@@ -570,6 +519,17 @@ export default function PricingSummarySurface({
         titleId={titleId}
       />
 
+      <SummarySection label="System output" live>
+        <SystemOutput
+          timeline={timeline}
+          timelineFeedbackActive={timelineFeedbackActive}
+          timelineSettling={timelineSettling}
+          total={total}
+          totalFeedbackActive={totalFeedbackActive}
+          totalSettling={totalSettling}
+        />
+      </SummarySection>
+
       <SummarySection description={selectionHint} label={selectionLabel} live>
         <div
           className={[
@@ -580,22 +540,11 @@ export default function PricingSummarySurface({
           ].join(" ")}
         >
           {stagedItems.length ? (
-            <SummaryList items={stagedItems} />
+            <StructuredSummaryBreakdown groups={stagedItems} />
           ) : (
             <EmptyState detail={emptyState.detail} title={emptyState.title} />
           )}
         </div>
-      </SummarySection>
-
-      <SummarySection label="System output" live>
-        <SystemOutput
-          timeline={timeline}
-          timelineFeedbackActive={timelineFeedbackActive}
-          timelineSettling={timelineSettling}
-          total={total}
-          totalFeedbackActive={totalFeedbackActive}
-          totalSettling={totalSettling}
-        />
       </SummarySection>
 
       <SummarySection description={ctaNote} label="Next step">

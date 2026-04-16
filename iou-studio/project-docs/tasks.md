@@ -6,36 +6,21 @@
 21: Real Order Flow  
 22: Mobile Persistent Summary  
 23: Unified Config Schema  
-24: Nested Options + Add-ons
+24: Nested Options + Add-ons  
+25: Line-Item Summary Upgrade
 
 ---
 
 ## CURRENT PHASE
 
-Phase 6 — System Structure
+Phase 7 — Platform Alignment
 
 ---
 
 ## Active Tasks (STRICT ORDER)
 
-### 25. Line-Item Summary Upgrade (CRITICAL)
-- grouped breakdown:
-  - modules
-  - options
-  - subtotals
-- timeline contribution clarity
-- provider-facing clarity
-
----
-
-## NEXT PHASE
-
-Phase 7 — Platform Alignment
-
----
-
-### 26. IA + Navigation Cleanup
-- simplify nav
+### 26. IA + Navigation Cleanup (CRITICAL)
+- simplify navigation
 - remove “Products”
 - Portfolio → Case Studies
 - align routes with system flow
@@ -45,26 +30,33 @@ Phase 7 — Platform Alignment
 ### 27. Copy System Alignment
 - remove agency language
 - unify system-first tone
+- align messaging across all pages
 
 ---
 
 ### 28. Services → System Menu
-- convert services into modular menu
-- integrate with configurator
+- replace card grids
+- convert services into modular strips
+- integrate browsing directly into configurator logic
 
 ---
 
-## PHASE 8 — Trust Realization
+## NEXT PHASE
+
+Phase 8 — Trust Realization
+
+---
 
 ### 29. Real Case Studies
 - replace placeholders
-- real outputs and visuals
+- show real outputs
+- add timeline + deliverables
 
 ---
 
 ### 30. Deliverable Clarity Layer
-- show what user receives
-- reflect in summary
+- show what user actually receives
+- reflect in summary and modules
 
 ---
 
@@ -72,14 +64,14 @@ Phase 7 — Platform Alignment
 
 ### 31. Controlled 3D Layer
 - subtle hero 3D
-- ambient only
+- ambient, not intrusive
 
 ---
 
 ### 32. Visual Polish Pass
-- spacing
-- typography
-- consistency
+- spacing consistency
+- typography refinement
+- reduce repetitive patterns
 
 ---
 

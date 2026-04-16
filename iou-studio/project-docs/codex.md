@@ -24,6 +24,7 @@ System now includes:
 - unified configuration schema
 - nested options and add-ons
 - live pricing + timeline (schema-driven)
+- line-item summary (grouped breakdown)
 - product-grade summary panel
 - mobile persistent summary
 - trust layers (process, proof, metrics)
@@ -37,7 +38,7 @@ System now includes:
 
 ## CURRENT PRIORITY
 
-Improve clarity and usability of deeper configuration
+Align the platform experience with the system
 
 ---
 
@@ -47,23 +48,24 @@ This is a system interface.
 
 Users:
 - configure services
-- customize scope
+- shape scope
 - review structured output
 - submit without needing a call
 
 ---
 
-## System Depth Principle (NEW)
+## Output Principle (NEW)
 
-System must:
-- support meaningful configuration
-- expose complexity progressively
-- remain easy to scan and use
+The system must produce:
 
-Avoid:
-- overwhelming UI
-- exposing all options at once
-- deep nesting beyond 1 level (for now)
+- clear scope definition
+- grouped breakdown
+- transparent pricing
+- understandable timeline
+
+This output must work for:
+- users (decision-making)
+- providers (execution)
 
 ---
 
@@ -71,9 +73,9 @@ Avoid:
 
 System must now become:
 
-- clearer → line-item summary
-- aligned → IA + copy
-- realistic → real outputs and deliverables
+- aligned → IA + navigation
+- consistent → copy and tone
+- believable → real proof
 - memorable → identity layer
 
 ---
@@ -82,7 +84,7 @@ System must now become:
 
 - one task at a time
 - preserve working system
-- extend safely
+- refine structure
 
 Goal:
-Build a high-quality, scalable service product
+Turn system into a polished, high-trust product platform

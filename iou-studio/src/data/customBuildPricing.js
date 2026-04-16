@@ -9,7 +9,7 @@ import { formatInr } from "./pricing.js";
 
 const EMPTY_TIMELINE_SUMMARY = {
   description: "Select modules to generate a live delivery estimate.",
-  label: "Estimated delivery",
+  label: "Final timeline",
   rangeDays: null,
   value: "Timeline updates as you build",
 };
@@ -64,7 +64,7 @@ export function getCustomBuildTimeline(selectedModules = []) {
 
   return {
     description: "Live estimate based on the selected modules and active option choices.",
-    label: "Estimated delivery",
+    label: "Final timeline",
     rangeDays: totalTimelineDays,
     value: formatTimelineRange(totalTimelineDays, EMPTY_TIMELINE_SUMMARY.value),
   };

@@ -7,10 +7,10 @@ IOU Labs is a productized service platform designed as an interactive system.
 Users can:
 - browse services like a menu
 - configure what they need
-- customize selected modules
+- customize modules and options
 - see pricing and timelines instantly
-- review their setup
-- submit a structured build request
+- review a structured build specification
+- submit a request
 - receive confirmation
 
 This is NOT a marketing website.
@@ -64,10 +64,9 @@ NOT:
 
 Users can:
 - select services (modules or packages)
-- customize modules using nested options
-- see live pricing
-- see timeline estimates
-- review selections in a structured summary
+- configure modules with nested options
+- see live pricing and timeline updates
+- review selections in a structured, grouped summary
 - understand process via “What Happens Next”
 - see outputs via Recent Builds
 - trust system via Metrics
@@ -82,7 +81,7 @@ Users can:
 ## System Flow
 
 1. Configure
-2. Review
+2. Review (Line-item summary)
 3. Submit
 4. Confirm
 
@@ -90,47 +89,57 @@ Users can:
 
 ## System Architecture
 
-The configurator now uses a unified configuration schema:
+Unified configuration schema:
 
 - categories → modules → options
 - packages mapped to modules
 - pricing derived from schema
 - timeline derived from schema
-- options contribute to:
-  - price
-  - timeline
-  - summary output
+- summary derived as structured output
 
 ---
 
-## System Depth (NEW)
+## System Output (NEW)
 
-The system now supports:
+The system now generates:
 
-- base module selection
-- nested options (1 level deep)
-- add-ons and configuration choices
-- dynamic scope shaping by user
+- grouped module breakdown
+- selected options per module
+- module-level subtotals
+- timeline contributions
+- final total and timeline
 
-This transforms the configurator into a:
-👉 real service builder
+This output acts as:
+👉 a build specification
+
+---
+
+## Product State
+
+The system is now:
+
+- interactive
+- configurable
+- transparent
+- actionable
+- structurally scalable
+- operationally clear
 
 ---
 
 ## Current Phase
 
-Phase 6 — System Structure (Active)
+Phase 6 — System Structure (Complete)
 
 Goal:
-Make the system:
-- scalable
-- expressive
-- closer to real-world service configuration
+Make the system usable both for:
+- users (decision clarity)
+- providers (execution clarity)
 
 ---
 
 ## Immediate Focus
 
-- structured summary clarity
-- provider-facing output quality
-- reducing ambiguity in final build definition
+- platform alignment (IA + copy)
+- real proof assets
+- refining browsing experience

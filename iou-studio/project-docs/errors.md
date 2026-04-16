@@ -18,17 +18,16 @@
 ## Low
 
 * Minor visual inconsistencies across sections
-* Pricing formatting edge cases with nested options
-* Repetitive card-grid patterns
+* Edge-case formatting for nested options
+* Slight density in summary when many options selected
 
 ---
 
 ## Watchlist
 
-* Validate pricing correctness with multiple option combinations
-* Validate timeline stacking logic for options
-* Ensure option defaults behave predictably
-* Prevent UI overload when multiple modules expanded
-* Ensure mobile usability remains clean with nested options
-* Ensure summary receives correct option data
-* Avoid deep coupling between UI and schema
+* Ensure line-item summary remains readable under heavy configurations
+* Validate pricing accuracy across complex option combinations
+* Validate timeline aggregation logic
+* Maintain mobile readability for long summaries
+* Prevent UI from becoming too dense
+* Ensure summary structure maps cleanly to submission payload

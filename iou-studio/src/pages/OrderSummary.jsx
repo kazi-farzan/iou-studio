@@ -1,11 +1,12 @@
-import { startTransition, useEffect, useState } from "react";
+import { startTransition, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StepFlowIndicator from "../components/pricing/StepFlowIndicator.jsx";
+import StructuredSummaryBreakdown from "../components/pricing/StructuredSummaryBreakdown.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
-import { useOrderFlow } from "../orderFlow/useOrderFlow.js";
 import { buildOrderFlowSteps } from "../orderFlow/orderFlow.js";
+import { useOrderFlow } from "../orderFlow/useOrderFlow.js";
 
 function getFieldClasses(hasError) {
   return [
@@ -39,6 +40,107 @@ function validateOrderDetails(values) {
   return errors;
 }
 
+function ReviewMetricCard({ metric }) {
+  return (
+    <div className="theme-panel-contrast rounded-[24px] p-5">
+      <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+        {metric.label}
+      </p>
+      <p className="mt-3 break-words text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-[2rem]">
+        {metric.value}
+      </p>
+      {metric.meta ? (
+        <p className="mt-2 text-sm font-medium text-[var(--text-secondary)]">
+          {metric.meta}
+        </p>
+      ) : null}
+      {metric.description ? (
+        <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
+          {metric.description}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function ReviewMetaRow({ label, value }) {
+  return (
+    <div className="grid gap-2 border-b border-[color:var(--border-subtle)] py-3 last:border-b-0 last:pb-0 first:pt-0 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-start sm:gap-4">
+      <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+        {label}
+      </p>
+      <p className="text-sm font-medium leading-6 text-[var(--text-primary)] sm:text-right">
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function CommercialTerms({ pricingRows, selectedSummary }) {
+  return (
+    <div className="rounded-[26px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-5 sm:p-6">
+      <div className="space-y-2">
+        <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+          Commercial structure
+        </p>
+        <p className="text-sm leading-6 text-[var(--text-secondary)]">
+          Pricing context stays visible here while the grouped scope below keeps the
+          requested build explicit.
+        </p>
+      </div>
+
+      <div className="mt-5 space-y-4">
+        {pricingRows.map((row) => (
+          <div
+            className="grid gap-2 border-b border-[color:var(--border-subtle)] pb-4 last:border-b-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start"
+            key={row.label}
+          >
+            <div>
+              <p className="text-sm font-medium text-[var(--text-primary)]">
+                {row.label}
+              </p>
+              <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
+                {row.detail}
+              </p>
+            </div>
+            <p className="text-sm font-medium text-[var(--text-primary)] sm:text-right">
+              {row.value}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {selectedSummary?.note ? (
+        <p className="mt-5 text-sm leading-6 text-[var(--text-secondary)]">
+          {selectedSummary.note}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function getScopeSummary(configuration) {
+  const groupCount = configuration.summaryBreakdown.groups.length;
+
+  if (configuration.packageSelection) {
+    return `${groupCount} grouped package scope`;
+  }
+
+  const optionCount = configuration.customSelection?.selectedOptionCount ?? 0;
+
+  if (!groupCount) {
+    return "No grouped scope yet";
+  }
+
+  if (!optionCount) {
+    return `${groupCount} module${groupCount === 1 ? "" : "s"}`;
+  }
+
+  return `${groupCount} module${groupCount === 1 ? "" : "s"} / ${optionCount} customization${
+    optionCount === 1 ? "" : "s"
+  }`;
+}
+
 export default function OrderSummary() {
   const navigate = useNavigate();
   const { contactDraft, draftConfiguration, setContactDraft, submitOrder } =
@@ -47,6 +149,10 @@ export default function OrderSummary() {
   const hasSelection = draftConfiguration.hasSelection;
   const isPackageMode = Boolean(draftConfiguration.packageSelection);
   const steps = buildOrderFlowSteps("review", { hasSelection });
+  const scopeSummary = useMemo(
+    () => getScopeSummary(draftConfiguration),
+    [draftConfiguration],
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -102,11 +208,11 @@ export default function OrderSummary() {
               Order Review
             </p>
             <h1 className="max-w-3xl text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-              Review your setup
+              Review your build specification
             </h1>
             <p className="max-w-3xl text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-              Confirm the active configuration, then submit a structured request
-              tied to the reviewed build.
+              Confirm the active configuration as a grouped scope breakdown, then
+              submit a structured request tied to the reviewed build.
             </p>
           </div>
 
@@ -139,11 +245,11 @@ export default function OrderSummary() {
             <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_340px] xl:items-start">
               <div className="space-y-6">
                 <Card className="p-6 sm:p-8">
-                  <div className="space-y-5">
+                  <div className="space-y-8">
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div className="max-w-3xl space-y-3">
                         <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-                          Selected setup
+                          Reviewed build
                         </p>
                         <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
                           {draftConfiguration.title}
@@ -163,137 +269,35 @@ export default function OrderSummary() {
                       </div>
                     </div>
 
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <ReviewMetricCard metric={draftConfiguration.total} />
+                      <ReviewMetricCard metric={draftConfiguration.timeline} />
+                    </div>
+
                     {isPackageMode ? (
-                      <div className="space-y-4">
-                        <div className="grid gap-4 md:grid-cols-2">
-                          <div className="theme-panel-contrast rounded-[24px] p-5">
-                            <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                              {
-                                draftConfiguration.packageSelection.selectedSummary
-                                  .headlineLabel
-                              }
-                            </p>
-                            <p className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
-                              {
-                                draftConfiguration.packageSelection.selectedSummary
-                                  .headlineValue
-                              }
-                            </p>
-                          </div>
-                          <div className="theme-panel-contrast rounded-[24px] p-5">
-                            <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                              {
-                                draftConfiguration.packageSelection.selectedSummary
-                                  .secondaryLabel
-                              }
-                            </p>
-                            <p className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
-                              {
-                                draftConfiguration.packageSelection.selectedSummary
-                                  .secondaryValue
-                              }
-                            </p>
-                          </div>
-                        </div>
+                      <CommercialTerms
+                        pricingRows={draftConfiguration.packageSelection.pricingRows}
+                        selectedSummary={draftConfiguration.packageSelection.selectedSummary}
+                      />
+                    ) : null}
 
-                        <div className="rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-5">
-                          {draftConfiguration.packageSelection.pricingRows.map((row) => (
-                            <div
-                              className="grid gap-2 border-b border-[color:var(--border-subtle)] py-4 last:border-b-0 last:pb-0 first:pt-0 sm:grid-cols-[minmax(0,1fr)_auto]"
-                              key={row.label}
-                            >
-                              <div>
-                                <p className="text-sm font-medium text-[var(--text-primary)]">
-                                  {row.label}
-                                </p>
-                                <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
-                                  {row.detail}
-                                </p>
-                              </div>
-                              <p className="text-sm font-medium text-[var(--text-primary)] sm:text-right">
-                                {row.value}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className="grid gap-4 md:grid-cols-2">
-                          {draftConfiguration.packageSelection.plan.features.map((feature) => (
-                            <div className="theme-panel rounded-[24px] p-5" key={feature}>
-                              <p className="text-sm leading-7 text-[var(--text-secondary)]">
-                                {feature}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
+                    <div className="space-y-4">
+                      <div className="max-w-3xl space-y-2">
+                        <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                          Build specification
+                        </p>
+                        <p className="text-sm leading-6 text-[var(--text-secondary)]">
+                          Each group below shows the requested scope, selected nested
+                          options, subtotal, and timeline contribution in a reviewable
+                          format.
+                        </p>
                       </div>
-                    ) : (
-                      <div className="grid gap-4">
-                        {draftConfiguration.customSelection.lineItems.map((item) => (
-                          <div className="theme-panel rounded-[24px] p-5" key={item.id}>
-                            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                              <div>
-                                <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
-                                  {item.eyebrow}
-                                </p>
-                                <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
-                                  {item.title}
-                                </p>
-                                <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                                  {item.detail}
-                                </p>
-                              </div>
-                              <div className="sm:text-right">
-                                <p className="text-base font-semibold text-[var(--text-primary)]">
-                                  {item.value}
-                                </p>
-                                {item.timeline ? (
-                                  <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
-                                    {item.timeline}
-                                  </p>
-                                ) : null}
-                              </div>
-                            </div>
 
-                            <div className="mt-4 rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-4">
-                              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                                Module configuration
-                              </p>
-
-                              {item.selectedOptions.length ? (
-                                <div className="mt-3 space-y-3">
-                                  {item.selectedOptions.map((option) => (
-                                    <div
-                                      className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between"
-                                      key={option.id}
-                                    >
-                                      <div className="min-w-0">
-                                        <p className="text-sm font-medium text-[var(--text-primary)]">
-                                          {option.label}
-                                        </p>
-                                        {option.description ? (
-                                          <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
-                                            {option.description}
-                                          </p>
-                                        ) : null}
-                                      </div>
-
-                                      <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--text-muted)] sm:text-right">
-                                        {option.impactLabel}
-                                      </p>
-                                    </div>
-                                  ))}
-                                </div>
-                              ) : (
-                                <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
-                                  {item.selectionNote}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                      <StructuredSummaryBreakdown
+                        groups={draftConfiguration.summaryBreakdown.groups}
+                        variant="page"
+                      />
+                    </div>
                   </div>
                 </Card>
 
@@ -414,27 +418,6 @@ export default function OrderSummary() {
                 </div>
 
                 <div className="space-y-5 px-5 py-6 sm:px-6">
-                  {draftConfiguration.reviewItems.map((item) => (
-                    <div
-                      className="border-b border-[color:var(--border-subtle)] pb-4 last:border-b-0 last:pb-0"
-                      key={item.id}
-                    >
-                      {item.eyebrow ? (
-                        <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                          {item.eyebrow}
-                        </p>
-                      ) : null}
-                      <p className="mt-2 text-sm font-medium text-[var(--text-primary)]">
-                        {item.title}
-                      </p>
-                      {item.detail ? (
-                        <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
-                          {item.detail}
-                        </p>
-                      ) : null}
-                    </div>
-                  ))}
-
                   <div className="rounded-[24px] border border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-soft))] p-5">
                     <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
                       {draftConfiguration.total.label}
@@ -459,6 +442,12 @@ export default function OrderSummary() {
                         {draftConfiguration.timeline.description}
                       </p>
                     </div>
+                  </div>
+
+                  <div className="rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-5">
+                    <ReviewMetaRow label="Mode" value={draftConfiguration.modeLabel} />
+                    <ReviewMetaRow label="Billing" value={draftConfiguration.billingLabel} />
+                    <ReviewMetaRow label="Scope" value={scopeSummary} />
                   </div>
 
                   <p className="text-sm leading-6 text-[var(--text-secondary)]">

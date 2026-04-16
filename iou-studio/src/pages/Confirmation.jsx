@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import StepFlowIndicator from "../components/pricing/StepFlowIndicator.jsx";
+import StructuredSummaryBreakdown from "../components/pricing/StructuredSummaryBreakdown.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
@@ -171,27 +172,6 @@ export default function Confirmation() {
                 </div>
 
                 <div className="space-y-5 px-5 py-6 sm:px-6">
-                  {lastSubmittedOrder.configuration.reviewItems.map((item) => (
-                    <div
-                      className="border-b border-[color:var(--border-subtle)] pb-4 last:border-b-0 last:pb-0"
-                      key={item.id}
-                    >
-                      {item.eyebrow ? (
-                        <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
-                          {item.eyebrow}
-                        </p>
-                      ) : null}
-                      <p className="mt-2 text-sm font-medium text-[var(--text-primary)]">
-                        {item.title}
-                      </p>
-                      {item.detail ? (
-                        <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
-                          {item.detail}
-                        </p>
-                      ) : null}
-                    </div>
-                  ))}
-
                   <div className="rounded-[24px] border border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-soft))] p-5">
                     <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
                       {lastSubmittedOrder.configuration.total.label}
@@ -214,6 +194,10 @@ export default function Confirmation() {
                       </p>
                     </div>
                   </div>
+
+                  <StructuredSummaryBreakdown
+                    groups={lastSubmittedOrder.configuration.summaryBreakdown.groups}
+                  />
 
                   <div className="flex flex-col gap-3">
                     <Button size="lg" to="/pricing#builder">
