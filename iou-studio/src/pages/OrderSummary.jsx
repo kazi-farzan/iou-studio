@@ -243,9 +243,52 @@ export default function OrderSummary() {
                                   {item.detail}
                                 </p>
                               </div>
-                              <p className="text-base font-semibold text-[var(--text-primary)]">
-                                {item.value}
+                              <div className="sm:text-right">
+                                <p className="text-base font-semibold text-[var(--text-primary)]">
+                                  {item.value}
+                                </p>
+                                {item.timeline ? (
+                                  <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
+                                    {item.timeline}
+                                  </p>
+                                ) : null}
+                              </div>
+                            </div>
+
+                            <div className="mt-4 rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-4">
+                              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+                                Module configuration
                               </p>
+
+                              {item.selectedOptions.length ? (
+                                <div className="mt-3 space-y-3">
+                                  {item.selectedOptions.map((option) => (
+                                    <div
+                                      className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between"
+                                      key={option.id}
+                                    >
+                                      <div className="min-w-0">
+                                        <p className="text-sm font-medium text-[var(--text-primary)]">
+                                          {option.label}
+                                        </p>
+                                        {option.description ? (
+                                          <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
+                                            {option.description}
+                                          </p>
+                                        ) : null}
+                                      </div>
+
+                                      <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--text-muted)] sm:text-right">
+                                        {option.impactLabel}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              ) : (
+                                <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
+                                  {item.selectionNote}
+                                </p>
+                              )}
                             </div>
                           </div>
                         ))}

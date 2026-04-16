@@ -102,12 +102,14 @@ export default function Pricing() {
     draftConfiguration,
     mode,
     selectedCustomModuleIds,
+    selectedCustomModuleOptions,
     selectedPlanId,
     setAppliedCouponCode,
     setBillingMode,
     setCouponInput,
     setMode,
     setSelectedCustomModuleIds,
+    setSelectedCustomModuleOptions,
     setSelectedPlanId,
   } = useOrderFlow();
   const [couponError, setCouponError] = useState("");
@@ -142,10 +144,17 @@ export default function Pricing() {
 
   const selectedCustomModules = customBuildPricing?.modules ?? [];
   const selectedCustomModulesCount = selectedCustomModules.length;
+  const selectedCustomOptionCount = customBuildPricing?.selectedOptionCount ?? 0;
   const selectedCustomModulesLabel = selectedCustomModulesCount
-    ? `${selectedCustomModulesCount} module${
-        selectedCustomModulesCount === 1 ? "" : "s"
-      } selected`
+    ? selectedCustomOptionCount
+      ? `${selectedCustomModulesCount} module${
+          selectedCustomModulesCount === 1 ? "" : "s"
+        } / ${selectedCustomOptionCount} customization${
+          selectedCustomOptionCount === 1 ? "" : "s"
+        }`
+      : `${selectedCustomModulesCount} module${
+          selectedCustomModulesCount === 1 ? "" : "s"
+        } selected`
     : "Select modules to begin";
 
   const summaryPanelData = useMemo(
@@ -214,6 +223,16 @@ export default function Pricing() {
 
       return [...current, moduleId];
     });
+  }
+
+  function handleCustomModuleOptionChange(moduleId, optionId, value) {
+    setSelectedCustomModuleOptions((current) => ({
+      ...current,
+      [moduleId]: {
+        ...(current[moduleId] ?? {}),
+        [optionId]: value,
+      },
+    }));
   }
 
   function handleSelectionGuidance() {
@@ -575,8 +594,9 @@ export default function Pricing() {
                           </h2>
                           <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
                             Select any module card to add or remove it from your
-                            system. The base total and delivery estimate update
-                            immediately as the active module set changes.
+                            system. Selected modules reveal focused options and
+                            add-ons inline, and every price and timeline change
+                            updates immediately.
                           </p>
                         </div>
 
@@ -592,6 +612,8 @@ export default function Pricing() {
                             isSelected={selectedCustomModuleIds.includes(module.id)}
                             key={module.id}
                             module={module}
+                            onOptionChange={handleCustomModuleOptionChange}
+                            optionSelections={selectedCustomModuleOptions[module.id] ?? {}}
                             onToggle={handleCustomModuleToggle}
                           />
                         ))}

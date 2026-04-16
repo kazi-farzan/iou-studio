@@ -7,6 +7,7 @@ IOU Labs is a productized service platform designed as an interactive system.
 Users can:
 - browse services like a menu
 - configure what they need
+- customize selected modules
 - see pricing and timelines instantly
 - review their setup
 - submit a structured build request
@@ -63,6 +64,7 @@ NOT:
 
 Users can:
 - select services (modules or packages)
+- customize modules using nested options
 - see live pricing
 - see timeline estimates
 - review selections in a structured summary
@@ -86,19 +88,32 @@ Users can:
 
 ---
 
-## System Architecture (NEW)
+## System Architecture
 
 The configurator now uses a unified configuration schema:
 
-- single source of truth for:
-  - categories
-  - modules
-  - packages
+- categories → modules → options
+- packages mapped to modules
 - pricing derived from schema
 - timeline derived from schema
-- state structured for scalability
+- options contribute to:
+  - price
+  - timeline
+  - summary output
 
-This replaces fragmented pricing/module logic.
+---
+
+## System Depth (NEW)
+
+The system now supports:
+
+- base module selection
+- nested options (1 level deep)
+- add-ons and configuration choices
+- dynamic scope shaping by user
+
+This transforms the configurator into a:
+👉 real service builder
 
 ---
 
@@ -107,12 +122,15 @@ This replaces fragmented pricing/module logic.
 Phase 6 — System Structure (Active)
 
 Goal:
-Make the system scalable, extensible, and backend-ready.
+Make the system:
+- scalable
+- expressive
+- closer to real-world service configuration
 
 ---
 
 ## Immediate Focus
 
-- nested options (deeper configurator)
-- structured summary output
-- reducing ambiguity in scope definition
+- structured summary clarity
+- provider-facing output quality
+- reducing ambiguity in final build definition

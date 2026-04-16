@@ -22,7 +22,8 @@ System now includes:
 
 - configurator (modules + packages)
 - unified configuration schema
-- live pricing + timeline (derived from schema)
+- nested options and add-ons
+- live pricing + timeline (schema-driven)
 - product-grade summary panel
 - mobile persistent summary
 - trust layers (process, proof, metrics)
@@ -36,7 +37,7 @@ System now includes:
 
 ## CURRENT PRIORITY
 
-Deepen the system without breaking structure
+Improve clarity and usability of deeper configuration
 
 ---
 
@@ -46,21 +47,23 @@ This is a system interface.
 
 Users:
 - configure services
+- customize scope
 - review structured output
 - submit without needing a call
 
 ---
 
-## System Architecture Principle (NEW)
+## System Depth Principle (NEW)
 
-- single source of truth for configuration
-- derived values (price, timeline)
-- modular and extensible structure
+System must:
+- support meaningful configuration
+- expose complexity progressively
+- remain easy to scan and use
 
 Avoid:
-- duplicated pricing logic
-- fragmented data definitions
-- tightly coupled UI + data
+- overwhelming UI
+- exposing all options at once
+- deep nesting beyond 1 level (for now)
 
 ---
 
@@ -68,10 +71,10 @@ Avoid:
 
 System must now become:
 
-- deeper → nested options
-- clearer → line-item breakdown
+- clearer → line-item summary
 - aligned → IA + copy
-- realistic → real proof and outputs
+- realistic → real outputs and deliverables
+- memorable → identity layer
 
 ---
 
@@ -82,4 +85,4 @@ System must now become:
 - extend safely
 
 Goal:
-Build a scalable, production-ready service platform
+Build a high-quality, scalable service product

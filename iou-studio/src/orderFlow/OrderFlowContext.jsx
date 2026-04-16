@@ -16,6 +16,9 @@ export function OrderFlowProvider({ children }) {
   const [appliedCouponCode, setAppliedCouponCode] = useState("");
   const [selectedPlanId, setSelectedPlanId] = useState(getDefaultPlanId());
   const [selectedCustomModuleIds, setSelectedCustomModuleIds] = useState([]);
+  const [selectedCustomModuleOptions, setSelectedCustomModuleOptions] = useState(
+    {},
+  );
   const [contactDraft, setContactDraft] = useState(getDefaultContactDraft());
   const [lastSubmittedOrder, setLastSubmittedOrder] = useState(null);
 
@@ -26,6 +29,7 @@ export function OrderFlowProvider({ children }) {
         billingMode,
         mode,
         selectedCustomModuleIds,
+        selectedCustomModuleOptions,
         selectedPlanId,
       }),
     [
@@ -33,6 +37,7 @@ export function OrderFlowProvider({ children }) {
       billingMode,
       mode,
       selectedCustomModuleIds,
+      selectedCustomModuleOptions,
       selectedPlanId,
     ],
   );
@@ -63,6 +68,7 @@ export function OrderFlowProvider({ children }) {
     lastSubmittedOrder,
     mode,
     selectedCustomModuleIds,
+    selectedCustomModuleOptions,
     selectedPlanId,
     setAppliedCouponCode,
     setBillingMode,
@@ -70,6 +76,7 @@ export function OrderFlowProvider({ children }) {
     setCouponInput,
     setMode,
     setSelectedCustomModuleIds,
+    setSelectedCustomModuleOptions,
     setSelectedPlanId,
     submitOrder,
   };

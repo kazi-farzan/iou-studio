@@ -18,19 +18,17 @@
 ## Low
 
 * Minor visual inconsistencies across sections
-* Pricing formatting edge cases
+* Pricing formatting edge cases with nested options
 * Repetitive card-grid patterns
 
 ---
 
 ## Watchlist
 
-* Ensure unified schema does not introduce edge-case pricing bugs
-* Validate price/timeline consistency across:
-  - configurator
-  - order summary
-  - mobile summary
-* Ensure selection state maps correctly to schema
-* Maintain performance as schema grows
-* Avoid tightly coupling UI to schema structure
-* Keep schema flexible for nested options (Task 24)
+* Validate pricing correctness with multiple option combinations
+* Validate timeline stacking logic for options
+* Ensure option defaults behave predictably
+* Prevent UI overload when multiple modules expanded
+* Ensure mobile usability remains clean with nested options
+* Ensure summary receives correct option data
+* Avoid deep coupling between UI and schema

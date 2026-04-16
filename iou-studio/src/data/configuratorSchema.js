@@ -1,3 +1,7 @@
+const OPTION_TYPE_BOOLEAN = "boolean";
+const OPTION_TYPE_SINGLE_CHOICE = "single-choice";
+const OPTION_TYPE_SELECT = "select";
+
 const configuratorCategoriesList = [
   {
     id: "branding",
@@ -32,6 +36,52 @@ function cloneTimelineDays(timelineDays = {}) {
   };
 }
 
+function hasTimelineImpact(timelineDays = {}) {
+  return Boolean(timelineDays.minimum || timelineDays.maximum);
+}
+
+function buildOptionChoice(definition) {
+  return {
+    description: definition.description ?? "",
+    id: definition.id,
+    label: definition.label,
+    priceImpact: definition.priceImpact ?? 0,
+    timelineImpact: cloneTimelineDays(definition.timelineImpact),
+  };
+}
+
+function buildModuleOption(definition) {
+  if (definition.type === OPTION_TYPE_BOOLEAN) {
+    return {
+      defaultValue: Boolean(definition.defaultValue),
+      description: definition.description ?? "",
+      display: "checkbox",
+      id: definition.id,
+      label: definition.label,
+      priceImpact: definition.priceImpact ?? 0,
+      timelineImpact: cloneTimelineDays(definition.timelineImpact),
+      type: definition.type,
+    };
+  }
+
+  const choices = (definition.choices ?? []).map(buildOptionChoice);
+  const hasDefaultChoice = choices.some(
+    (choice) => choice.id === definition.defaultValue,
+  );
+
+  return {
+    choices,
+    defaultValue: hasDefaultChoice ? definition.defaultValue : choices[0]?.id ?? null,
+    description: definition.description ?? "",
+    display:
+      definition.display ??
+      (definition.type === OPTION_TYPE_SELECT ? "select" : "radio"),
+    id: definition.id,
+    label: definition.label,
+    type: definition.type,
+  };
+}
+
 function buildModule(definition) {
   const resolvedCategory = categoryById.get(definition.categoryId);
   const baseTimelineDays = cloneTimelineDays(definition.baseTimelineDays);
@@ -47,7 +97,7 @@ function buildModule(definition) {
     description: definition.description,
     id: definition.id,
     metadata: definition.metadata ?? {},
-    options: definition.options ?? [],
+    options: (definition.options ?? []).map(buildModuleOption),
     tags: definition.tags ?? [],
     timelineDays: baseTimelineDays,
     title: definition.title,
@@ -56,6 +106,7 @@ function buildModule(definition) {
 
 function buildPackage(definition) {
   return {
+    audience: definition.audience,
     ctaLabel: definition.ctaLabel,
     description: definition.description,
     features: definition.features ?? [],
@@ -65,10 +116,124 @@ function buildPackage(definition) {
     metadata: definition.metadata ?? {},
     name: definition.name,
     options: definition.options ?? [],
-    audience: definition.audience,
     pricing: definition.pricing,
     timelineEstimate: definition.timelineEstimate,
   };
+}
+
+function getConfiguredOptionChoice(option, value) {
+  return option.choices?.find((choice) => choice.id === value) ?? null;
+}
+
+function buildBooleanSelection(option) {
+  if (!option.value) {
+    return {
+      activeSelection: null,
+      selection: null,
+    };
+  }
+
+  const selection = {
+    description: option.description,
+    groupLabel: option.label,
+    id: `${option.id}:enabled`,
+    isDefault: option.value === Boolean(option.defaultValue),
+    label: option.label,
+    optionId: option.id,
+    priceImpact: option.priceImpact,
+    summaryLabel: option.label,
+    timelineImpact: cloneTimelineDays(option.timelineImpact),
+    type: option.type,
+    value: true,
+    valueLabel: "Included",
+  };
+  const isActive =
+    !selection.isDefault ||
+    selection.priceImpact > 0 ||
+    hasTimelineImpact(selection.timelineImpact);
+
+  return {
+    activeSelection: isActive ? selection : null,
+    selection,
+  };
+}
+
+function buildChoiceSelection(option) {
+  if (!option.selectedChoice) {
+    return {
+      activeSelection: null,
+      selection: null,
+    };
+  }
+
+  const selection = {
+    description: option.selectedChoice.description || option.description,
+    groupLabel: option.label,
+    id: `${option.id}:${option.selectedChoice.id}`,
+    isDefault: option.selectedChoice.id === option.defaultValue,
+    label: `${option.label}: ${option.selectedChoice.label}`,
+    optionId: option.id,
+    priceImpact: option.selectedChoice.priceImpact,
+    summaryLabel: `${option.label}: ${option.selectedChoice.label}`,
+    timelineImpact: cloneTimelineDays(option.selectedChoice.timelineImpact),
+    type: option.type,
+    value: option.selectedChoice.id,
+    valueLabel: option.selectedChoice.label,
+  };
+  const isActive =
+    !selection.isDefault ||
+    selection.priceImpact > 0 ||
+    hasTimelineImpact(selection.timelineImpact);
+
+  return {
+    activeSelection: isActive ? selection : null,
+    selection,
+  };
+}
+
+function buildResolvedModuleOption(option, rawValue) {
+  const value = getResolvedModuleOptionValue(option, rawValue);
+
+  if (option.type === OPTION_TYPE_BOOLEAN) {
+    return {
+      ...option,
+      value,
+    };
+  }
+
+  const selectedChoice =
+    getConfiguredOptionChoice(option, value) ?? option.choices?.[0] ?? null;
+
+  return {
+    ...option,
+    selectedChoice,
+    value: selectedChoice?.id ?? null,
+  };
+}
+
+function buildModuleSelections(options = []) {
+  return options.reduce(
+    (runningSelections, option) => {
+      const { activeSelection, selection } =
+        option.type === OPTION_TYPE_BOOLEAN
+          ? buildBooleanSelection(option)
+          : buildChoiceSelection(option);
+
+      if (selection) {
+        runningSelections.selectedOptions.push(selection);
+      }
+
+      if (activeSelection) {
+        runningSelections.activeOptions.push(activeSelection);
+      }
+
+      return runningSelections;
+    },
+    {
+      activeOptions: [],
+      selectedOptions: [],
+    },
+  );
 }
 
 export const configuratorCategories = configuratorCategoriesList;
@@ -90,6 +255,34 @@ export const configuratorModules = [
       "Visual language system",
       "Core brand assets",
     ],
+    options: [
+      {
+        id: "social-kit",
+        label: "Social kit",
+        type: OPTION_TYPE_BOOLEAN,
+        description:
+          "Launch-ready profile, story, and post assets aligned to the core identity.",
+        priceImpact: 3500,
+        timelineImpact: {
+          minimum: 1,
+          maximum: 2,
+        },
+        defaultValue: false,
+      },
+      {
+        id: "menu-design",
+        label: "Menu design",
+        type: OPTION_TYPE_BOOLEAN,
+        description:
+          "A service or product menu layout that fits the approved brand system.",
+        priceImpact: 2500,
+        timelineImpact: {
+          minimum: 1,
+          maximum: 1,
+        },
+        defaultValue: false,
+      },
+    ],
   }),
   buildModule({
     id: "website",
@@ -107,6 +300,63 @@ export const configuratorModules = [
       "Content flow setup",
       "Conversion-focused web surface",
     ],
+    options: [
+      {
+        id: "page-count",
+        label: "Page count",
+        type: OPTION_TYPE_SINGLE_CHOICE,
+        display: "radio",
+        description: "Scale the website structure to match the amount of content and flow.",
+        defaultValue: "core",
+        choices: [
+          {
+            id: "core",
+            label: "Up to 5 pages",
+            description: "A focused site structure for the main offer, proof, and contact flow.",
+            priceImpact: 0,
+            timelineImpact: {
+              minimum: 0,
+              maximum: 0,
+            },
+          },
+          {
+            id: "expanded",
+            label: "6-10 pages",
+            description:
+              "A broader information structure for services, campaigns, or deeper content.",
+            priceImpact: 6000,
+            timelineImpact: {
+              minimum: 2,
+              maximum: 3,
+            },
+          },
+          {
+            id: "extended",
+            label: "11-16 pages",
+            description:
+              "A larger site map for layered offers, landing flows, or more complex content.",
+            priceImpact: 12000,
+            timelineImpact: {
+              minimum: 4,
+              maximum: 5,
+            },
+          },
+        ],
+      },
+      {
+        id: "contact-flow",
+        label: "Booking or contact form",
+        type: OPTION_TYPE_BOOLEAN,
+        description:
+          "A structured inquiry or booking form routed into the website conversion flow.",
+        priceImpact: 4000,
+        timelineImpact: {
+          minimum: 1,
+          maximum: 2,
+        },
+        defaultValue: false,
+      },
+    ],
   }),
   buildModule({
     id: "ordering-system",
@@ -123,6 +373,64 @@ export const configuratorModules = [
       "Ordering flow structure",
       "Operational handoff points",
       "Commerce system baseline",
+    ],
+    options: [
+      {
+        id: "whatsapp-handoff",
+        label: "WhatsApp integration",
+        type: OPTION_TYPE_BOOLEAN,
+        description:
+          "Order confirmations and customer handoff connected into a WhatsApp touchpoint.",
+        priceImpact: 3000,
+        timelineImpact: {
+          minimum: 1,
+          maximum: 1,
+        },
+        defaultValue: false,
+      },
+      {
+        id: "payment-integration",
+        label: "Payment integration",
+        type: OPTION_TYPE_SELECT,
+        display: "select",
+        description:
+          "Choose how payments are handled inside or around the ordering experience.",
+        defaultValue: "none",
+        choices: [
+          {
+            id: "none",
+            label: "No online payment",
+            description: "Orders are placed first, then payment is handled manually afterward.",
+            priceImpact: 0,
+            timelineImpact: {
+              minimum: 0,
+              maximum: 0,
+            },
+          },
+          {
+            id: "payment-link",
+            label: "Payment link handoff",
+            description:
+              "Customers receive a branded payment link after the order is submitted.",
+            priceImpact: 5000,
+            timelineImpact: {
+              minimum: 1,
+              maximum: 2,
+            },
+          },
+          {
+            id: "integrated-checkout",
+            label: "Integrated checkout",
+            description:
+              "Customers complete payment directly inside the ordering flow.",
+            priceImpact: 9000,
+            timelineImpact: {
+              minimum: 2,
+              maximum: 3,
+            },
+          },
+        ],
+      },
     ],
   }),
   buildModule({
@@ -254,6 +562,17 @@ export function getConfiguratorModules(moduleIds = []) {
     .filter(Boolean);
 }
 
+export function getConfiguredModules(
+  moduleIds = [],
+  optionSelectionsByModule = {},
+) {
+  return getConfiguratorModules(moduleIds)
+    .map((module) =>
+      getConfiguredModule(module, optionSelectionsByModule[module.id] ?? {}),
+    )
+    .filter(Boolean);
+}
+
 export function getConfiguratorPackage(packageId) {
   return packageById.get(packageId) ?? null;
 }
@@ -269,6 +588,85 @@ export function getPackageIncludedModules(packageOrId) {
   }
 
   return getConfiguratorModules(packageConfig.includedModuleIds);
+}
+
+export function getModuleOptionDefaultValue(option) {
+  if (!option) {
+    return null;
+  }
+
+  if (option.type === OPTION_TYPE_BOOLEAN) {
+    return Boolean(option.defaultValue);
+  }
+
+  return option.defaultValue ?? option.choices?.[0]?.id ?? null;
+}
+
+export function getResolvedModuleOptionValue(option, rawValue) {
+  const defaultValue = getModuleOptionDefaultValue(option);
+
+  if (!option) {
+    return null;
+  }
+
+  if (option.type === OPTION_TYPE_BOOLEAN) {
+    return typeof rawValue === "boolean" ? rawValue : defaultValue;
+  }
+
+  return getConfiguredOptionChoice(option, rawValue)?.id ?? defaultValue;
+}
+
+export function getConfiguredModule(moduleOrId, optionSelections = {}) {
+  const module =
+    typeof moduleOrId === "string"
+      ? getConfiguratorModule(moduleOrId)
+      : moduleOrId;
+
+  if (!module) {
+    return null;
+  }
+
+  const resolvedOptions = module.options.map((option) =>
+    buildResolvedModuleOption(option, optionSelections[option.id]),
+  );
+  const { activeOptions, selectedOptions } = buildModuleSelections(resolvedOptions);
+  const optionTimelineDays = sumTimelineRanges(
+    activeOptions,
+    (entry) => entry.timelineImpact,
+  );
+  const configuredPrice =
+    module.basePrice +
+    activeOptions.reduce(
+      (runningTotal, option) => runningTotal + (option.priceImpact ?? 0),
+      0,
+    );
+  const configuredTimelineDays = {
+    maximum: module.baseTimelineDays.maximum + optionTimelineDays.maximum,
+    minimum: module.baseTimelineDays.minimum + optionTimelineDays.minimum,
+  };
+  const normalizedOptionSelections = resolvedOptions.reduce(
+    (runningSelections, option) => {
+      runningSelections[option.id] = option.value;
+      return runningSelections;
+    },
+    {},
+  );
+
+  return {
+    ...module,
+    activeOptions,
+    configuredPrice,
+    configuredTimelineDays,
+    hasActiveOptions: activeOptions.length > 0,
+    optionSelections: normalizedOptionSelections,
+    options: resolvedOptions,
+    selectedOptionCount: activeOptions.length,
+    selectedOptionSummary: selectedOptions
+      .map((option) => option.summaryLabel)
+      .join(" / "),
+    selectedOptions,
+    timelineDays: configuredTimelineDays,
+  };
 }
 
 export function groupModulesByCategory(modules = []) {
@@ -315,7 +713,10 @@ export function sumTimelineRanges(
   );
 }
 
-export function formatTimelineRange(range, emptyValue = "Timeline updates as you build") {
+export function formatTimelineRange(
+  range,
+  emptyValue = "Timeline updates as you build",
+) {
   if (!range?.minimum || !range?.maximum) {
     return emptyValue;
   }

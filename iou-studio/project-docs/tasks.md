@@ -5,7 +5,8 @@
 1–20: System foundation, configurator, trust, refinement  
 21: Real Order Flow  
 22: Mobile Persistent Summary  
-23: Unified Config Schema
+23: Unified Config Schema  
+24: Nested Options + Add-ons
 
 ---
 
@@ -17,20 +18,13 @@ Phase 6 — System Structure
 
 ## Active Tasks (STRICT ORDER)
 
-### 24. Nested Options + Add-ons (CRITICAL)
-- module-level configuration depth
-- add toggles / selections inside modules
-- dynamic price + timeline updates
-
----
-
-### 25. Line-Item Summary Upgrade
+### 25. Line-Item Summary Upgrade (CRITICAL)
 - grouped breakdown:
   - modules
   - options
   - subtotals
 - timeline contribution clarity
-- improve provider-facing clarity
+- provider-facing clarity
 
 ---
 

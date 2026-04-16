@@ -1,3 +1,4 @@
+import { formatTimelineRange } from "../data/configuratorSchema.js";
 import { getCustomBuildPricing } from "../data/customBuildPricing.js";
 import {
   billingOptions,
@@ -39,6 +40,73 @@ function getBillingLabel(billingMode) {
   );
 }
 
+function getCustomModuleCountLabel(moduleCount) {
+  return `${moduleCount} module${moduleCount === 1 ? "" : "s"}`;
+}
+
+function getCustomizationCountLabel(optionCount) {
+  return `${optionCount} customization${optionCount === 1 ? "" : "s"}`;
+}
+
+function getCustomStatusLabel(moduleCount, optionCount) {
+  if (!moduleCount) {
+    return "Awaiting selection";
+  }
+
+  if (!optionCount) {
+    return `${getCustomModuleCountLabel(moduleCount)} active`;
+  }
+
+  return `${getCustomModuleCountLabel(moduleCount)} / ${getCustomizationCountLabel(
+    optionCount,
+  )}`;
+}
+
+function getCustomSelectionMeta(moduleCount, optionCount) {
+  if (!moduleCount) {
+    return "";
+  }
+
+  if (!optionCount) {
+    return `${getCustomModuleCountLabel(moduleCount)} included`;
+  }
+
+  return `${getCustomModuleCountLabel(moduleCount)} / ${getCustomizationCountLabel(
+    optionCount,
+  )}`;
+}
+
+function formatOptionImpactLabel(option) {
+  const parts = [];
+
+  if (option.priceImpact > 0) {
+    parts.push(`+ ${formatInr(option.priceImpact)}`);
+  }
+
+  const timelineLabel = formatTimelineRange(option.timelineImpact, "");
+
+  if (timelineLabel) {
+    parts.push(`+ ${timelineLabel}`);
+  }
+
+  return parts.join(" / ") || "Included";
+}
+
+function getModuleSelectionFallback(module) {
+  if (module.options.length) {
+    return "Default scope with no add-ons selected.";
+  }
+
+  return "Base module scope only.";
+}
+
+function buildReviewOptionItem(option) {
+  return {
+    ...option,
+    impactLabel: formatOptionImpactLabel(option),
+  };
+}
+
 function getPackageTimelineRecord(planId) {
   return pricingPackages.find((plan) => plan.id === planId)?.timelineEstimate || null;
 }
@@ -66,11 +134,15 @@ function buildModuleReviewLineItem(module) {
     detail: module.description,
     eyebrow: module.category,
     id: module.id,
+    selectedOptions: module.selectedOptions.map(buildReviewOptionItem),
+    selectionNote: module.selectedOptions.length
+      ? module.selectedOptionSummary
+      : getModuleSelectionFallback(module),
     timeline: formatModuleTimelineHint(
-      module.baseTimelineDays ?? module.timelineDays,
+      module.configuredTimelineDays ?? module.timelineDays,
     ),
     title: module.title,
-    value: formatInr(module.basePrice),
+    value: formatInr(module.configuredPrice ?? module.basePrice),
   };
 }
 
@@ -167,15 +239,19 @@ function buildPackageSummaryPanel({ billingLabel, plan, timeline, total }) {
   };
 }
 
-function buildCustomSummaryPanel({ customBuildPricing, moduleCount }) {
+function buildCustomSummaryPanel({
+  customBuildPricing,
+  moduleCount,
+  optionCount,
+}) {
   return {
     ctaLabel: "Continue to Order Summary",
     ctaNote: moduleCount
-      ? "Review the active module selection, then submit the custom build request from the next screen."
+      ? "Review the active module selection and nested choices, then submit the custom build request from the next screen."
       : "Add modules to prepare a valid custom build summary.",
     ctaTo: "/order-summary",
     description:
-      "Monitor the active module selection, base total, and delivery estimate while the custom build takes shape.",
+      "Monitor the active module selection, configured total, and delivery estimate while the custom build takes shape.",
     emptyState: {
       detail: "Add modules to start building your custom setup.",
       title: "No modules selected yet.",
@@ -184,19 +260,21 @@ function buildCustomSummaryPanel({ customBuildPricing, moduleCount }) {
     items: customBuildPricing.summaryItems,
     modeLabel: "Build Your Own",
     selectionHint: moduleCount
-      ? "Selected modules stay synchronized here in real time."
+      ? optionCount
+        ? "Selected modules and nested choices stay synchronized here in real time."
+        : "Selected modules stay synchronized here in real time."
       : "Module selections will appear here as soon as you start building.",
     selectionLabel: "Selected modules",
-    statusLabel: moduleCount ? `${moduleCount} active` : "Awaiting selection",
+    statusLabel: getCustomStatusLabel(moduleCount, optionCount),
     timeline: customBuildPricing.timeline,
     total: {
       description: moduleCount
-        ? "Base total for the current module selection."
-        : "Add modules to generate a live base total.",
-      label: "Total",
-      meta: moduleCount
-        ? `${moduleCount} module${moduleCount === 1 ? "" : "s"} included`
-        : "",
+        ? optionCount
+          ? "Configured total for the current module and add-on selection."
+          : "Configured total for the current module selection."
+        : "Add modules to generate a live configured total.",
+      label: "Configured total",
+      meta: getCustomSelectionMeta(moduleCount, optionCount),
       value: moduleCount
         ? formatInr(customBuildPricing.total)
         : "Awaiting selection",
@@ -274,6 +352,13 @@ function buildCustomSubmissionPayload(customBuildPricing) {
       groupedModules: customBuildPricing.groupedModules,
       lineItems: customBuildPricing.lineItems,
       moduleIds: customBuildPricing.selectedModules.map((module) => module.id),
+      moduleOptions: customBuildPricing.selectedModules.reduce(
+        (runningSelections, module) => {
+          runningSelections[module.id] = module.optionSelections;
+          return runningSelections;
+        },
+        {},
+      ),
     },
     timeline: {
       displayValue: customBuildPricing.timeline.value,
@@ -360,25 +445,28 @@ export function buildOrderConfiguration({
   billingMode,
   mode,
   selectedCustomModuleIds,
+  selectedCustomModuleOptions = {},
   selectedPlanId,
 }) {
   const billingLabel = getBillingLabel(billingMode);
 
   if (mode === ORDER_FLOW_MODE_CUSTOM) {
-    const customBuildPricing = getCustomBuildPricing(selectedCustomModuleIds);
+    const customBuildPricing = getCustomBuildPricing(
+      selectedCustomModuleIds,
+      selectedCustomModuleOptions,
+    );
     const moduleCount = customBuildPricing.selectedModules.length;
-    const customStatusLabel = moduleCount
-      ? `${moduleCount} active`
-      : "Awaiting selection";
+    const optionCount = customBuildPricing.selectedOptionCount;
+    const customStatusLabel = getCustomStatusLabel(moduleCount, optionCount);
     const total = {
       description: moduleCount
-        ? "Base total for the current module selection."
+        ? optionCount
+          ? "Configured total for the selected modules and active add-ons."
+          : "Configured total for the current module selection."
         : "Select services to begin pricing.",
-      label: "Base total",
-      meta: moduleCount
-        ? `${moduleCount} module${moduleCount === 1 ? "" : "s"} included`
-        : "",
-      value: formatInr(customBuildPricing.total),
+      label: "Configured total",
+      meta: getCustomSelectionMeta(moduleCount, optionCount),
+      value: moduleCount ? formatInr(customBuildPricing.total) : "Awaiting selection",
     };
 
     return {
@@ -389,9 +477,12 @@ export function buildOrderConfiguration({
         groupedModules: customBuildPricing.groupedModules,
         lineItems: customBuildPricing.selectedModules.map(buildModuleReviewLineItem),
         modules: customBuildPricing.selectedModules,
+        selectedOptionCount: optionCount,
       },
       description: moduleCount
-        ? "Review the selected modules, base total, and delivery estimate before you submit."
+        ? optionCount
+          ? "Review the selected modules, nested options, configured total, and delivery estimate before you submit."
+          : "Review the selected modules, configured total, and delivery estimate before you submit."
         : "Select modules on the configurator to build a valid order request.",
       hasSelection: moduleCount > 0,
       mode,
@@ -403,12 +494,21 @@ export function buildOrderConfiguration({
         billingMode: null,
         couponCode: null,
         customModuleIds: customBuildPricing.selectedModules.map((module) => module.id),
+        customModuleOptions: customBuildPricing.selectedModules.reduce(
+          (runningSelections, module) => {
+            runningSelections[module.id] = module.optionSelections;
+            return runningSelections;
+          },
+          {},
+        ),
         mode,
         packageId: null,
       },
       selectionLabel: "Selected modules",
       selectionNote: moduleCount
-        ? "Selected modules stay tied to this request."
+        ? optionCount
+          ? "Selected modules and nested choices stay tied to this request."
+          : "Selected modules stay tied to this request."
         : "Module selections appear here once you start building.",
       statusLabel: customStatusLabel,
       structuredSelection: {
@@ -421,12 +521,15 @@ export function buildOrderConfiguration({
       summaryPanel: buildCustomSummaryPanel({
         customBuildPricing,
         moduleCount,
+        optionCount,
       }),
       timeline: customBuildPricing.timeline,
       title: moduleCount
-        ? `Custom build with ${moduleCount} active module${
-            moduleCount === 1 ? "" : "s"
-          }`
+        ? optionCount
+          ? `Custom build with ${getCustomModuleCountLabel(
+              moduleCount,
+            )} and ${getCustomizationCountLabel(optionCount)}`
+          : `Custom build with ${getCustomModuleCountLabel(moduleCount)}`
         : "Custom build pending",
       total,
     };
