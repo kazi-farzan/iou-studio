@@ -26,21 +26,21 @@ const defaultMetrics = [
 export default function MetricsStrip({ items = defaultMetrics }) {
   return (
     <div className="scroll-mt-28 sm:scroll-mt-32" id="metrics-strip">
-      <Section className="pt-0 pb-10 sm:pb-12" width="full">
+      <Section spacing="compact" width="full">
         <div className="mx-auto max-w-6xl">
           <h2 className="sr-only">How the system performs</h2>
 
-          <div className="overflow-hidden rounded-[28px] border border-[color:var(--border-subtle)] bg-[var(--border-subtle)]">
+          <div className="overflow-hidden rounded-[30px] border border-[color:var(--border-subtle)] bg-[var(--border-subtle)] shadow-[var(--shadow-raised)]">
             <div className="grid gap-px md:grid-cols-2 xl:grid-cols-4">
               {items.map((metric) => (
                 <article
                   className="bg-[var(--surface-soft)] px-5 py-5 sm:px-6 sm:py-6"
                   key={metric.value}
                 >
-                  <p className="text-base font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
+                  <p className="text-lg font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
                     {metric.value}
                   </p>
-                  <p className="mt-2 max-w-[28ch] text-sm leading-6 text-[var(--text-secondary)]">
+                  <p className="mt-2 max-w-[28ch] text-sm leading-7 text-[var(--text-secondary)]">
                     {metric.detail}
                   </p>
                 </article>

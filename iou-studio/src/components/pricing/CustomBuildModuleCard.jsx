@@ -37,7 +37,7 @@ function formatImpactLabel(priceImpact, timelineImpact, emptyLabel = "Included")
 
 function getModuleClasses(isSelected) {
   return [
-    "group relative flex h-full flex-col overflow-hidden rounded-[26px] border px-5 py-6 text-left transition-[background-color,border-color,box-shadow,transform] duration-200 ease-out motion-reduce:transition-none sm:px-6 sm:py-6",
+    "group relative flex h-full flex-col overflow-hidden rounded-[30px] border px-5 py-6 text-left transition-[background-color,border-color,box-shadow,transform] duration-200 ease-out motion-reduce:transition-none sm:px-6 sm:py-6",
     isSelected
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-soft))] shadow-[var(--shadow-soft)]"
       : "border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface-muted),var(--surface-soft))] hover:-translate-y-0.5 hover:border-[color:var(--border-strong)] hover:bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))] hover:shadow-[var(--shadow-soft)] motion-reduce:hover:translate-y-0",
@@ -81,7 +81,7 @@ function getMetricClasses() {
 
 function getActionClasses(isSelected) {
   return [
-    "inline-flex min-h-[48px] w-full items-center justify-between gap-3 self-start rounded-full border px-4 py-2.5 text-sm font-medium tracking-[0.01em] transition-[background-color,border-color,color] duration-200 ease-out motion-reduce:transition-none sm:w-auto sm:self-auto sm:justify-center",
+    "inline-flex min-h-[48px] w-full items-center justify-between gap-3 self-start rounded-[18px] border px-4 py-2.5 text-sm font-semibold tracking-[0.01em] transition-[background-color,border-color,color] duration-200 ease-out motion-reduce:transition-none sm:w-auto sm:self-auto sm:justify-center",
     isSelected
       ? "border-[color:var(--border-accent)] bg-[var(--surface-accent-strong)] text-[var(--accent-contrast-text)]"
       : "border-[color:var(--border-subtle)] bg-[var(--surface)] text-[var(--text-primary)] group-hover:border-[color:var(--border-strong)] group-hover:bg-[var(--surface-soft)]",
@@ -90,7 +90,7 @@ function getActionClasses(isSelected) {
 
 function getChoiceClasses(isChecked) {
   return [
-    "block rounded-[20px] border p-4 transition-[background-color,border-color] duration-200 ease-out motion-reduce:transition-none",
+    "block rounded-[22px] border p-4 transition-[background-color,border-color] duration-200 ease-out motion-reduce:transition-none",
     isChecked
       ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)]"
       : "border-[color:var(--border-subtle)] bg-[var(--surface)] hover:border-[color:var(--border-strong)]",
@@ -117,7 +117,7 @@ function ModuleBooleanOption({ moduleId, onOptionChange, option }) {
 
   return (
     <label
-      className="flex cursor-pointer items-start gap-4 rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface)] p-4 transition-[background-color,border-color] duration-200 ease-out hover:border-[color:var(--border-strong)] motion-reduce:transition-none"
+      className="flex cursor-pointer items-start gap-4 rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface)] p-4 transition-[background-color,border-color] duration-200 ease-out hover:border-[color:var(--border-strong)] motion-reduce:transition-none"
       htmlFor={checkboxId}
     >
       <input
@@ -158,7 +158,7 @@ function ModuleBooleanOption({ moduleId, onOptionChange, option }) {
 
 function ModuleChoiceOption({ moduleId, onOptionChange, option }) {
   return (
-    <fieldset className="rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface)] p-4">
+    <fieldset className="rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface)] p-4">
       <legend className="text-sm font-medium text-[var(--text-primary)]">
         {option.label}
       </legend>
@@ -221,7 +221,7 @@ function ModuleSelectOption({ moduleId, onOptionChange, option }) {
   const selectedChoice = option.selectedChoice;
 
   return (
-    <div className="rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface)] p-4">
+    <div className="rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface)] p-4">
       <label
         className="text-sm font-medium text-[var(--text-primary)]"
         htmlFor={selectId}
@@ -340,7 +340,7 @@ export default function CustomBuildModuleCard({
       <div
         aria-hidden="true"
         className={[
-          "pointer-events-none absolute inset-[6px] rounded-[20px] border transition-[opacity,border-color] duration-200 ease-out motion-reduce:transition-none",
+          "pointer-events-none absolute inset-[6px] rounded-[24px] border transition-[opacity,border-color] duration-200 ease-out motion-reduce:transition-none",
           isSelected
             ? "border-[color:var(--border-accent)] opacity-100"
             : "border-[color:var(--border-strong)] opacity-0 group-hover:opacity-100",
@@ -392,22 +392,22 @@ export default function CustomBuildModuleCard({
         </div>
 
         <div className="mt-6 flex-1 space-y-4">
-          <h3 className="text-xl font-semibold tracking-[-0.03em] text-[var(--text-primary)] transition-colors duration-200 ease-out motion-reduce:transition-none">
+          <h3 className="text-[1.45rem] font-semibold tracking-[-0.04em] text-[var(--text-primary)] transition-colors duration-200 ease-out motion-reduce:transition-none">
             {module.title}
           </h3>
           <p
-            className="max-w-[44ch] text-sm leading-6 text-[var(--text-secondary)] transition-colors duration-200 ease-out motion-reduce:transition-none"
+            className="max-w-[44ch] text-sm leading-7 text-[var(--text-secondary)] transition-colors duration-200 ease-out motion-reduce:transition-none"
             id={descriptionId}
           >
             {module.description}
           </p>
 
           {baseDeliverableSummary ? (
-            <div className="rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-3">
-              <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--text-muted)]">
+            <div className="rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-4">
+              <p className="type-label">
                 Includes
               </p>
-              <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+              <p className="mt-2 text-sm leading-7 text-[var(--text-secondary)]">
                 {baseDeliverableSummary}
               </p>
             </div>
@@ -491,13 +491,13 @@ export default function CustomBuildModuleCard({
 
       {isSelected && hasOptions ? (
         <div className="relative mt-6 border-t border-[color:var(--border-subtle)] pt-6">
-          <div className="rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-4 sm:p-5">
+          <div className="rounded-[26px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-4 sm:p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div className="space-y-2">
-                <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                <p className="type-kicker">
                   Customize module
                 </p>
-                <p className="max-w-[40ch] text-sm leading-6 text-[var(--text-secondary)]">
+                <p className="max-w-[40ch] text-sm leading-7 text-[var(--text-secondary)]">
                   Reveal only the decisions that matter for this module, with every
                   change feeding the live price and timeline.
                 </p>

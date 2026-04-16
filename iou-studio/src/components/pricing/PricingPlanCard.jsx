@@ -5,7 +5,7 @@ import DeliverableList from "./DeliverableList.jsx";
 
 function getCardClasses({ isMostPopular, isSelected }) {
   return [
-    "group relative h-full overflow-hidden p-5 sm:p-8",
+    "group relative h-full overflow-hidden p-5 sm:p-7",
     isSelected
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))] shadow-[var(--shadow-soft)]"
       : "",
@@ -35,8 +35,8 @@ function IncludedModules({ modules = [] }) {
   }
 
   return (
-    <div className="rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5">
-      <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+    <div className="rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5">
+      <p className="type-label">
         Modules included
       </p>
 
@@ -69,17 +69,17 @@ export default function PricingPlanCard({
       {isSelected ? (
         <div
           aria-hidden="true"
-          className="theme-ambient-orb-2 pointer-events-none absolute right-[-2.5rem] top-[-3rem] h-28 w-28 rounded-full blur-2xl"
+          className="theme-ambient-orb-2 pointer-events-none absolute right-[-2rem] top-[-2.5rem] h-28 w-28 rounded-full blur-2xl"
         />
       ) : null}
 
       <div className="relative flex h-full min-w-0 flex-col">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="space-y-3">
-            <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
+            <p className="type-label">
               {plan.audience}
             </p>
-            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
+            <h2 className="text-[2rem] font-semibold tracking-[-0.045em] text-[var(--text-primary)]">
               {plan.name}
             </h2>
           </div>
@@ -103,12 +103,12 @@ export default function PricingPlanCard({
           {plan.description}
         </p>
 
-        <p className="mt-3 text-xs leading-6 text-[var(--text-muted)]">
+        <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
           This is a starting configuration. You can customize this setup later.
         </p>
 
-        <div className="mt-7 rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5 sm:p-6">
-          <p className="text-xs font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+        <div className="mt-7 rounded-[26px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5 sm:p-6">
+          <p className="type-label">
             Starting configuration
           </p>
 
@@ -131,11 +131,11 @@ export default function PricingPlanCard({
 
         <div
           className={[
-            "mt-6 rounded-[22px] border p-5",
+            "mt-6 rounded-[24px] border p-5",
             getCalloutClasses(plan.callout.tone),
           ].join(" ")}
         >
-          <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+          <p className="type-kicker">
             {plan.callout.eyebrow}
           </p>
           <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
@@ -170,11 +170,11 @@ export default function PricingPlanCard({
         {plan.coupon ? (
           <div
             className={[
-              "mt-6 rounded-[22px] border p-5",
+              "mt-6 rounded-[24px] border p-5",
               getCalloutClasses(plan.coupon.tone),
             ].join(" ")}
           >
-            <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+            <p className="type-kicker">
               {plan.coupon.badgeLabel}
             </p>
 

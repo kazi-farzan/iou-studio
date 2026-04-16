@@ -30,11 +30,11 @@ function formatPackageStartingPrice(packageConfig) {
 
 function MenuStat({ detail, label, value }) {
   return (
-    <div className="rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface)] px-5 py-4">
-      <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
+    <div className="theme-panel-contrast rounded-[26px] px-5 py-5">
+      <p className="type-label">
         {label}
       </p>
-      <p className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
+      <p className="mt-3 type-stat">
         {value}
       </p>
       <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
@@ -46,8 +46,8 @@ function MenuStat({ detail, label, value }) {
 
 function MetricCell({ label, value }) {
   return (
-    <div className="rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface)] px-4 py-3">
-      <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+    <div className="theme-panel-contrast rounded-[22px] px-4 py-3.5">
+      <p className="type-label">
         {label}
       </p>
       <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">
@@ -88,16 +88,17 @@ export default function Services() {
   return (
     <div className="w-full">
       <Section
-        className="pt-4 sm:pt-8"
+        spacing="hero"
         description="Browse the system by module group, compare baseline price and timeline, and send a preselected setup straight into the build flow."
         eyebrow="System Menu"
         title="Select modules here, then configure the build."
+        titleAs="h1"
         width="full"
       >
         <div className="space-y-6 sm:space-y-8">
           <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_340px]">
-            <div className="rounded-[32px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))] p-6 sm:p-7">
-              <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+            <div className="theme-card rounded-[34px] p-6 sm:p-7">
+              <p className="type-kicker">
                 Flow Alignment
               </p>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
@@ -109,10 +110,10 @@ export default function Services() {
               <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 {flowSteps.map((step, index) => (
                   <div
-                    className="rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface)] px-4 py-4"
+                    className="theme-panel-contrast rounded-[22px] px-4 py-4"
                     key={step}
                   >
-                    <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
+                    <p className="type-label">
                       Step {index + 1}
                     </p>
                     <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">
@@ -123,8 +124,8 @@ export default function Services() {
               </div>
             </div>
 
-            <div className="theme-panel rounded-[32px] p-6 sm:p-7">
-              <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+            <div className="theme-panel rounded-[34px] p-6 sm:p-7">
+              <p className="type-kicker">
                 Entry Logic
               </p>
               <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
@@ -167,12 +168,12 @@ export default function Services() {
 
               return (
                 <section
-                  className="overflow-hidden rounded-[32px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface-muted),var(--surface-soft))]"
+                  className="overflow-hidden rounded-[34px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface-muted),var(--surface-soft))] shadow-[var(--shadow-raised)]"
                   key={group.id}
                 >
                   <div className="grid xl:grid-cols-[280px_minmax(0,1fr)]">
                     <div className="border-b border-[color:var(--border-subtle)] px-6 py-6 sm:px-7 xl:border-b-0 xl:border-r">
-                      <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                      <p className="type-kicker">
                         Module Group
                       </p>
                       <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
@@ -183,11 +184,11 @@ export default function Services() {
                       </p>
 
                       <div className="mt-5 flex flex-wrap gap-2">
-                        <span className="rounded-full border border-[color:var(--border-subtle)] bg-[var(--surface)] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-secondary)]">
+                        <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-secondary)]">
                           {group.modules.length} module
                           {group.modules.length === 1 ? "" : "s"}
                         </span>
-                        <span className="rounded-full border border-[color:var(--border-subtle)] bg-[var(--surface)] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-secondary)]">
+                        <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-secondary)]">
                           {selectedCount
                             ? `${selectedCount} in build`
                             : "Ready to configure"}
@@ -261,13 +262,13 @@ export default function Services() {
       </Section>
 
       <Section
-        className="pt-2 sm:pt-4"
+        spacing="compact"
         description="Start from a prepared configuration when you want a faster baseline. These setups open inside the same system and can still be reviewed before submission."
         eyebrow="Starting Setups"
         title="Pre-built configurations for direct entry."
         width="full"
       >
-        <div className="overflow-hidden rounded-[32px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))]">
+        <div className="overflow-hidden rounded-[34px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))] shadow-[var(--shadow-raised)]">
           <div className="divide-y divide-[color:var(--border-subtle)]">
             {startingSetups.map((packageConfig) => {
               const isActive = activeSetupId === packageConfig.id;
@@ -336,7 +337,7 @@ export default function Services() {
 
       <Section
         align="center"
-        className="pb-10 sm:pb-14"
+        spacing="compact"
         description="Open the configurator directly if you already know the path. The same state continues forward into review, submit, and confirmation."
         eyebrow="Build Surface"
         title="Continue from the menu or go straight into configuration."

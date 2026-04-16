@@ -9,15 +9,15 @@ export default function SiteLayout() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
       >
-        <div className="theme-ambient-orb-1 absolute left-[-12rem] top-[-10rem] h-[24rem] w-[24rem] rounded-full blur-3xl" />
-        <div className="theme-ambient-orb-2 absolute right-[-10rem] top-24 h-[20rem] w-[20rem] rounded-full blur-3xl" />
+        <div className="theme-ambient-orb-1 absolute left-[-14rem] top-[-11rem] h-[28rem] w-[28rem] rounded-full blur-3xl" />
+        <div className="theme-ambient-orb-2 absolute right-[-9rem] top-16 h-[22rem] w-[22rem] rounded-full blur-3xl" />
         <div className="theme-ambient-shell absolute inset-0" />
       </div>
 
       <div className="relative z-10 flex min-h-screen flex-col">
         <Navbar />
 
-        <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-5 pb-14 pt-8 sm:px-8 sm:pt-10 lg:px-10 lg:pt-14">
+        <main className="mx-auto flex w-full max-w-[84rem] flex-1 flex-col px-5 pb-16 pt-4 sm:px-8 sm:pb-20 sm:pt-6 lg:px-10 lg:pt-8">
           <Outlet />
         </main>
 

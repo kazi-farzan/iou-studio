@@ -223,16 +223,16 @@ export default function OrderSummary() {
 
   return (
     <div className="w-full">
-      <Section className="pt-3 sm:pt-4" width="full">
-        <div className="space-y-10 sm:space-y-8">
-          <div className="max-w-4xl space-y-4 sm:space-y-3">
-            <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
+      <Section spacing="hero" width="full">
+        <div className="space-y-8 sm:space-y-10">
+          <div className="max-w-4xl space-y-4 sm:space-y-5">
+            <p className="type-kicker">
               Summary
             </p>
-            <h1 className="max-w-3xl text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+            <h1 className="type-page-title max-w-[12ch]">
               Review your configured setup
             </h1>
-            <p className="max-w-3xl text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+            <p className="type-body-lg max-w-3xl">
               Confirm the active configuration as a build specification with
               explicit scope, output, pricing, and timing before submission.
             </p>
@@ -270,13 +270,13 @@ export default function OrderSummary() {
                   <div className="space-y-8">
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div className="max-w-3xl space-y-3">
-                        <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                        <p className="type-kicker">
                           Reviewed build
                         </p>
-                        <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+                        <h2 className="type-section-title max-w-[14ch]">
                           {draftConfiguration.title}
                         </h2>
-                        <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+                        <p className="type-body max-w-[54ch]">
                           {draftConfiguration.description}
                         </p>
                       </div>
@@ -304,9 +304,9 @@ export default function OrderSummary() {
                     ) : null}
 
                     {outputSections.length ? (
-                      <div className="rounded-[26px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-5 sm:p-6">
+                      <div className="rounded-[28px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-5 sm:p-6">
                         <div className="max-w-3xl space-y-2">
-                          <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                          <p className="type-kicker">
                             Requested output
                           </p>
                           <p className="text-sm leading-6 text-[var(--text-secondary)]">
@@ -326,7 +326,7 @@ export default function OrderSummary() {
 
                     <div className="space-y-4">
                       <div className="max-w-3xl space-y-2">
-                        <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                        <p className="type-kicker">
                           Build specification
                         </p>
                         <p className="text-sm leading-6 text-[var(--text-secondary)]">
@@ -347,7 +347,7 @@ export default function OrderSummary() {
                 <Card className="p-6 sm:p-8">
                   <form className="space-y-5" noValidate onSubmit={handleSubmit}>
                     <div className="space-y-3">
-                      <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                      <p className="type-kicker">
                         Submission details
                       </p>
                       <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
@@ -452,7 +452,7 @@ export default function OrderSummary() {
 
               <Card className="overflow-hidden p-0 xl:sticky xl:top-28">
                 <div className="border-b border-[color:var(--border-subtle)] px-5 py-6 sm:px-6">
-                  <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                  <p className="type-kicker">
                     Order output
                   </p>
                   <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
@@ -461,8 +461,8 @@ export default function OrderSummary() {
                 </div>
 
                 <div className="space-y-5 px-5 py-6 sm:px-6">
-                  <div className="rounded-[24px] border border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-soft))] p-5">
-                    <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+                  <div className="rounded-[26px] border border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-soft))] p-5">
+                    <p className="type-label">
                       {draftConfiguration.total.label}
                     </p>
                     <p className="mt-2 break-words text-[2rem] font-semibold tracking-[-0.05em] text-[var(--text-primary)]">
@@ -487,7 +487,7 @@ export default function OrderSummary() {
                     </div>
                   </div>
 
-                  <div className="rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-5">
+                  <div className="rounded-[26px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-5">
                     <ReviewMetaRow label="Mode" value={draftConfiguration.modeLabel} />
                     <ReviewMetaRow label="Billing" value={draftConfiguration.billingLabel} />
                     <ReviewMetaRow label="Scope" value={scopeSummary} />

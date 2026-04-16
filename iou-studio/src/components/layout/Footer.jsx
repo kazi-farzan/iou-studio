@@ -18,11 +18,11 @@ function getFooterLinkClasses({ isActive }) {
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[color:var(--border-subtle)] bg-[var(--surface-muted)]">
-      <div className="mx-auto grid w-full max-w-7xl gap-8 px-6 py-8 text-sm sm:px-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:px-10">
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-[var(--text-primary)]">IOU Studio</p>
-          <p className="mt-1 text-[var(--text-secondary)]">
+    <footer className="border-t border-[color:var(--border-subtle)] bg-[color:var(--nav-background)] backdrop-blur-xl">
+      <div className="mx-auto grid w-full max-w-[84rem] gap-8 px-6 py-8 text-sm sm:px-8 sm:py-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:px-10">
+        <div className="space-y-3">
+          <p className="type-kicker">IOU Studio</p>
+          <p className="max-w-xl text-sm leading-7 text-[var(--text-secondary)]">
             System-led delivery for product, brand, design, and growth execution.
           </p>
         </div>

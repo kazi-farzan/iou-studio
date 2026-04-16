@@ -9,11 +9,11 @@ import {
 
 function OverviewCard({ item }) {
   return (
-    <div className="theme-panel rounded-[24px] p-4 sm:p-5">
-      <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-[var(--text-muted)]">
+    <div className="theme-panel-contrast rounded-[26px] p-4 sm:p-5">
+      <p className="type-label">
         {item.label}
       </p>
-      <p className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)] sm:text-3xl">
+      <p className="mt-3 type-stat">
         {item.value}
       </p>
       <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
@@ -31,7 +31,7 @@ function DetailBlock({ children, label, tone = "default" }) {
 
   return (
     <div className={["rounded-[24px] border p-4 sm:p-5", toneClasses].join(" ")}>
-      <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-[var(--text-muted)]">
+      <p className="type-label">
         {label}
       </p>
       <div className="mt-3">{children}</div>
@@ -59,7 +59,7 @@ function StudyToken({ item, tone = "default" }) {
 
 function DeliverableRow({ item }) {
   return (
-    <div className="rounded-[18px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-3 py-3 text-sm text-[var(--text-secondary)] sm:px-4">
+    <div className="rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-3 py-3 text-sm text-[var(--text-secondary)] sm:px-4">
       {item}
     </div>
   );
@@ -70,7 +70,7 @@ function CaseStudyRecord({ study }) {
     <Card as="article" className="overflow-hidden p-4 sm:p-6 lg:p-7">
       <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[color:var(--border-subtle)] pb-5">
         <div className="min-w-0">
-          <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--text-muted)]">
+          <p className="type-label">
             {study.id}
           </p>
           <h2 className="mt-3 text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-3xl">
@@ -81,8 +81,8 @@ function CaseStudyRecord({ study }) {
           </p>
         </div>
 
-        <div className="theme-panel-contrast rounded-[20px] px-4 py-3 text-left sm:min-w-[220px]">
-          <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
+        <div className="theme-panel-contrast rounded-[22px] px-4 py-3 text-left sm:min-w-[220px]">
+          <p className="type-label">
             Delivery timeline
           </p>
           <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">
@@ -168,10 +168,11 @@ export default function CaseStudies() {
     <div className="w-full">
       <Section
         animated={false}
-        className="pt-4 sm:pt-8"
+        spacing="hero"
         description="Each case study is logged as a build record: business context, configured modules, delivery timeline, output, and result. This page is meant to read like evidence of execution, not a gallery."
         eyebrow="Case Studies"
         title="Documented builds from the same system users configure."
+        titleAs="h1"
         width="full"
       >
         <div className="space-y-8 lg:space-y-10">
@@ -192,7 +193,7 @@ export default function CaseStudies() {
       <Section
         align="center"
         animated={false}
-        className="pb-10 sm:pb-14"
+        spacing="compact"
         description="Use the same build flow to configure your own scope before any handoff begins."
         eyebrow="Start Build"
         title="Configure your system with the same module logic shown above."

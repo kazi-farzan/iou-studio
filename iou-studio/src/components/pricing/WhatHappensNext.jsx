@@ -36,40 +36,37 @@ export default function WhatHappensNext({
 }) {
   return (
     <div className="scroll-mt-28" id="what-happens-next">
-      <Section className="pt-0 pb-10 sm:pb-14" width="full">
-        <div className="mx-auto max-w-6xl border-y border-[color:var(--border-subtle)] py-8 sm:py-10">
-          <div className="mx-auto flex max-w-5xl flex-col gap-8">
-            <div className="max-w-2xl space-y-3">
-              <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
+      <Section spacing="compact" width="full">
+        <div className="theme-panel rounded-[34px] px-5 py-6 sm:px-7 sm:py-8">
+          <div className="mx-auto flex max-w-6xl flex-col gap-8">
+            <div className="max-w-2xl space-y-3 sm:space-y-4">
+              <p className="type-kicker">
                 What Happens Next
               </p>
-              <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-3xl">
+              <h2 className="type-section-title max-w-[12ch]">
                 What happens after you continue.
               </h2>
-              <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+              <p className="type-body max-w-[48ch]">
                 Your configuration moves into a structured review so scope,
                 timing, and pricing are confirmed before build work starts.
               </p>
             </div>
 
-            <div className="grid gap-0 lg:grid-cols-4">
+            <div className="grid gap-3 lg:grid-cols-4">
               {steps.map((step, index) => (
                 <div
                   className={[
-                    "flex flex-col gap-3 py-5 lg:px-5 lg:py-0",
-                    index === 0
-                      ? "pt-0 lg:pl-0"
-                      : "border-t border-[color:var(--border-subtle)] lg:border-l lg:border-t-0",
-                    index === steps.length - 1 ? "pb-0 lg:pr-0" : "",
+                    "theme-panel-contrast flex flex-col gap-3 rounded-[24px] px-5 py-5",
+                    index === steps.length - 1 ? "" : "",
                   ]
                     .filter(Boolean)
                     .join(" ")}
                   key={step.number}
                 >
-                  <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                  <p className="type-kicker">
                     {step.number}
                   </p>
-                  <h3 className="text-lg font-medium tracking-[-0.02em] text-[var(--text-primary)] sm:text-xl">
+                  <h3 className="text-lg font-semibold tracking-[-0.03em] text-[var(--text-primary)] sm:text-xl">
                     {step.title}
                   </h3>
                   <p className="text-sm leading-7 text-[var(--text-secondary)]">
@@ -79,7 +76,7 @@ export default function WhatHappensNext({
               ))}
             </div>
 
-            <div className="flex flex-col gap-4 border-t border-[color:var(--border-subtle)] pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-4 border-t border-[color:var(--border-subtle)] pt-6 sm:flex-row sm:items-center sm:justify-between">
               <p className="max-w-2xl text-sm text-[var(--text-muted)]">
                 {trustNote}
               </p>

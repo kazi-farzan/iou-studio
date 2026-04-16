@@ -4,9 +4,9 @@ import PricingSummarySurface from "./PricingSummarySurface.jsx";
 import { getSummaryActionLabel } from "./pricingSummaryHelpers.js";
 
 const MOBILE_BAR_CTA_CLASSNAME =
-  "min-w-[6.25rem] rounded-[18px] border-[color:var(--border-strong)] bg-[var(--surface-muted)] px-4 text-[var(--text-primary)] shadow-none hover:border-[color:var(--border-accent)] hover:bg-[var(--surface-accent)]";
+  "min-w-[6.5rem] px-4";
 const SHEET_CLOSE_BUTTON_CLASSNAME =
-  "inline-flex min-h-[44px] items-center justify-center rounded-full border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 text-sm font-medium text-[var(--text-primary)] transition-colors duration-200 hover:border-[color:var(--border-accent)] hover:bg-[var(--surface-accent)]";
+  "inline-flex min-h-[44px] items-center justify-center rounded-[18px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 text-sm font-medium text-[var(--text-primary)] transition-colors duration-200 hover:border-[color:var(--border-strong)] hover:bg-[var(--surface-overlay)]";
 
 function getCollapsedStatusLine(summary) {
   const parts = [summary.modeLabel, summary.statusLabel].filter(Boolean);
@@ -65,8 +65,8 @@ export default function MobilePricingSummaryBar({
     <>
       <div className="fixed inset-x-0 bottom-0 z-40 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] xl:hidden">
         <div className="mx-auto w-full max-w-5xl">
-          <div className="overflow-hidden rounded-[24px] border border-[color:var(--border-strong)] bg-[var(--nav-background)] backdrop-blur-xl">
-            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:px-5">
+          <div className="overflow-hidden rounded-[26px] border border-[color:var(--border-strong)] bg-[var(--nav-background)] shadow-[var(--shadow-card)] backdrop-blur-xl">
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3.5 sm:px-5">
               <button
                 aria-controls={dialogId}
                 aria-expanded={isOpen}
@@ -121,7 +121,7 @@ export default function MobilePricingSummaryBar({
                   className={MOBILE_BAR_CTA_CLASSNAME}
                   size="md"
                   to={summary.ctaTo}
-                  variant="secondary"
+                  variant="primary"
                 >
                   {compactActionLabel}
                 </Button>
@@ -158,7 +158,7 @@ export default function MobilePricingSummaryBar({
             <div
               aria-labelledby={titleId}
               aria-modal="true"
-              className="overflow-hidden rounded-[30px] border border-[color:var(--border-strong)] bg-[var(--surface-strong)] shadow-[var(--shadow-card)] backdrop-blur-xl"
+              className="overflow-hidden rounded-[32px] border border-[color:var(--border-strong)] bg-[var(--surface-strong)] shadow-[var(--shadow-card)] backdrop-blur-xl"
               id={dialogId}
               role="dialog"
             >

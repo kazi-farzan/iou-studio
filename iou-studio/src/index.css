@@ -2,92 +2,96 @@
 
 :root {
   color-scheme: light;
-  --background: #f6efe7;
-  --background-soft: #fdf6ef;
-  --surface: rgba(255, 250, 244, 0.84);
-  --surface-strong: rgba(255, 246, 237, 0.96);
-  --surface-muted: rgba(255, 255, 255, 0.56);
-  --surface-soft: rgba(255, 251, 246, 0.74);
-  --surface-contrast: rgba(115, 84, 60, 0.08);
-  --surface-accent: rgba(116, 84, 224, 0.1);
-  --surface-accent-strong: rgba(116, 84, 224, 0.16);
-  --border-subtle: rgba(113, 84, 62, 0.14);
-  --border-strong: rgba(113, 84, 62, 0.2);
-  --border-accent: rgba(116, 84, 224, 0.24);
-  --text-primary: #241a16;
-  --text-secondary: rgba(36, 26, 22, 0.74);
-  --text-muted: rgba(36, 26, 22, 0.54);
+  --background: #f4efe8;
+  --background-soft: #faf6f1;
+  --surface: rgba(255, 252, 247, 0.86);
+  --surface-strong: rgba(255, 249, 244, 0.95);
+  --surface-muted: rgba(255, 255, 255, 0.62);
+  --surface-soft: rgba(255, 252, 247, 0.78);
+  --surface-contrast: rgba(92, 69, 55, 0.08);
+  --surface-overlay: rgba(255, 247, 240, 0.9);
+  --surface-accent: rgba(93, 80, 198, 0.1);
+  --surface-accent-strong: rgba(93, 80, 198, 0.16);
+  --border-subtle: rgba(92, 69, 55, 0.13);
+  --border-strong: rgba(92, 69, 55, 0.18);
+  --border-accent: rgba(93, 80, 198, 0.22);
+  --text-primary: #211914;
+  --text-secondary: rgba(33, 25, 20, 0.75);
+  --text-muted: rgba(33, 25, 20, 0.54);
   --text-inverse: #fffaf6;
-  --accent-primary: #6d4de0;
-  --accent-secondary: #9476f2;
-  --accent-soft: rgba(116, 84, 224, 0.12);
-  --accent-soft-strong: rgba(116, 84, 224, 0.2);
-  --accent-glow: rgba(116, 84, 224, 0.28);
-  --accent-ring: rgba(148, 118, 242, 0.34);
-  --accent-contrast-text: #4e379b;
+  --accent-primary: #5d50c6;
+  --accent-secondary: #8176dc;
+  --accent-soft: rgba(93, 80, 198, 0.12);
+  --accent-soft-strong: rgba(93, 80, 198, 0.18);
+  --accent-glow: rgba(93, 80, 198, 0.24);
+  --accent-ring: rgba(129, 118, 220, 0.3);
+  --accent-contrast-text: #50439f;
   --accent-solid-text: #fffaf6;
-  --shadow-soft: 0 18px 50px rgba(140, 103, 67, 0.12);
-  --shadow-card: 0 20px 60px rgba(140, 103, 67, 0.14);
-  --shadow-accent: 0 18px 50px rgba(116, 84, 224, 0.2);
-  --nav-background: rgba(250, 243, 235, 0.84);
-  --nav-rail-bg: rgba(255, 255, 255, 0.46);
-  --brand-gradient-start: rgba(116, 84, 224, 0.74);
-  --brand-gradient-end: rgba(116, 84, 224, 0.16);
+  --shadow-soft: 0 18px 44px rgba(108, 78, 50, 0.1);
+  --shadow-card: 0 26px 72px rgba(108, 78, 50, 0.12);
+  --shadow-raised: 0 14px 30px rgba(108, 78, 50, 0.08);
+  --shadow-accent: 0 20px 48px rgba(93, 80, 198, 0.18);
+  --nav-background: rgba(250, 244, 237, 0.84);
+  --nav-rail-bg: rgba(255, 255, 255, 0.48);
+  --brand-gradient-start: rgba(93, 80, 198, 0.72);
+  --brand-gradient-end: rgba(93, 80, 198, 0.16);
   --page-gradient:
-    radial-gradient(circle at top left, rgba(190, 143, 94, 0.16), transparent 32%),
-    radial-gradient(circle at top right, rgba(148, 118, 242, 0.12), transparent 24%),
-    linear-gradient(180deg, #fcf7f1 0%, #f6efe7 52%, #f1e7dc 100%);
-  --ambient-orb-1: radial-gradient(circle, rgba(190, 143, 94, 0.18), transparent 70%);
-  --ambient-orb-2: radial-gradient(circle, rgba(148, 118, 242, 0.14), transparent 72%);
+    radial-gradient(circle at top left, rgba(190, 143, 94, 0.15), transparent 32%),
+    radial-gradient(circle at top right, rgba(129, 118, 220, 0.12), transparent 24%),
+    linear-gradient(180deg, #fcf8f2 0%, #f4efe8 52%, #efe7dc 100%);
+  --ambient-orb-1: radial-gradient(circle, rgba(190, 143, 94, 0.16), transparent 70%);
+  --ambient-orb-2: radial-gradient(circle, rgba(129, 118, 220, 0.12), transparent 72%);
   --ambient-shell:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.32), transparent 18%, transparent 82%, rgba(173, 144, 118, 0.05));
-  --selection-bg: rgba(148, 118, 242, 0.26);
-  --divider-gradient: linear-gradient(90deg, transparent, rgba(148, 118, 242, 0.65), transparent);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 18%, transparent 82%, rgba(173, 144, 118, 0.05));
+  --selection-bg: rgba(129, 118, 220, 0.22);
+  --divider-gradient: linear-gradient(90deg, transparent, rgba(129, 118, 220, 0.5), transparent);
 }
 
 html.dark {
   color-scheme: dark;
-  --background: #06070b;
-  --background-soft: #0d0e15;
-  --surface: rgba(18, 19, 29, 0.78);
-  --surface-strong: rgba(24, 25, 38, 0.94);
-  --surface-muted: rgba(255, 255, 255, 0.04);
-  --surface-soft: rgba(255, 255, 255, 0.03);
-  --surface-contrast: rgba(0, 0, 0, 0.2);
-  --surface-accent: rgba(124, 58, 237, 0.12);
-  --surface-accent-strong: rgba(124, 58, 237, 0.18);
-  --border-subtle: rgba(255, 255, 255, 0.08);
+  --background: #07080c;
+  --background-soft: #0d1017;
+  --surface: rgba(18, 20, 31, 0.8);
+  --surface-strong: rgba(23, 25, 39, 0.94);
+  --surface-muted: rgba(255, 255, 255, 0.05);
+  --surface-soft: rgba(255, 255, 255, 0.035);
+  --surface-contrast: rgba(255, 255, 255, 0.06);
+  --surface-overlay: rgba(18, 20, 31, 0.9);
+  --surface-accent: rgba(129, 118, 220, 0.14);
+  --surface-accent-strong: rgba(129, 118, 220, 0.22);
+  --border-subtle: rgba(255, 255, 255, 0.085);
   --border-strong: rgba(255, 255, 255, 0.14);
-  --border-accent: rgba(183, 148, 246, 0.24);
-  --text-primary: #f5f7fb;
-  --text-secondary: rgba(245, 247, 251, 0.7);
-  --text-muted: rgba(245, 247, 251, 0.5);
-  --text-inverse: #f5f7fb;
-  --accent-primary: #7c3aed;
-  --accent-secondary: #b794f6;
-  --accent-soft: rgba(124, 58, 237, 0.18);
-  --accent-soft-strong: rgba(124, 58, 237, 0.26);
-  --accent-glow: rgba(124, 58, 237, 0.35);
-  --accent-ring: rgba(183, 148, 246, 0.42);
-  --accent-contrast-text: #f5f7fb;
+  --border-accent: rgba(183, 174, 250, 0.24);
+  --text-primary: #f4f6fb;
+  --text-secondary: rgba(244, 246, 251, 0.72);
+  --text-muted: rgba(244, 246, 251, 0.52);
+  --text-inverse: #f4f6fb;
+  --accent-primary: #6f5de0;
+  --accent-secondary: #b7aefa;
+  --accent-soft: rgba(111, 93, 224, 0.16);
+  --accent-soft-strong: rgba(111, 93, 224, 0.24);
+  --accent-glow: rgba(111, 93, 224, 0.3);
+  --accent-ring: rgba(183, 174, 250, 0.34);
+  --accent-contrast-text: #f4f6fb;
   --accent-solid-text: #ffffff;
-  --shadow-soft: 0 18px 50px rgba(0, 0, 0, 0.18);
-  --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.28);
-  --shadow-accent: 0 18px 50px rgba(124, 58, 237, 0.28);
-  --nav-background: rgba(7, 8, 12, 0.72);
-  --nav-rail-bg: rgba(255, 255, 255, 0.03);
-  --brand-gradient-start: rgba(124, 58, 237, 0.34);
-  --brand-gradient-end: rgba(124, 58, 237, 0.08);
+  --shadow-soft: 0 18px 46px rgba(0, 0, 0, 0.24);
+  --shadow-card: 0 28px 80px rgba(0, 0, 0, 0.34);
+  --shadow-raised: 0 12px 30px rgba(0, 0, 0, 0.2);
+  --shadow-accent: 0 20px 48px rgba(111, 93, 224, 0.24);
+  --nav-background: rgba(8, 10, 16, 0.74);
+  --nav-rail-bg: rgba(255, 255, 255, 0.035);
+  --brand-gradient-start: rgba(111, 93, 224, 0.34);
+  --brand-gradient-end: rgba(111, 93, 224, 0.08);
   --page-gradient:
-    radial-gradient(circle at top left, rgba(124, 58, 237, 0.22), transparent 28%),
-    radial-gradient(circle at top right, rgba(183, 148, 246, 0.12), transparent 22%),
-    linear-gradient(180deg, #090a10 0%, #06070b 55%, #05060a 100%);
-  --ambient-orb-1: radial-gradient(circle, rgba(124, 58, 237, 0.28), transparent 70%);
-  --ambient-orb-2: radial-gradient(circle, rgba(183, 148, 246, 0.16), transparent 72%);
+    radial-gradient(circle at top left, rgba(111, 93, 224, 0.2), transparent 28%),
+    radial-gradient(circle at top right, rgba(183, 174, 250, 0.1), transparent 22%),
+    linear-gradient(180deg, #090a11 0%, #07080c 55%, #05060b 100%);
+  --ambient-orb-1: radial-gradient(circle, rgba(111, 93, 224, 0.24), transparent 70%);
+  --ambient-orb-2: radial-gradient(circle, rgba(183, 174, 250, 0.12), transparent 72%);
   --ambient-shell:
     linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 22%, transparent 78%, rgba(255, 255, 255, 0.02));
-  --selection-bg: rgba(124, 58, 237, 0.35);
-  --divider-gradient: linear-gradient(90deg, transparent, rgba(183, 148, 246, 0.9), transparent);
+  --selection-bg: rgba(111, 93, 224, 0.32);
+  --divider-gradient: linear-gradient(90deg, transparent, rgba(183, 174, 250, 0.7), transparent);
 }
 
 html {
@@ -119,14 +123,34 @@ html {
     background-image: var(--page-gradient);
     color: var(--text-primary);
     font-family:
-      "Avenir Next", "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui,
+      "Plus Jakarta Sans", "Avenir Next", Inter, ui-sans-serif, system-ui,
       -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.5;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition:
       background-color 180ms ease,
       color 180ms ease;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.05;
   }
 
   a {
@@ -153,17 +177,18 @@ html {
     border: 1px solid var(--border-subtle);
     background: linear-gradient(180deg, var(--surface), var(--surface-soft));
     box-shadow: var(--shadow-card);
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(18px);
   }
 
   .theme-panel {
     border: 1px solid var(--border-subtle);
-    background: var(--surface-muted);
+    background: linear-gradient(180deg, var(--surface-muted), var(--surface-soft));
+    box-shadow: var(--shadow-raised);
   }
 
   .theme-panel-contrast {
     border: 1px solid var(--border-subtle);
-    background: var(--surface-contrast);
+    background: linear-gradient(180deg, var(--surface-contrast), var(--surface-soft));
   }
 
   .theme-chip {
@@ -180,7 +205,7 @@ html {
 
   .theme-dot {
     background: var(--accent-secondary);
-    box-shadow: 0 0 16px var(--accent-glow);
+    box-shadow: 0 0 14px var(--accent-glow);
   }
 
   .theme-brand-mark {
@@ -192,18 +217,19 @@ html {
   .theme-nav-shell {
     border-bottom: 1px solid var(--border-subtle);
     background: var(--nav-background);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(22px);
   }
 
   .theme-nav-rail {
     border: 1px solid var(--border-subtle);
     background: var(--nav-rail-bg);
+    box-shadow: var(--shadow-raised);
   }
 
   .theme-toggle {
     border: 1px solid var(--border-subtle);
     background: var(--surface-muted);
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow-raised);
   }
 
   .theme-toggle:hover {
@@ -215,6 +241,11 @@ html {
     border: 1px solid var(--border-subtle);
     background: var(--surface-soft);
     color: var(--text-primary);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    transition:
+      border-color 180ms ease,
+      background-color 180ms ease,
+      box-shadow 180ms ease;
   }
 
   .theme-input::placeholder {
@@ -223,7 +254,10 @@ html {
 
   .theme-input:focus {
     border-color: var(--border-accent);
-    background: var(--surface-muted);
+    background: var(--surface-overlay);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 0 0 4px color-mix(in srgb, var(--accent-ring) 38%, transparent);
     outline: none;
   }
 
@@ -241,6 +275,69 @@ html {
 
   .theme-divider {
     background: var(--divider-gradient);
+  }
+
+  .type-kicker {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent-secondary);
+  }
+
+  .type-page-title {
+    max-width: 16ch;
+    font-size: clamp(2.5rem, 4vw, 4.5rem);
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    line-height: 0.98;
+    color: var(--text-primary);
+  }
+
+  .type-section-title {
+    max-width: 18ch;
+    font-size: clamp(2rem, 3vw, 3.25rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+
+  .type-card-title {
+    font-size: clamp(1.35rem, 1.2vw + 1rem, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+    color: var(--text-primary);
+  }
+
+  .type-body-lg {
+    max-width: 60ch;
+    font-size: clamp(1rem, 0.2vw + 0.96rem, 1.125rem);
+    line-height: 1.85;
+    color: var(--text-secondary);
+  }
+
+  .type-body {
+    font-size: 0.96rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+  }
+
+  .type-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .type-stat {
+    font-size: clamp(1.75rem, 2vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    color: var(--text-primary);
   }
 }
 

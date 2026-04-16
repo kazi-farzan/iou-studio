@@ -45,16 +45,16 @@ export default function Home() {
       <SystemEntryHero />
       <HowItWorks />
 
-      <Section className="pt-4" width="full">
-        <div className="space-y-8">
-          <div className="max-w-3xl space-y-4">
-            <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
+      <Section spacing="compact" width="full">
+        <div className="space-y-8 sm:space-y-10">
+          <div className="max-w-3xl space-y-4 sm:space-y-5">
+            <p className="type-kicker">
               System Capabilities
             </p>
-            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+            <h2 className="type-section-title max-w-[14ch]">
               Four capability lanes, one build system.
             </h2>
-            <p className="text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
+            <p className="type-body-lg">
               Start with a single lane or combine multiple capabilities into one
               configured request that stays clear from scope selection through handoff.
             </p>
@@ -64,27 +64,27 @@ export default function Home() {
             {services.map((service) => (
               <Card
                 key={service.id}
-                className="group h-full p-7"
+                className="group h-full p-6"
                 interactive
               >
                 <div className="flex h-full flex-col">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
+                    <span className="type-label">
                       {service.id}
                     </span>
-                    <span className="theme-panel flex h-12 w-12 items-center justify-center rounded-2xl text-[11px] font-medium tracking-[0.22em] text-[var(--accent-secondary)] transition-all duration-300 group-hover:border-[color:var(--border-accent)] group-hover:bg-[var(--surface-accent)] group-hover:text-[var(--accent-contrast-text)]">
+                    <span className="theme-panel flex h-12 w-12 items-center justify-center rounded-[18px] text-[11px] font-medium tracking-[0.22em] text-[var(--accent-secondary)] transition-all duration-300 group-hover:border-[color:var(--border-accent)] group-hover:bg-[var(--surface-accent)] group-hover:text-[var(--accent-contrast-text)]">
                       {service.token}
                     </span>
                   </div>
 
-                  <h3 className="mt-8 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
+                  <h3 className="mt-7 text-[1.6rem] font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
                     {service.title}
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
                     {service.description}
                   </p>
 
-                  <p className="mt-auto pt-8 text-sm font-medium text-[var(--accent-secondary)]">
+                  <p className="mt-auto pt-8 text-sm font-semibold text-[var(--accent-secondary)]">
                     {service.detail}
                   </p>
                 </div>
@@ -96,7 +96,7 @@ export default function Home() {
 
       <Section
         align="center"
-        className="pb-10 sm:pb-14"
+        spacing="compact"
         width="default"
       >
         <Card className="relative overflow-hidden px-6 py-10 sm:px-10 sm:py-12">
@@ -106,13 +106,13 @@ export default function Home() {
           />
 
           <div className="relative mx-auto max-w-3xl">
-            <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
+            <p className="type-kicker">
               Start Build
             </p>
-            <h2 className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+            <h2 className="mt-5 type-section-title max-w-[14ch] sm:mx-auto">
               Configure the right setup before the first conversation starts.
             </h2>
-            <p className="mt-4 text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
+            <p className="mt-4 type-body-lg sm:mx-auto">
               Use the guided build flow to select a starting point, shape the scope,
               and move into review with the system output already visible.
             </p>

@@ -49,7 +49,7 @@ const recentBuilds = [
 
 function VisualShell({ children, label }) {
   return (
-    <div className="rounded-[26px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))] p-3 sm:p-4">
+    <div className="rounded-[28px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))] p-3 sm:p-4">
       <div className="flex items-center justify-between border-b border-[color:var(--border-subtle)] pb-3">
         <div className="flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface-accent-strong)]" />
@@ -292,13 +292,13 @@ function BuildPreview({ preview }) {
 
 function BuildCard({ build }) {
   return (
-    <article className="group rounded-[30px] border border-[color:var(--border-subtle)] bg-[var(--surface-muted)] p-4 transition-[transform,border-color,opacity] duration-300 hover:-translate-y-1 hover:border-[color:var(--border-accent)] sm:p-5">
+    <article className="group rounded-[32px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface-muted),var(--surface-soft))] p-4 transition-[transform,border-color,opacity,box-shadow] duration-300 hover:-translate-y-1 hover:border-[color:var(--border-strong)] hover:shadow-[var(--shadow-card)] sm:p-5">
       <BuildPreview preview={build.preview} />
 
       <div className="mt-5 space-y-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0 space-y-1">
-            <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-[var(--text-muted)]">
+            <p className="type-label">
               {build.id}
             </p>
             <h3 className="text-xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
@@ -350,13 +350,14 @@ function BuildCard({ build }) {
 export default function RecentBuilds() {
   return (
     <div className="scroll-mt-28 sm:scroll-mt-32" id="recent-builds">
-      <Section className="pt-0 pb-10 sm:pb-12" width="full">
+      <Section spacing="compact" width="full">
         <div className="mx-auto max-w-6xl space-y-8">
-          <div className="max-w-3xl space-y-3">
-            <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-3xl">
+          <div className="max-w-3xl space-y-3 sm:space-y-4">
+            <p className="type-kicker">Proof Layer</p>
+            <h2 className="type-section-title max-w-[12ch]">
               Recent Build Log
             </h2>
-            <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+            <p className="type-body max-w-[48ch]">
               Quick proof from recent configured outputs. Case Studies holds the
               deeper records with scope, modules, delivery timelines, and results.
             </p>

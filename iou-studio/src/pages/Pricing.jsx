@@ -77,16 +77,16 @@ function getSurfaceClasses(tone) {
 
 function getModeToggleClasses(isActive) {
   return [
-    "flex min-h-[96px] flex-1 flex-col justify-center rounded-[22px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-0 sm:px-5 sm:py-4",
+    "flex min-h-[96px] flex-1 flex-col justify-center rounded-[24px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-0 sm:px-5 sm:py-4",
     isActive
-      ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] text-[var(--text-primary)]"
+      ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-accent-strong))] text-[var(--text-primary)] shadow-[var(--shadow-raised)]"
       : "border-transparent bg-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-subtle)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
   ].join(" ");
 }
 
 function getToggleClasses(isActive) {
   return [
-    "flex min-h-[88px] flex-col justify-center rounded-[22px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-0",
+    "flex min-h-[88px] flex-col justify-center rounded-[24px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-0",
     isActive
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-accent-strong))] text-[var(--text-primary)] shadow-[var(--shadow-accent)]"
       : "border-transparent bg-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
@@ -262,25 +262,25 @@ export default function Pricing() {
       className="w-full scroll-mt-28 pb-[calc(8.5rem+env(safe-area-inset-bottom))] sm:scroll-mt-32 xl:pb-0"
       id="builder"
     >
-      <Section className="pt-3 sm:pt-4" width="full">
-        <div className="space-y-10 sm:space-y-8">
-          <div className="max-w-4xl space-y-4 sm:space-y-3">
-            <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
+      <Section spacing="hero" width="full">
+        <div className="space-y-8 sm:space-y-10">
+          <div className="max-w-4xl space-y-4 sm:space-y-5">
+            <p className="type-kicker">
               Start Build
             </p>
 
-            <h1 className="max-w-3xl text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+            <h1 className="type-page-title max-w-[12ch]">
               Configure your build
             </h1>
 
-            <p className="max-w-3xl text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+            <p className="type-body-lg max-w-3xl">
               Select a starting configuration or assemble a custom system build.
               <span className="block">
                 Pricing and timeline update live while the setup takes shape.
               </span>
             </p>
 
-            <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
+            <p className="type-label">
               Live scope. Clear totals. Direct next step.
             </p>
           </div>
@@ -290,14 +290,14 @@ export default function Pricing() {
             steps={stepFlowSteps}
           />
 
-          <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start xl:gap-8">
-            <div className="min-w-0 space-y-10 sm:space-y-8">
-              <div className="max-w-4xl space-y-4 sm:space-y-3">
-                <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+          <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start xl:gap-10">
+            <div className="min-w-0 space-y-8 sm:space-y-10">
+              <div className="max-w-4xl space-y-4">
+                <p className="type-kicker">
                   Configuration Mode
                 </p>
 
-                <div className="theme-panel flex flex-col gap-2.5 rounded-[28px] border border-[color:var(--border-subtle)] p-2.5 sm:flex-row">
+                <div className="theme-panel flex flex-col gap-2.5 rounded-[30px] border border-[color:var(--border-subtle)] p-2.5 sm:flex-row">
                   {configurationModes.map((option) => (
                     <button
                       key={option.id}
@@ -320,15 +320,15 @@ export default function Pricing() {
               {isPackagesMode ? (
                 <>
                   <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(280px,0.7fr)] lg:items-start">
-                    <Card className="p-5 sm:p-6 lg:p-7">
+                    <Card className="p-6 sm:p-7 lg:p-8">
                       <div className="space-y-6">
-                        <div className="max-w-3xl space-y-3">
-                          <div className="theme-panel inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
+                        <div className="max-w-3xl space-y-4">
+                          <div className="theme-panel inline-flex items-center gap-3 rounded-full px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
                             <span className="theme-dot h-2 w-2 rounded-full" />
                             Configuration Overview
                           </div>
 
-                          <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+                          <p className="type-body max-w-[52ch]">
                             Use this surface to switch billing, test coupon rules, and review
                             starting configurations in one place. Every change updates the
                             active totals immediately, so the setup stays clear while you work.
@@ -337,8 +337,8 @@ export default function Pricing() {
 
                         <div className="grid gap-4 md:grid-cols-3">
                           {pricingNotes.map((note) => (
-                            <div key={note.label} className="theme-panel rounded-[24px] p-5">
-                              <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                            <div key={note.label} className="theme-panel-contrast rounded-[24px] p-5">
+                              <p className="type-kicker">
                                 {note.label}
                               </p>
                               <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
@@ -351,7 +351,7 @@ export default function Pricing() {
                     </Card>
 
                     <div className="space-y-4">
-                      <Card className="p-4 sm:p-5">
+                      <Card className="p-5 sm:p-6">
                         <div className="space-y-4">
                           <div className="grid grid-cols-2 gap-2.5">
                             {billingOptions.map((option) => (
@@ -374,11 +374,11 @@ export default function Pricing() {
 
                           <div
                             className={[
-                              "rounded-[24px] border p-4",
+                              "rounded-[24px] border p-5",
                               getSurfaceClasses(pricingModeSummary.tone),
                             ].join(" ")}
                           >
-                            <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                            <p className="type-kicker">
                               {pricingModeSummary.eyebrow}
                             </p>
                             <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
@@ -391,11 +391,11 @@ export default function Pricing() {
                         </div>
                       </Card>
 
-                      <Card className="p-4 sm:p-5">
+                      <Card className="p-5 sm:p-6">
                         <div className="space-y-4">
                           <div className="flex items-start justify-between gap-4">
                             <div>
-                              <p className="text-xs font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
+                              <p className="type-kicker">
                                 Coupon Simulation
                               </p>
                               <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
@@ -449,11 +449,11 @@ export default function Pricing() {
 
                           <div
                             className={[
-                              "rounded-[24px] border p-4",
+                              "rounded-[24px] border p-5",
                               getSurfaceClasses(couponFeedback.tone),
                             ].join(" ")}
                           >
-                            <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                            <p className="type-kicker">
                               {couponFeedback.label}
                             </p>
                             <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
@@ -472,11 +472,11 @@ export default function Pricing() {
                     className="space-y-5 sm:space-y-4"
                     id={PACKAGE_SELECTION_SECTION_ID}
                   >
-                    <div className="max-w-3xl space-y-2">
-                      <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                    <div className="max-w-3xl space-y-3">
+                      <p className="type-kicker">
                         Starting Configurations
                       </p>
-                      <p className="text-sm leading-6 text-[var(--text-secondary)]">
+                      <p className="type-body max-w-[50ch]">
                         Choose a baseline setup. The summary panel follows the active
                         configuration so you always have the current state in view.
                       </p>
@@ -496,15 +496,15 @@ export default function Pricing() {
 
                   <Card className="p-6 sm:p-8">
                     <div className="space-y-6">
-                      <div className="max-w-3xl space-y-3">
-                        <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                      <div className="max-w-3xl space-y-4">
+                        <p className="type-kicker">
                           Live Comparison
                         </p>
-                        <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+                        <h2 className="type-section-title max-w-[16ch]">
                           Compare the active billing view without re-reading every
                           card.
                         </h2>
-                        <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+                        <p className="type-body max-w-[52ch]">
                           The selected billing mode and coupon logic update every number
                           below, so this comparison stays aligned with the plan cards
                           and the summary panel.
@@ -520,7 +520,7 @@ export default function Pricing() {
                             <div
                               key={plan.id}
                               className={[
-                                "rounded-[26px] border p-5 transition-all duration-300",
+                                "rounded-[28px] border p-5 transition-all duration-300 sm:p-6",
                                 isSelected
                                   ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] shadow-[var(--shadow-accent)]"
                                   : "theme-panel",
@@ -557,10 +557,10 @@ export default function Pricing() {
                                 <div className="grid min-w-0 flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
                                   {snapshot.metrics.map((metric) => (
                                     <div
-                                      className="theme-panel-contrast min-w-0 rounded-[20px] p-4 sm:p-5"
+                                      className="theme-panel-contrast min-w-0 rounded-[22px] p-4 sm:p-5"
                                       key={metric.label}
                                     >
-                                      <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
+                                      <p className="type-label">
                                         {metric.label}
                                       </p>
                                       <div className="mt-2 min-w-0">
@@ -582,17 +582,17 @@ export default function Pricing() {
                 </>
               ) : (
                 <div id={CUSTOM_BUILD_SECTION_ID}>
-                  <Card className="p-5 sm:p-8 lg:p-10">
+                  <Card className="p-6 sm:p-8 lg:p-10">
                     <div className="space-y-9 sm:space-y-8">
                       <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                         <div className="max-w-3xl space-y-4">
-                          <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                          <p className="type-kicker">
                             Custom Build
                           </p>
-                          <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+                          <h2 className="type-section-title max-w-[14ch]">
                             Build your custom setup
                           </h2>
-                          <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+                          <p className="type-body max-w-[56ch]">
                             Select any module card to add or remove it from your
                             system. Selected modules reveal focused options and
                             add-ons inline, and every price and timeline change
@@ -600,7 +600,7 @@ export default function Pricing() {
                           </p>
                         </div>
 
-                        <div className="theme-panel inline-flex w-fit items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                        <div className="theme-panel inline-flex w-fit items-center gap-3 rounded-full px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
                           <span className="theme-dot h-2 w-2 rounded-full" />
                           {selectedCustomModulesLabel}
                         </div>

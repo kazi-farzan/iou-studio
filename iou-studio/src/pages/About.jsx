@@ -46,16 +46,17 @@ export default function About() {
     <div className="w-full">
       <Section
         animated={false}
-        className="pt-4 sm:pt-8"
+        spacing="hero"
         description="This is the system view of IOU: how the interface works, why the flow is structured the way it is, and how setup turns into a reviewable build request."
         eyebrow="How It Works"
         title="How the IOU system moves from setup to confirmation."
+        titleAs="h1"
         width="full"
       >
         <div className="grid gap-5 lg:grid-cols-3">
           {systemStages.map((stage) => (
             <Card key={stage.id} className="h-full p-7 sm:p-8">
-              <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+              <p className="type-kicker">
                 {stage.id}
               </p>
               <h2 className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)] sm:text-3xl">
@@ -71,7 +72,7 @@ export default function About() {
 
       <Section
         animated={false}
-        className="pb-10 sm:pb-14"
+        spacing="compact"
         description="The structure exists to make decisions faster, outputs clearer, and the transition from intent to execution more reliable."
         eyebrow="About System"
         title="Why the system is structured this way."
@@ -94,7 +95,7 @@ export default function About() {
       <Section
         align="center"
         animated={false}
-        className="pt-0 pb-10 sm:pb-14"
+        spacing="compact"
         description="Move straight into the build flow when the system fits your use case, or use support for edge cases that need a direct conversation."
         eyebrow="Next Step"
         title="Use the system first, then branch into support only when needed."

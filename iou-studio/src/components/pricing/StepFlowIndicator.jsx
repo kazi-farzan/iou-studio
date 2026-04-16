@@ -2,10 +2,10 @@ function getStepClasses(status) {
   if (status === "complete") {
     return {
       container:
-        "border-[color:var(--border-accent)] bg-[var(--surface-accent)]",
+        "border-[color:var(--border-accent)] bg-[var(--surface-accent)] shadow-[var(--shadow-raised)]",
       connector: "bg-[var(--border-accent)]",
       indicator:
-        "border-[color:var(--border-accent)] bg-[var(--accent-secondary)] text-[var(--text-inverse)] shadow-[var(--shadow-soft)]",
+        "border-[color:var(--border-accent)] bg-[var(--accent-secondary)] text-[var(--text-inverse)] shadow-[var(--shadow-raised)]",
       label: "text-[var(--text-primary)]",
       meta: "text-[var(--accent-secondary)]",
     };
@@ -52,15 +52,15 @@ export default function StepFlowIndicator({
   const mobileColumns = steps.length >= 4 ? 2 : Math.max(steps.length, 1);
 
   return (
-    <div className="theme-panel rounded-[28px] border border-[color:var(--border-subtle)] px-4 py-4 sm:px-5 sm:py-5">
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+    <div className="theme-panel rounded-[30px] border border-[color:var(--border-subtle)] px-5 py-5 sm:px-6 sm:py-6">
+      <div className="space-y-5">
+        <div className="space-y-3">
+          <p className="type-kicker">
             System Flow
           </p>
 
           {description ? (
-            <p className="max-w-3xl text-sm leading-6 text-[var(--text-secondary)]">
+            <p className="max-w-3xl text-sm leading-7 text-[var(--text-secondary)]">
               {description}
             </p>
           ) : null}
@@ -99,7 +99,7 @@ export default function StepFlowIndicator({
 
                 <div
                   className={[
-                    "relative flex h-full min-w-0 flex-col gap-3 rounded-[22px] border px-3 py-3 sm:px-4 sm:py-4",
+                    "relative flex h-full min-w-0 flex-col gap-3 rounded-[24px] border px-4 py-4 sm:px-5 sm:py-5",
                     classes.container,
                   ].join(" ")}
                 >
@@ -123,7 +123,7 @@ export default function StepFlowIndicator({
                     </p>
                     <p
                       className={[
-                        "mt-2 text-sm font-medium tracking-[0.01em] sm:text-base",
+                        "mt-2 text-sm font-semibold tracking-[0.01em] sm:text-base",
                         classes.label,
                       ].join(" ")}
                     >

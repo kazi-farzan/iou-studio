@@ -77,16 +77,16 @@ function getPalette(isDark) {
         ambientLight: "#a78bfa",
         border: "rgba(255, 255, 255, 0.08)",
         fade:
-          "linear-gradient(90deg, rgba(6, 7, 11, 0.84) 0%, rgba(6, 7, 11, 0.68) 28%, rgba(6, 7, 11, 0.16) 62%, rgba(6, 7, 11, 0.42) 100%)",
+          "linear-gradient(90deg, rgba(7, 8, 12, 0.88) 0%, rgba(7, 8, 12, 0.72) 28%, rgba(7, 8, 12, 0.18) 62%, rgba(7, 8, 12, 0.48) 100%)",
         fog: "#080910",
-        glowPrimary: "rgba(124, 58, 237, 0.18)",
-        glowSecondary: "rgba(147, 197, 253, 0.12)",
+        glowPrimary: "rgba(124, 58, 237, 0.14)",
+        glowSecondary: "rgba(147, 197, 253, 0.08)",
         keyLight: "#c4b5fd",
         shell:
-          "linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(124, 58, 237, 0.1) 48%, rgba(6, 7, 11, 0.04) 100%)",
+          "linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(124, 58, 237, 0.08) 48%, rgba(6, 7, 11, 0.03) 100%)",
         soft: "#8b5cf6",
         topFade:
-          "linear-gradient(180deg, rgba(6, 7, 11, 0.18) 0%, rgba(6, 7, 11, 0) 34%, rgba(6, 7, 11, 0.34) 100%)",
+          "linear-gradient(180deg, rgba(6, 7, 11, 0.16) 0%, rgba(6, 7, 11, 0) 34%, rgba(6, 7, 11, 0.3) 100%)",
         warm: "#dbeafe",
       }
     : {
@@ -94,16 +94,16 @@ function getPalette(isDark) {
         ambientLight: "#d6bcfa",
         border: "rgba(113, 84, 62, 0.12)",
         fade:
-          "linear-gradient(90deg, rgba(246, 239, 231, 0.94) 0%, rgba(246, 239, 231, 0.76) 28%, rgba(246, 239, 231, 0.16) 62%, rgba(246, 239, 231, 0.5) 100%)",
+          "linear-gradient(90deg, rgba(244, 239, 232, 0.95) 0%, rgba(244, 239, 232, 0.78) 28%, rgba(244, 239, 232, 0.18) 62%, rgba(244, 239, 232, 0.54) 100%)",
         fog: "#f4ece3",
-        glowPrimary: "rgba(148, 118, 242, 0.16)",
-        glowSecondary: "rgba(190, 143, 94, 0.14)",
+        glowPrimary: "rgba(148, 118, 242, 0.12)",
+        glowSecondary: "rgba(190, 143, 94, 0.1)",
         keyLight: "#c4b5fd",
         shell:
-          "linear-gradient(160deg, rgba(255, 255, 255, 0.22), rgba(148, 118, 242, 0.08) 48%, rgba(255, 255, 255, 0.04) 100%)",
+          "linear-gradient(160deg, rgba(255, 255, 255, 0.2), rgba(148, 118, 242, 0.07) 48%, rgba(255, 255, 255, 0.03) 100%)",
         soft: "#6d4de0",
         topFade:
-          "linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 34%, rgba(246, 239, 231, 0.22) 100%)",
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 34%, rgba(244, 239, 232, 0.18) 100%)",
         warm: "#be8f5e",
       };
 }
@@ -392,7 +392,7 @@ export default function Hero3D({ className = "" }) {
       aria-hidden="true"
       ref={containerRef}
       className={[
-        "absolute inset-0 overflow-hidden rounded-[28px]",
+        "absolute inset-0 overflow-hidden rounded-[32px]",
         className,
       ]
         .filter(Boolean)
@@ -406,13 +406,13 @@ export default function Hero3D({ className = "" }) {
         }}
       />
       <div
-        className="absolute -right-8 top-[-2rem] h-44 w-44 rounded-full blur-3xl"
+        className="absolute -right-6 top-[-1.5rem] h-40 w-40 rounded-full blur-3xl"
         style={{
           background: `radial-gradient(circle, ${palette.glowPrimary} 0%, transparent 72%)`,
         }}
       />
       <div
-        className="absolute bottom-[-3rem] left-[-2rem] h-40 w-40 rounded-full blur-3xl"
+        className="absolute bottom-[-2.5rem] left-[-1.5rem] h-36 w-36 rounded-full blur-3xl"
         style={{
           background: `radial-gradient(circle, ${palette.glowSecondary} 0%, transparent 72%)`,
         }}
@@ -430,7 +430,7 @@ export default function Hero3D({ className = "" }) {
         }}
       />
       <div
-        className="absolute inset-0 opacity-75"
+        className="absolute inset-0 opacity-70"
         style={{
           background: palette.topFade,
         }}

@@ -1,7 +1,7 @@
 function MetricTile({ metric }) {
   return (
-    <div className="theme-panel-contrast rounded-[18px] p-3 sm:p-4">
-      <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+    <div className="theme-panel-contrast rounded-[20px] p-3 sm:p-4">
+      <p className="type-label">
         {metric.label}
       </p>
       <p className="mt-2 text-sm font-semibold text-[var(--text-primary)] sm:text-base">
@@ -13,7 +13,7 @@ function MetricTile({ metric }) {
 
 function PrimaryRow({ row }) {
   return (
-    <div className="rounded-[18px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-3 py-3 sm:px-4">
+    <div className="rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-3 py-3 sm:px-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-sm font-medium text-[var(--text-primary)]">
@@ -33,8 +33,8 @@ function PrimaryRow({ row }) {
 
 function SecondaryRow({ row }) {
   return (
-    <div className="rounded-[14px] border border-[color:var(--border-subtle)] bg-[var(--surface-muted)] px-3 py-2.5">
-      <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+    <div className="rounded-[16px] border border-[color:var(--border-subtle)] bg-[var(--surface-muted)] px-3 py-2.5">
+      <p className="type-label">
         {row.label}
       </p>
       <p className="mt-1.5 text-sm font-medium text-[var(--text-primary)]">
@@ -46,7 +46,7 @@ function SecondaryRow({ row }) {
 
 export default function CaseStudyVisual({ visual }) {
   return (
-    <div className="rounded-[30px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))] p-3 shadow-[var(--shadow-soft)] sm:p-4">
+    <div className="rounded-[32px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))] p-3 shadow-[var(--shadow-soft)] sm:p-4">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--border-subtle)] pb-3">
         <div className="flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-[var(--surface-accent-strong)]" />
@@ -65,10 +65,10 @@ export default function CaseStudyVisual({ visual }) {
       </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.08fr)_minmax(220px,0.92fr)]">
-        <div className="theme-panel rounded-[24px] p-4 sm:p-5">
+        <div className="theme-panel rounded-[26px] p-4 sm:p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
+              <p className="type-label">
                 {visual.primary.viewport}
               </p>
               <h3 className="mt-2 text-lg font-semibold tracking-[-0.02em] text-[var(--text-primary)]">
@@ -94,8 +94,8 @@ export default function CaseStudyVisual({ visual }) {
             ))}
           </div>
 
-          <div className="mt-4 rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-3 sm:p-4">
-            <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
+          <div className="mt-4 rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-3 sm:p-4">
+            <p className="type-label">
               {visual.primary.summaryLabel}
             </p>
             <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
@@ -105,11 +105,11 @@ export default function CaseStudyVisual({ visual }) {
         </div>
 
         <div className="space-y-4">
-          <div className="mx-auto w-full max-w-[240px] rounded-[28px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface),var(--surface-strong))] p-3 shadow-[var(--shadow-soft)]">
+          <div className="mx-auto w-full max-w-[240px] rounded-[30px] border border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface),var(--surface-strong))] p-3 shadow-[var(--shadow-soft)]">
             <div className="mx-auto h-1.5 w-14 rounded-full bg-[var(--surface-contrast)]" />
 
-            <div className="mt-3 rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-4">
-              <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
+            <div className="mt-3 rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] p-4">
+              <p className="type-label">
                 {visual.secondary.viewport}
               </p>
               <h3 className="mt-2 text-base font-semibold tracking-[-0.02em] text-[var(--text-primary)]">

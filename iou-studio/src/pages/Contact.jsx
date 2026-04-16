@@ -16,17 +16,18 @@ export default function Contact() {
     <div className="w-full">
       <Section
         animated={false}
-        className="pt-4 sm:pt-8"
+        spacing="hero"
         description="The primary path is the build flow. Use contact as a secondary route when you need help, have an edge case, or want direct support."
         eyebrow="Support"
         title="Use contact when the build flow needs human help."
+        titleAs="h1"
         width="full"
       >
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_360px] xl:items-start">
           <Card className="p-7 sm:p-8">
             <div className="space-y-6">
               <div className="space-y-3">
-                <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                <p className="type-kicker">
                   Support Brief
                 </p>
                 <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)] sm:text-3xl">
@@ -42,7 +43,7 @@ export default function Contact() {
                   <label className="grid gap-2">
                     <span className="text-sm font-medium text-[var(--text-primary)]">Name</span>
                     <input
-                      className="theme-input rounded-2xl px-4 py-3 text-sm transition-all duration-300"
+                      className="theme-input rounded-[20px] px-4 py-3 text-sm transition-all duration-300"
                       name="name"
                       placeholder="Your name"
                       type="text"
@@ -52,7 +53,7 @@ export default function Contact() {
                   <label className="grid gap-2">
                     <span className="text-sm font-medium text-[var(--text-primary)]">Email</span>
                     <input
-                      className="theme-input rounded-2xl px-4 py-3 text-sm transition-all duration-300"
+                      className="theme-input rounded-[20px] px-4 py-3 text-sm transition-all duration-300"
                       name="email"
                       placeholder="you@example.com"
                       type="email"
@@ -63,7 +64,7 @@ export default function Contact() {
                 <label className="grid gap-2">
                   <span className="text-sm font-medium text-[var(--text-primary)]">Context</span>
                   <select
-                    className="theme-input rounded-2xl px-4 py-3 text-sm transition-all duration-300"
+                    className="theme-input rounded-[20px] px-4 py-3 text-sm transition-all duration-300"
                     name="service"
                   >
                     <option>Help with configurator setup</option>
@@ -77,7 +78,7 @@ export default function Contact() {
                 <label className="grid gap-2">
                   <span className="text-sm font-medium text-[var(--text-primary)]">Support Brief</span>
                   <textarea
-                    className="theme-input min-h-40 rounded-2xl px-4 py-3 text-sm transition-all duration-300"
+                    className="theme-input min-h-40 rounded-[20px] px-4 py-3 text-sm transition-all duration-300"
                     name="message"
                     placeholder="Tell IOU Studio what you are trying to build, where the flow breaks down, and what support you need."
                     rows={6}
@@ -105,7 +106,7 @@ export default function Contact() {
 
           <div className="space-y-6">
             <Card className="p-7">
-              <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+              <p className="type-kicker">
                 WhatsApp
               </p>
               <h2 className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
@@ -126,7 +127,7 @@ export default function Contact() {
             </Card>
 
             <Card className="p-7">
-              <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+              <p className="type-kicker">
                 Notes
               </p>
               <div className="mt-5 space-y-3">

@@ -6,7 +6,7 @@ import { getSummaryActionLabel } from "./pricingSummaryHelpers.js";
 const SUMMARY_LIST_TRANSITION_MS = 180;
 const SUMMARY_FEEDBACK_MS = 420;
 const DEFAULT_CTA_BUTTON_CLASSNAME =
-  "w-full rounded-[18px] border-[color:var(--border-strong)] bg-[var(--surface-strong)] text-[var(--text-primary)] shadow-[var(--shadow-soft)] transition-[background-color,border-color,transform,box-shadow] duration-200 ease-out hover:border-[color:var(--border-accent)] hover:bg-[var(--surface-accent)] active:translate-y-px active:scale-[0.995] motion-reduce:transition-none";
+  "w-full";
 
 function getSummarySignal(values = []) {
   return values.map((value) => String(value ?? "")).join("||");
@@ -266,7 +266,7 @@ function useStagedSummaryItems(items, enabled) {
 
 function EmptyState({ detail, title }) {
   return (
-    <div className="rounded-[24px] border border-dashed border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-5 py-7 transition-[background-color,border-color,opacity,transform] duration-200 ease-out motion-reduce:transition-none">
+    <div className="rounded-[26px] border border-dashed border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-5 py-7 transition-[background-color,border-color,opacity,transform] duration-200 ease-out motion-reduce:transition-none">
       <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
         Awaiting selection
       </p>
@@ -290,11 +290,11 @@ function SummarySection({
     <section
       aria-atomic={live ? "true" : undefined}
       aria-live={live ? "polite" : undefined}
-      className="border-t border-[color:var(--border-subtle)] px-5 py-6 sm:px-6 sm:py-6"
+      className="border-t border-[color:var(--border-subtle)] px-5 py-6 sm:px-6 sm:py-7"
     >
       <div className="space-y-4 sm:space-y-5">
-        <div className="space-y-2">
-          <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
+        <div className="space-y-2.5">
+          <p className="type-label">
             {label}
           </p>
 
@@ -337,15 +337,15 @@ function SummaryHeader({
   eyebrow,
 }) {
   return (
-    <div className="px-5 py-6 sm:px-6 sm:py-6">
+    <div className="px-5 py-6 sm:px-6 sm:py-7">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1 space-y-4 sm:space-y-5">
           <div className="space-y-2">
-            <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+            <p className="type-kicker">
               {eyebrow}
             </p>
             <h2
-              className="text-[1.7rem] font-semibold leading-tight tracking-[-0.04em] text-[var(--text-primary)] sm:text-2xl"
+              className="text-[1.75rem] font-semibold leading-tight tracking-[-0.045em] text-[var(--text-primary)] sm:text-[2rem]"
               id={titleId}
             >
               {title}
@@ -383,7 +383,7 @@ function SystemOutput({
     >
       <div className="space-y-5 sm:space-y-6">
         <div className="space-y-3">
-          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+          <p className="type-label">
             {total.label}
           </p>
 
@@ -420,7 +420,7 @@ function SystemOutput({
         <div className="border-t border-[color:var(--border-subtle)] pt-5">
           <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end sm:gap-4">
             <div className="space-y-2">
-              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
+              <p className="type-label">
                 {timeline.label}
               </p>
 
@@ -556,7 +556,7 @@ export default function PricingSummarySurface({
 
       <SummarySection description={ctaNote} label="Next step">
         {isActionDisabled && validationNote ? (
-          <div className="mb-4 rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-3">
+          <div className="mb-4 rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-3">
             <p className="text-sm leading-6 text-[var(--text-secondary)]">
               {validationNote}
             </p>
@@ -588,7 +588,7 @@ export default function PricingSummarySurface({
             className={ctaButtonClassName}
             size="lg"
             to={ctaTo}
-            variant="secondary"
+            variant="primary"
           >
             {resolvedCtaLabel}
           </Button>

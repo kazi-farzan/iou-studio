@@ -4,8 +4,8 @@ function getGroupClasses(presenceState, variant) {
   return [
     "overflow-hidden border transition-[opacity,transform,background-color,border-color,box-shadow] duration-200 ease-out motion-reduce:transition-none",
     variant === "page"
-      ? "rounded-[28px] border-[color:var(--border-strong)] bg-[linear-gradient(180deg,var(--surface-contrast),var(--surface-soft))] shadow-[var(--shadow-soft)]"
-      : "rounded-[24px] border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface-contrast),var(--surface-soft))]",
+      ? "rounded-[30px] border-[color:var(--border-strong)] bg-[linear-gradient(180deg,var(--surface-contrast),var(--surface-soft))] shadow-[var(--shadow-soft)]"
+      : "rounded-[26px] border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface-contrast),var(--surface-soft))]",
     presenceState === "entering"
       ? "translate-y-1 opacity-60"
       : presenceState === "exiting"
@@ -15,7 +15,7 @@ function getGroupClasses(presenceState, variant) {
 }
 
 function getMetricClasses() {
-  return "rounded-[18px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-3 py-2.5";
+  return "rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-3";
 }
 
 function getBadgeClasses(tone = "default") {
@@ -57,10 +57,10 @@ function SummaryRowBadge({ tone, value }) {
 
 function BreakdownRow({ row }) {
   return (
-    <div className="grid gap-3 border-t border-[color:var(--border-subtle)] pt-3 first:border-t-0 first:pt-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-4">
+    <div className="grid gap-3 border-t border-[color:var(--border-subtle)] pt-4 first:border-t-0 first:pt-0 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-4">
       <div className="min-w-0">
         {row.eyebrow ? (
-          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-[var(--text-muted)]">
+          <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
             {row.eyebrow}
           </p>
         ) : null}
@@ -110,11 +110,11 @@ function BreakdownRow({ row }) {
 function BreakdownGroup({ group, variant }) {
   return (
     <article className={getGroupClasses(group.presenceState, variant)}>
-      <div className="border-b border-[color:var(--border-subtle)] px-4 py-4 sm:px-5 sm:py-5">
+      <div className="border-b border-[color:var(--border-subtle)] px-5 py-5 sm:px-6 sm:py-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             {group.eyebrow ? (
-              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
+              <p className="type-kicker">
                 {group.eyebrow}
               </p>
             ) : null}
@@ -145,7 +145,7 @@ function BreakdownGroup({ group, variant }) {
         </div>
       </div>
 
-      <div className="px-4 py-4 sm:px-5 sm:py-5">
+      <div className="px-5 py-5 sm:px-6 sm:py-6">
         {group.rowsLabel ? (
           <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-muted)]">
             {group.rowsLabel}

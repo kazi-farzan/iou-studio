@@ -12,43 +12,50 @@ const alignmentClasses = {
   center: "items-center text-center",
 };
 
+const spacingClasses = {
+  compact: "py-10 sm:py-12 lg:py-14",
+  default: "py-14 sm:py-16 lg:py-20",
+  airy: "py-16 sm:py-20 lg:py-24",
+  hero: "pb-14 pt-6 sm:pb-16 sm:pt-8 lg:pb-20 lg:pt-10",
+};
+
 export default function Section({
   align = "left",
   animated = true,
   children,
   className = "",
+  contentClassName = "",
   description,
   eyebrow,
+  spacing = "default",
   title,
+  titleAs: TitleTag = "h2",
   width = "default",
 }) {
   const sectionRef = usePageAnimation(animated);
   const contentClasses = [widthClasses[width], alignmentClasses[align]]
     .filter(Boolean)
     .join(" ");
+  const spacingClass = spacingClasses[spacing] || spacingClasses.default;
 
   return (
     <section
       ref={sectionRef}
-      className={["relative w-full py-10 sm:py-12", className].filter(Boolean).join(" ")}
+      className={["relative w-full", spacingClass, className].filter(Boolean).join(" ")}
     >
-      <div className={["flex flex-col gap-6", contentClasses].join(" ")}>
+      <div className={["flex flex-col gap-8 sm:gap-10", contentClasses, contentClassName].join(" ")}>
         {(eyebrow || title || description) && (
-          <div className="space-y-4">
-            {eyebrow ? (
-              <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
-                {eyebrow}
-              </p>
-            ) : null}
+          <div className="space-y-4 sm:space-y-5">
+            {eyebrow ? <p className="type-kicker">{eyebrow}</p> : null}
 
             {title ? (
-              <h1 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-5xl lg:text-6xl">
+              <TitleTag className={TitleTag === "h1" ? "type-page-title" : "type-section-title"}>
                 {title}
-              </h1>
+              </TitleTag>
             ) : null}
 
             {description ? (
-              <p className="max-w-3xl text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
+              <p className="type-body-lg">
                 {description}
               </p>
             ) : null}
