@@ -1,6 +1,7 @@
 import Button from "../ui/Button.jsx";
 import Card from "../ui/Card.jsx";
 import Section from "../ui/Section.jsx";
+import Hero3D from "./Hero3D.jsx";
 
 const entryIndicators = [
   {
@@ -37,7 +38,7 @@ const systemSteps = [
 
 export default function SystemEntryHero() {
   return (
-    <Section className="pt-4 sm:pt-8 lg:pt-10" width="full">
+    <Section className="overflow-hidden pt-4 sm:pt-8 lg:pt-10" width="full">
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.14fr)_380px] xl:items-start">
         <div className="space-y-7">
           <div className="theme-panel inline-flex items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)] shadow-[var(--shadow-soft)]">
@@ -87,10 +88,7 @@ export default function SystemEntryHero() {
         </div>
 
         <Card className="relative overflow-hidden p-6 sm:p-7 lg:p-8">
-          <div
-            aria-hidden="true"
-            className="theme-ambient-orb-2 pointer-events-none absolute right-[-3rem] top-[-4rem] h-36 w-36 rounded-full blur-2xl"
-          />
+          <Hero3D />
 
           <div className="relative space-y-6">
             <div className="space-y-3">

@@ -72,6 +72,11 @@ Shared order-flow state now supports:
 - persistence across Configure -> Review -> Submit -> Confirm
 - deliverable-aware build specifications across pricing and order review
 
+The homepage hero now includes a controlled identity layer:
+- a lightweight Three.js ambient node field inside the System State card
+- desktop-only motion with a static fallback on smaller or lower-power devices
+- theme-aware lighting and low-contrast geometry so the system UI stays primary
+
 ---
 
 ## System Output
@@ -104,6 +109,7 @@ The product is now:
 - navigation-aligned
 - schema-driven across browse and build surfaces
 - deliverable-explicit in configure and review flows
+- identity-layered with controlled ambient 3D in the hero
 - consistent from entry layer to submission
 
 ---
@@ -112,12 +118,14 @@ The product is now:
 
 Phase 9 - Identity + Wow (Active)
 
-Phase 8 - Trust Realization is complete through Task 30.
+Phase 8 - Trust Realization is complete.
 
 ---
 
 ## Immediate Focus
 
-- Task 31: Controlled 3D Layer
+- Task 32: Visual Polish Pass
+- QA hero readability and passive motion behavior across light and dark themes
+- Monitor desktop hero performance and bundle impact from the controlled 3D layer
 - QA deliverable readability across dense mobile and desktop build states
 - Keep case study records and future schema changes aligned with deliverable terminology

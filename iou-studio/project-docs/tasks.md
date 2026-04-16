@@ -16,6 +16,8 @@
    Replaced placeholder proof with documented build records that show business context, configured modules, deliverables, timelines, outcomes, and visual proof surfaces.
 30: Deliverable Clarity Layer
    Added structured deliverables to the shared schema and surfaced them across package cards, custom modules, grouped summaries, and Order Summary so the flow reads more like a build specification.
+31: Controlled 3D Layer
+   Added a theme-aware, low-contrast Three.js node field to the homepage System State hero card with desktop-only motion, static fallback behavior on smaller or lower-power devices, and isolated lifecycle handling.
 
 ---
 
@@ -29,15 +31,11 @@ Phase 8 - Trust Realization is complete.
 
 ## Active Tasks (Strict Order)
 
-31. Controlled 3D Layer
+32. Visual Polish Pass
 
 ---
 
 ## Upcoming
-
-32. Visual Polish Pass
-
----
 
 Phase 10 - Product Readiness
 
