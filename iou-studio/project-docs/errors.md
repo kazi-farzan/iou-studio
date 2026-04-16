@@ -8,9 +8,8 @@
 
 ## Medium
 
-* Navigation still too broad (agency-style IA)
-* Copy inconsistency (agency vs system tone)
-* Services page not aligned with system menu structure
+* Copy inconsistency across pages (agency vs system tone)
+* Services page still partially card-based (not yet a full system menu)
 * Case studies lack real proof assets
 
 ---
@@ -25,9 +24,8 @@
 
 ## Watchlist
 
-* Ensure line-item summary remains readable under heavy configurations
-* Validate pricing accuracy across complex option combinations
-* Validate timeline aggregation logic
-* Maintain mobile readability for long summaries
-* Prevent UI from becoming too dense
-* Ensure summary structure maps cleanly to submission payload
+* Ensure navigation changes did not break internal linking
+* Ensure all CTAs point to configurator (no dead flows)
+* Validate route consistency after IA cleanup
+* Ensure user always has a clear next step
+* Maintain summary readability under heavy configurations

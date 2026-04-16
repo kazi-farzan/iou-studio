@@ -1,90 +1,31 @@
-# CODEX RULES
+# CURRENT ERRORS
 
-* Always give COMPLETE file code
-* No partial snippets unless asked
-* Keep code production-ready
-* Clean Tailwind usage
-* No unnecessary complexity
+## Active (Critical)
+
+* None blocking product usage
 
 ---
 
-## Output Style
+## Medium
 
-1. Brief explanation
-2. Full code
-3. File placement
-
----
-
-## Project State
-
-System now includes:
-
-- configurator (modules + packages)
-- unified configuration schema
-- nested options and add-ons
-- live pricing + timeline (schema-driven)
-- line-item summary (grouped breakdown)
-- product-grade summary panel
-- mobile persistent summary
-- trust layers (process, proof, metrics)
-- step flow indicator
-- full order flow:
-  - Order Summary
-  - Submission
-  - Confirmation
+* Copy inconsistency across pages (agency vs system tone)
+* Services page still partially card-based (not yet a full system menu)
+* Case studies lack real proof assets
 
 ---
 
-## CURRENT PRIORITY
+## Low
 
-Align the platform experience with the system
-
----
-
-## Product Direction (CRITICAL)
-
-This is a system interface.
-
-Users:
-- configure services
-- shape scope
-- review structured output
-- submit without needing a call
+* Minor visual inconsistencies across sections
+* Edge-case formatting for nested options
+* Slight density in summary when many options selected
 
 ---
 
-## Output Principle (NEW)
+## Watchlist
 
-The system must produce:
-
-- clear scope definition
-- grouped breakdown
-- transparent pricing
-- understandable timeline
-
-This output must work for:
-- users (decision-making)
-- providers (execution)
-
----
-
-## Next Evolution
-
-System must now become:
-
-- aligned → IA + navigation
-- consistent → copy and tone
-- believable → real proof
-- memorable → identity layer
-
----
-
-## Execution Mode
-
-- one task at a time
-- preserve working system
-- refine structure
-
-Goal:
-Turn system into a polished, high-trust product platform
+* Ensure navigation changes did not break internal linking
+* Ensure all CTAs point to configurator (no dead flows)
+* Validate route consistency after IA cleanup
+* Ensure user always has a clear next step
+* Maintain summary readability under heavy configurations

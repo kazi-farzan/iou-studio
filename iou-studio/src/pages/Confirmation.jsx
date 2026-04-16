@@ -54,16 +54,16 @@ export default function Confirmation() {
                   There is no confirmed submission in this session yet.
                 </h2>
                 <p className="max-w-2xl text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-                  Start from the configurator, move into the order summary, and
+                  Start from the configurator, move into the setup summary, and
                   submit the request to reach this confirmation state.
                 </p>
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <Button size="lg" to="/pricing#builder">
-                    Return to configurator
+                    Start Build
                   </Button>
                   {draftConfiguration.hasSelection ? (
-                    <Button size="lg" to="/order-summary" variant="secondary">
-                      Go to order summary
+                    <Button size="lg" to="/summary" variant="secondary">
+                      Review Setup
                     </Button>
                   ) : null}
                 </div>
@@ -201,10 +201,10 @@ export default function Confirmation() {
 
                   <div className="flex flex-col gap-3">
                     <Button size="lg" to="/pricing#builder">
-                      Configure another setup
+                      Start Build
                     </Button>
-                    <Button size="lg" to="/order-summary" variant="secondary">
-                      Review current summary
+                    <Button size="lg" to="/summary" variant="secondary">
+                      Review Setup
                     </Button>
                   </div>
                 </div>

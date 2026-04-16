@@ -4,16 +4,14 @@ export function getSummaryActionLabel(summary, compact = false) {
   }
 
   if (summary.isActionDisabled) {
-    return summary.modeLabel === "Build Your Own"
-      ? "Select modules"
-      : "Select setup";
+    return summary.modeLabel === "Packages" ? "Select setup" : "Select modules";
   }
 
   if (!compact) {
     return summary.ctaLabel || "Continue";
   }
 
-  return summary.ctaLabel?.toLowerCase().includes("order summary")
+  return summary.ctaLabel?.toLowerCase().includes("review")
     ? "Review"
     : "Continue";
 }

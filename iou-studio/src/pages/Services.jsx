@@ -62,9 +62,9 @@ export default function Services() {
     <div className="w-full">
       <Section
         className="pt-4 sm:pt-8"
-        description="IOU Studio combines technical execution with brand and creative clarity so clients can build what they need without piecing together multiple vendors."
+        description="Each service lane can run on its own or combine into a single configured build. The goal is direct scope clarity before handoff, not open-ended browsing."
         eyebrow="Services"
-        title="Four focused capabilities, designed to work as one system."
+        title="Service lanes that combine into one configured build."
         width="full"
       >
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -80,7 +80,7 @@ export default function Services() {
                     {service.id}
                   </span>
                   <span className="theme-chip rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.24em] transition-all duration-300 group-hover:bg-[var(--surface-accent-strong)]">
-                    Category
+                    System Lane
                   </span>
                 </div>
 
@@ -108,7 +108,7 @@ export default function Services() {
                 <div className="mt-auto pt-8">
                   <div className="theme-panel-contrast rounded-2xl p-4">
                     <p className="text-xs font-medium uppercase tracking-[0.24em] text-[var(--text-muted)]">
-                      Ideal Fit
+                      Use When
                     </p>
                     <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
                       {service.fit}
@@ -124,17 +124,17 @@ export default function Services() {
       <Section
         align="center"
         className="pb-10 sm:pb-14"
-        description="Need a combination of services? The package flow helps narrow the right starting point before you submit a request."
-        eyebrow="Next Step"
-        title="Choose the right mix before the project begins."
+        description="Move into the build flow to combine lanes, check scope, and review the setup before anything is submitted."
+        eyebrow="Start Build"
+        title="Select the right lane, then configure the setup."
         width="default"
       >
         <div className="flex flex-wrap justify-center gap-3">
           <Button size="lg" to="/pricing">
-            Build Your Package
+            Start Build
           </Button>
           <Button size="lg" to="/contact" variant="secondary">
-            Contact IOU Studio
+            Contact Support
           </Button>
         </div>
       </Section>

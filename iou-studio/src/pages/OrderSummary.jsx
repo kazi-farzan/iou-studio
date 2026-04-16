@@ -205,10 +205,10 @@ export default function OrderSummary() {
         <div className="space-y-10 sm:space-y-8">
           <div className="max-w-4xl space-y-4 sm:space-y-3">
             <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
-              Order Review
+              Summary
             </p>
             <h1 className="max-w-3xl text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-              Review your build specification
+              Review your configured setup
             </h1>
             <p className="max-w-3xl text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
               Confirm the active configuration as a grouped scope breakdown, then
@@ -233,10 +233,10 @@ export default function OrderSummary() {
                 </p>
                 <div className="flex flex-col gap-3 sm:flex-row">
                   <Button size="lg" to="/pricing#builder">
-                    Return to configurator
+                    Start Build
                   </Button>
                   <Button size="lg" to="/pricing" variant="secondary">
-                    View pricing page
+                    View build surface
                   </Button>
                 </div>
               </div>
@@ -308,7 +308,7 @@ export default function OrderSummary() {
                         Submission details
                       </p>
                       <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[var(--text-primary)]">
-                        Submit this request
+                        Submit this build request
                       </h2>
                       <p className="text-sm leading-7 text-[var(--text-secondary)]">
                         This form stays attached to the reviewed configuration.
@@ -397,7 +397,7 @@ export default function OrderSummary() {
 
                     <div className="flex flex-col gap-3 border-t border-[color:var(--border-subtle)] pt-5 sm:flex-row">
                       <Button size="lg" to="/pricing#builder" variant="secondary">
-                        Adjust configuration
+                        Adjust setup
                       </Button>
                       <Button size="lg" type="submit">
                         Submit request

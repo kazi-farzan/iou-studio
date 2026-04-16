@@ -55,8 +55,8 @@ const configurationModes = [
   },
   {
     id: ORDER_FLOW_MODE_CUSTOM,
-    label: "Build Your Own",
-    detail: "Move into a custom system build.",
+    label: "Custom Build",
+    detail: "Assemble a modular system build.",
   },
 ];
 
@@ -266,22 +266,22 @@ export default function Pricing() {
         <div className="space-y-10 sm:space-y-8">
           <div className="max-w-4xl space-y-4 sm:space-y-3">
             <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
-              System Configuration
+              Start Build
             </p>
 
             <h1 className="max-w-3xl text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-              Configure Your Setup
+              Configure your build
             </h1>
 
             <p className="max-w-3xl text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-              Select a starting configuration or build your own setup.
+              Select a starting configuration or assemble a custom system build.
               <span className="block">
-                Pricing updates live as you adjust billing and coupon inputs.
+                Pricing and timeline update live while the setup takes shape.
               </span>
             </p>
 
             <p className="text-xs uppercase tracking-[0.22em] text-[var(--text-muted)]">
-              All selections update live. Clear scope before you proceed.
+              Live scope. Clear totals. Direct next step.
             </p>
           </div>
 
@@ -633,7 +633,7 @@ export default function Pricing() {
 
       <RecentBuilds />
       <MetricsStrip />
-      <WhatHappensNext />
+      <WhatHappensNext ctaLabel="Review Setup" ctaTo="/summary" />
       <MobilePricingSummaryBar
         onInvalidAction={handleSelectionGuidance}
         summary={summaryPanelData}

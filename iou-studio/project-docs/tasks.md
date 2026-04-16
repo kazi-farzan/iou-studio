@@ -1,13 +1,14 @@
 # CURRENT TASKS
 
-## Completed (Phase 1–6)
+## Completed (Phase 1–7)
 
 1–20: System foundation, configurator, trust, refinement  
 21: Real Order Flow  
 22: Mobile Persistent Summary  
 23: Unified Config Schema  
 24: Nested Options + Add-ons  
-25: Line-Item Summary Upgrade
+25: Line-Item Summary Upgrade  
+26: IA + Navigation Cleanup
 
 ---
 
@@ -19,15 +20,7 @@ Phase 7 — Platform Alignment
 
 ## Active Tasks (STRICT ORDER)
 
-### 26. IA + Navigation Cleanup (CRITICAL)
-- simplify navigation
-- remove “Products”
-- Portfolio → Case Studies
-- align routes with system flow
-
----
-
-### 27. Copy System Alignment
+### 27. Copy System Alignment (CRITICAL)
 - remove agency language
 - unify system-first tone
 - align messaging across all pages
@@ -63,26 +56,13 @@ Phase 8 — Trust Realization
 ## PHASE 9 — Identity + Wow
 
 ### 31. Controlled 3D Layer
-- subtle hero 3D
-- ambient, not intrusive
-
----
 
 ### 32. Visual Polish Pass
-- spacing consistency
-- typography refinement
-- reduce repetitive patterns
 
 ---
 
 ## PHASE 10 — Product Readiness
 
 ### 33. Submission Backend
-- structured data output
-- Firebase / webhook / email
-
----
 
 ### 34. Confirmation + Onboarding UX
-- refine success flow
-- clarify next steps

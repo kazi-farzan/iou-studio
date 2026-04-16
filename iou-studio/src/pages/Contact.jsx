@@ -3,11 +3,11 @@ import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
 
 const whatsappLink =
-  "https://api.whatsapp.com/send?text=Hello%20IOU%20Studio%2C%20I%27d%20like%20to%20discuss%20a%20project.";
+  "https://api.whatsapp.com/send?text=Hello%20IOU%20Studio%2C%20I%27d%20like%20help%20with%20a%20build%20or%20support%20request.";
 
 const contactNotes = [
-  "Share your main goal, timeline, and the type of support you need.",
-  "Use WhatsApp for quick conversations and the form for a more structured brief.",
+  "Use Start Build first when the project can be configured directly inside the system.",
+  "Use this page for support questions, edge cases, or requests that need a direct conversation.",
   "Form submission is currently frontend-only and ready for backend wiring later.",
 ];
 
@@ -17,9 +17,9 @@ export default function Contact() {
       <Section
         animated={false}
         className="pt-4 sm:pt-8"
-        description="Reach out with a quick message or a more structured brief. Both paths are designed to make the next step feel easy."
-        eyebrow="Contact"
-        title="Start the conversation in the format that suits you."
+        description="The primary path is the build flow. Use contact as a secondary route when you need help, have an edge case, or want direct support."
+        eyebrow="Support"
+        title="Use contact when the build flow needs human help."
         width="full"
       >
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_360px] xl:items-start">
@@ -27,10 +27,10 @@ export default function Contact() {
             <div className="space-y-6">
               <div className="space-y-3">
                 <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-                  Inquiry Form
+                  Support Brief
                 </p>
                 <h2 className="text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)] sm:text-3xl">
-                  Send a structured project brief
+                  Send a structured support request
                 </h2>
               </div>
 
@@ -61,32 +61,32 @@ export default function Contact() {
                 </div>
 
                 <label className="grid gap-2">
-                  <span className="text-sm font-medium text-[var(--text-primary)]">Service</span>
+                  <span className="text-sm font-medium text-[var(--text-primary)]">Context</span>
                   <select
                     className="theme-input rounded-2xl px-4 py-3 text-sm transition-all duration-300"
                     name="service"
                   >
-                    <option>Web & app development</option>
-                    <option>Branding & identity</option>
-                    <option>Graphic design & content</option>
+                    <option>Help with configurator setup</option>
+                    <option>Custom build requirement</option>
+                    <option>Branding or design support</option>
                     <option>Marketing support</option>
-                    <option>Combination of services</option>
+                    <option>General question</option>
                   </select>
                 </label>
 
                 <label className="grid gap-2">
-                  <span className="text-sm font-medium text-[var(--text-primary)]">Project Brief</span>
+                  <span className="text-sm font-medium text-[var(--text-primary)]">Support Brief</span>
                   <textarea
                     className="theme-input min-h-40 rounded-2xl px-4 py-3 text-sm transition-all duration-300"
                     name="message"
-                    placeholder="Tell IOU Studio about your goal, timeline, and what you need help with."
+                    placeholder="Tell IOU Studio what you are trying to build, where the flow breaks down, and what support you need."
                     rows={6}
                   />
                 </label>
 
                 <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:flex-wrap">
                   <Button className="w-full sm:w-auto" size="lg" type="submit">
-                    Send Inquiry
+                    Send Support Brief
                   </Button>
                   <Button
                     className="w-full sm:w-auto"
@@ -96,7 +96,7 @@ export default function Contact() {
                     target="_blank"
                     variant="secondary"
                   >
-                    Message On WhatsApp
+                    Open WhatsApp
                   </Button>
                 </div>
               </form>
@@ -109,11 +109,11 @@ export default function Contact() {
                 WhatsApp
               </p>
               <h2 className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
-                Prefer a faster message thread?
+                Need a faster support thread?
               </h2>
               <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
-                Use the WhatsApp link for a quicker first touch, then move into a
-                more detailed brief when the scope becomes clearer.
+                Use WhatsApp for quick support questions, then move into a more
+                structured brief when the requirements become clearer.
               </p>
               <a
                 className="mt-6 inline-flex text-sm font-medium text-[var(--accent-secondary)] transition-colors duration-300 hover:text-[var(--text-primary)]"
@@ -121,7 +121,7 @@ export default function Contact() {
                 rel="noreferrer"
                 target="_blank"
               >
-                Open WhatsApp
+                Open WhatsApp Support
               </a>
             </Card>
 

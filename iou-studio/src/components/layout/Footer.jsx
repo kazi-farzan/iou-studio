@@ -1,17 +1,56 @@
+import { NavLink } from "react-router-dom";
+import Button from "../ui/Button.jsx";
+
+const footerLinks = [
+  { label: "Services", path: "/services" },
+  { label: "Case Studies", path: "/case-studies" },
+  { label: "How It Works", path: "/how-it-works" },
+];
+
+function getFooterLinkClasses({ isActive }) {
+  return [
+    "text-sm transition-colors duration-300",
+    isActive
+      ? "text-[var(--text-primary)]"
+      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]",
+  ].join(" ");
+}
+
 export default function Footer() {
   return (
     <footer className="border-t border-[color:var(--border-subtle)] bg-[var(--surface-muted)]">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-6 py-8 text-sm sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10">
-        <div>
+      <div className="mx-auto grid w-full max-w-7xl gap-8 px-6 py-8 text-sm sm:px-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:px-10">
+        <div className="space-y-2">
           <p className="text-sm font-medium text-[var(--text-primary)]">IOU Studio</p>
           <p className="mt-1 text-[var(--text-secondary)]">
-            Precision systems for product, brand, design, and growth.
+            System-led delivery for product, brand, design, and growth execution.
           </p>
         </div>
 
-        <p className="text-[var(--text-muted)]">
-          Built to feel fast, clear, and premium from the first interaction.
-        </p>
+        <div className="flex flex-col items-start gap-4 lg:items-end">
+          <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-5 gap-y-2">
+            {footerLinks.map((item) => (
+              <NavLink key={item.path} className={getFooterLinkClasses} to={item.path}>
+                {item.label}
+              </NavLink>
+            ))}
+            <NavLink className={getFooterLinkClasses} to="/contact">
+              Contact
+            </NavLink>
+          </nav>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <Button size="sm" to="/pricing">
+              Start Build
+            </Button>
+            <NavLink
+              className="text-sm text-[var(--text-secondary)] transition-colors duration-300 hover:text-[var(--text-primary)]"
+              to="/contact"
+            >
+              Contact Support
+            </NavLink>
+          </div>
+        </div>
       </div>
     </footer>
   );

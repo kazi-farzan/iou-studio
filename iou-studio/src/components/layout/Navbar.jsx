@@ -3,13 +3,9 @@ import Button from "../ui/Button.jsx";
 import ThemeToggleButton from "../ui/ThemeToggleButton.jsx";
 
 const navigation = [
-  { label: "Home", path: "/" },
   { label: "Services", path: "/services" },
-  { label: "Pricing", path: "/pricing" },
-  { label: "Products", path: "/products" },
-  { label: "Portfolio", path: "/portfolio" },
-  { label: "About", path: "/about" },
-  { label: "Contact", path: "/contact" },
+  { label: "Case Studies", path: "/case-studies" },
+  { label: "How It Works", path: "/how-it-works" },
 ];
 
 function ArrowRightIcon({ className = "h-4 w-4" }) {
@@ -59,7 +55,7 @@ export default function Navbar() {
     });
   }
 
-  function handleStartBuilding() {
+  function handleStartBuild() {
     if (location.pathname === "/pricing") {
       if (location.hash !== "#builder") {
         navigate("/pricing#builder", { replace: true });
@@ -88,7 +84,7 @@ export default function Navbar() {
                 IOU Studio
               </span>
               <span className="hidden text-sm text-[var(--text-secondary)] transition-colors duration-300 group-hover:text-[var(--text-primary)] sm:block">
-                Tech-driven creative systems
+                System-led digital builds
               </span>
             </span>
           </NavLink>
@@ -96,10 +92,10 @@ export default function Navbar() {
           <div className="flex items-center justify-end gap-2.5 sm:gap-3 xl:col-start-3 xl:row-start-1">
             <Button
               className="shrink-0 gap-2 px-4 active:translate-y-px active:brightness-95"
-              onClick={handleStartBuilding}
+              onClick={handleStartBuild}
               size="sm"
             >
-              <span>Start Building</span>
+              <span>Start Build</span>
               <ArrowRightIcon />
             </Button>
             <ThemeToggleButton />

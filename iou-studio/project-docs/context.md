@@ -5,7 +5,7 @@
 IOU Labs is a productized service platform designed as an interactive system.
 
 Users can:
-- browse services like a menu
+- browse services through a structured system
 - configure what they need
 - customize modules and options
 - see pricing and timelines instantly
@@ -18,63 +18,16 @@ It is a system interface.
 
 ---
 
-## Services
-
-* Web & App Development
-* Branding & Identity
-* Digital systems (restaurants focus)
-
----
-
-## Design Direction
-
-* Premium, minimal
-* Deep navy / charcoal / gold accents
-* Light theme: soft cream
-* Dark theme: charcoal with subtle violet
-* Glassmorphism used subtly
-* Soft shadows, thin borders
-* Calm, structured UI
-
----
-
-## Tech Stack
-
-* React (Vite)
-* Tailwind CSS
-* GSAP (minimal, optional)
-* Three.js (planned, controlled use)
-
----
-
 ## Product Direction (CRITICAL)
 
 IOU Labs is:
 - a modular service system
-- transparent pricing platform
-- configurator-based UX
+- a transparent pricing platform
+- a configurator-driven product
 
 NOT:
 - a creative agency website
 - a marketing-heavy landing page
-
----
-
-## Current System Capabilities
-
-Users can:
-- select services (modules or packages)
-- configure modules with nested options
-- see live pricing and timeline updates
-- review selections in a structured, grouped summary
-- understand process via “What Happens Next”
-- see outputs via Recent Builds
-- trust system via Metrics
-- understand progression via Step Flow Indicator
-- move into Order Summary
-- submit structured request
-- receive confirmation
-- always see price/timeline via mobile persistent summary
 
 ---
 
@@ -84,6 +37,23 @@ Users can:
 2. Review (Line-item summary)
 3. Submit
 4. Confirm
+
+---
+
+## Navigation Model (NEW)
+
+Navigation is now system-driven:
+
+- Services
+- Case Studies
+- How It Works
+- Start Build (primary action)
+
+Navigation reflects:
+→ user intent and system flow
+
+NOT:
+→ exploratory browsing or agency hierarchy
 
 ---
 
@@ -99,9 +69,9 @@ Unified configuration schema:
 
 ---
 
-## System Output (NEW)
+## System Output
 
-The system now generates:
+The system generates:
 
 - grouped module breakdown
 - selected options per module
@@ -110,7 +80,7 @@ The system now generates:
 - final total and timeline
 
 This output acts as:
-👉 a build specification
+→ a build specification
 
 ---
 
@@ -124,22 +94,21 @@ The system is now:
 - actionable
 - structurally scalable
 - operationally clear
+- navigation-aligned as a unified product
 
 ---
 
 ## Current Phase
 
-Phase 6 — System Structure (Complete)
+Phase 7 — Platform Alignment (Active)
 
 Goal:
-Make the system usable both for:
-- users (decision clarity)
-- providers (execution clarity)
+Make the entire platform feel like one cohesive system, not separate pages.
 
 ---
 
 ## Immediate Focus
 
-- platform alignment (IA + copy)
+- copy consistency (system-first tone)
+- services → system menu transformation
 - real proof assets
-- refining browsing experience

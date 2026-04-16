@@ -136,9 +136,9 @@ function buildPackageSummaryPanel({
 }) {
   if (!plan) {
     return {
-      ctaLabel: "Continue to Order Summary",
-      ctaNote: "Choose a starting configuration to unlock the order summary.",
-      ctaTo: "/order-summary",
+      ctaLabel: "Review Setup",
+      ctaNote: "Choose a starting configuration to unlock the summary step.",
+      ctaTo: "/summary",
       description:
         "Monitor the active starting configuration, current pricing, and delivery window while you configure.",
       emptyState: {
@@ -154,15 +154,15 @@ function buildPackageSummaryPanel({
       statusLabel: billingLabel,
       timeline,
       total,
-      validationNote: "Select a package before continuing into the order summary.",
+      validationNote: "Select a package before continuing into the summary step.",
     };
   }
 
   return {
-    ctaLabel: "Continue to Order Summary",
+    ctaLabel: "Review Setup",
     ctaNote:
-      "Move into a structured review and submission surface with the current package state intact.",
-    ctaTo: "/order-summary",
+      "Move into the summary and submission surface with the current package state intact.",
+    ctaTo: "/summary",
     description:
       "Monitor the active starting configuration, current pricing, and delivery window while you configure.",
     emptyState: {
@@ -178,7 +178,7 @@ function buildPackageSummaryPanel({
     statusLabel: billingLabel,
     timeline,
     total,
-    validationNote: "Select a package before continuing into the order summary.",
+    validationNote: "Select a package before continuing into the summary step.",
   };
 }
 
@@ -189,11 +189,11 @@ function buildCustomSummaryPanel({
   summaryBreakdown,
 }) {
   return {
-    ctaLabel: "Continue to Order Summary",
+    ctaLabel: "Review Setup",
     ctaNote: moduleCount
       ? "Review the active module selection and nested choices, then submit the custom build request from the next screen."
       : "Add modules to prepare a valid custom build summary.",
-    ctaTo: "/order-summary",
+    ctaTo: "/summary",
     description:
       "Monitor the active module selection, configured total, and delivery estimate while the custom build takes shape.",
     emptyState: {
@@ -202,7 +202,7 @@ function buildCustomSummaryPanel({
     },
     groups: summaryBreakdown.groups,
     isActionDisabled: !moduleCount,
-    modeLabel: "Build Your Own",
+    modeLabel: "Custom Build",
     selectionHint: moduleCount
       ? optionCount
         ? "Each selected module is grouped with its active scope, subtotal, and timeline contribution."
@@ -224,7 +224,7 @@ function buildCustomSummaryPanel({
         : "Awaiting selection",
     },
     validationNote:
-      "Select at least one custom module before continuing into the order summary.",
+      "Select at least one custom module before continuing into the summary step.",
   };
 }
 
@@ -434,7 +434,7 @@ export function buildOrderConfiguration({
         : "Select modules on the configurator to build a valid order request.",
       hasSelection: moduleCount > 0,
       mode,
-      modeLabel: "Build Your Own",
+      modeLabel: "Custom Build",
       note: "You can still adjust this before submitting.",
       packageSelection: null,
       reviewItems: buildReviewItemsFromBreakdown(summaryBreakdown),

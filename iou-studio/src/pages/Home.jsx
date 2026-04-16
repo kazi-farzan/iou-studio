@@ -49,14 +49,14 @@ export default function Home() {
         <div className="space-y-8">
           <div className="max-w-3xl space-y-4">
             <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
-              Services Preview
+              System Capabilities
             </p>
             <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-              One studio for product, brand, design, and growth execution.
+              Four capability lanes, one build system.
             </h2>
             <p className="text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
-              Start with a single priority or combine multiple capabilities into one
-              guided engagement that feels cohesive from the start.
+              Start with a single lane or combine multiple capabilities into one
+              configured request that stays clear from scope selection through handoff.
             </p>
           </div>
 
@@ -107,22 +107,22 @@ export default function Home() {
 
           <div className="relative mx-auto max-w-3xl">
             <p className="text-xs font-medium uppercase tracking-[0.32em] text-[var(--accent-secondary)]">
-              Ready To Start
+              Start Build
             </p>
             <h2 className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-              Build a package that matches your goals before the first call.
+              Configure the right setup before the first conversation starts.
             </h2>
             <p className="mt-4 text-base leading-8 text-[var(--text-secondary)] sm:text-lg">
-              Use the guided pricing flow to choose the right foundation, add what
-              you need, and send a structured request with more confidence.
+              Use the guided build flow to select a starting point, shape the scope,
+              and move into review with the system output already visible.
             </p>
 
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button size="lg" to="/pricing">
-                Build Your Package
+                Start Build
               </Button>
               <Button size="lg" to="/contact" variant="secondary">
-                Contact IOU Studio
+                Contact Support
               </Button>
             </div>
           </div>
