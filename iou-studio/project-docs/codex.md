@@ -21,11 +21,12 @@
 System now includes:
 
 - configurator (modules + packages)
-- live pricing and timeline
-- summary panel (product-grade)
+- live pricing + timeline
+- product-grade summary panel
+- mobile persistent summary
 - trust layers (process, proof, metrics)
 - step flow indicator
-- real order flow:
+- full order flow:
   - Order Summary
   - Submission
   - Confirmation
@@ -34,9 +35,7 @@ System now includes:
 
 ## CURRENT PRIORITY
 
-Stabilize and improve the product loop:
-
-Configure → Review → Submit → Confirm
+Transition from working product → scalable system
 
 ---
 
@@ -51,38 +50,28 @@ Users:
 
 ---
 
-## Conversion Principle
-
-The main flow must now be:
+## Conversion Flow (COMPLETE)
 
 1. Configure
 2. Review
 3. Submit
 4. Confirm
 
-Avoid:
-- contact-first flows
-- vague CTAs
-- broken transitions
-
----
-
-## System Behavior Principle
-
 System must:
-- pass data across routes
-- preserve user selections
-- produce structured output
+- preserve state across steps
+- maintain clarity at all times
+- work seamlessly on mobile + desktop
 
 ---
 
 ## Next Evolution
 
 System must become:
-- scalable (config schema)
-- deeper (nested options)
-- clearer (line-item summary)
-- consistent (IA + copy)
+
+- scalable → unified schema
+- deeper → nested options
+- clearer → line-item breakdown
+- consistent → IA + copy
 
 ---
 
@@ -93,4 +82,4 @@ System must become:
 - expand safely
 
 Goal:
-Turn current system into a scalable, production-ready product
+Turn system into a scalable, production-ready platform

@@ -2,7 +2,7 @@
 
 ## Active (Critical)
 
-* Mobile summary not persistent (price/timeline lost on scroll)
+* None blocking core product usage
 
 ---
 
@@ -19,14 +19,17 @@
 
 * Minor visual inconsistencies across sections
 * Pricing formatting edge cases
-* Repetitive card-grid layouts
+* Repetitive card-grid patterns
 
 ---
 
 ## Watchlist
 
-* Ensure order flow state is preserved across navigation
-* Prevent data loss between configurator → summary → confirmation
-* Validate submission form UX and edge cases
-* Maintain performance with added routes
-* Ensure mobile usability is not degraded
+* Ensure mobile summary does not obscure content
+* Maintain performance with sticky elements
+* Ensure state consistency across:
+  - configurator
+  - order summary
+  - confirmation
+* Prevent duplication between desktop and mobile summary logic
+* Validate UX under rapid interactions

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import CustomBuildModuleCard from "../components/pricing/CustomBuildModuleCard.jsx";
 import MetricsStrip from "../components/pricing/MetricsStrip.jsx";
+import MobilePricingSummaryBar from "../components/pricing/MobilePricingSummaryBar.jsx";
 import PricingPlanCard from "../components/pricing/PricingPlanCard.jsx";
 import RecentBuilds from "../components/pricing/RecentBuilds.jsx";
 import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
@@ -62,6 +63,9 @@ const configurationModes = [
     detail: "Move into a custom system build.",
   },
 ];
+
+const PACKAGE_SELECTION_SECTION_ID = "pricing-package-selection-surface";
+const CUSTOM_BUILD_SECTION_ID = "pricing-custom-build-selection-surface";
 
 function getSurfaceClasses(tone) {
   if (tone === "accent") {
@@ -147,9 +151,10 @@ export default function Pricing() {
   );
 
   const selectedCustomModules = customBuildPricing.selectedModules;
-  const selectedCustomModulesLabel = selectedCustomModules.length
-    ? `${selectedCustomModules.length} module${
-        selectedCustomModules.length === 1 ? "" : "s"
+  const selectedCustomModulesCount = selectedCustomModules.length;
+  const selectedCustomModulesLabel = selectedCustomModulesCount
+    ? `${selectedCustomModulesCount} module${
+        selectedCustomModulesCount === 1 ? "" : "s"
       } selected`
     : "Select modules to begin";
 
@@ -201,7 +206,7 @@ export default function Pricing() {
 
     return {
       ctaLabel: "Continue to Order Summary",
-      ctaNote: selectedCustomModules.length
+      ctaNote: selectedCustomModulesCount
         ? "Review the active module selection, then submit the custom build request from the next screen."
         : "Add modules to prepare a valid custom build summary.",
       ctaTo: "/order-summary",
@@ -211,28 +216,30 @@ export default function Pricing() {
         title: "No modules selected yet.",
         detail: "Add modules to start building your custom setup.",
       },
-      isActionDisabled: !selectedCustomModules.length,
+      isActionDisabled: !selectedCustomModulesCount,
       items: customBuildPricing.summaryItems,
       modeLabel: "Build Your Own",
-      selectionHint: selectedCustomModules.length
+      selectionHint: selectedCustomModulesCount
         ? "Selected modules stay synchronized here in real time."
         : "Module selections will appear here as soon as you start building.",
       selectionLabel: "Selected modules",
-      statusLabel: selectedCustomModules.length
-        ? `${selectedCustomModules.length} active`
+      statusLabel: selectedCustomModulesCount
+        ? `${selectedCustomModulesCount} active`
         : "Awaiting selection",
       timeline: customBuildPricing.timeline,
       total: {
-        description: selectedCustomModules.length
+        description: selectedCustomModulesCount
           ? "Base total for the current module selection."
-          : "Select services to begin pricing.",
+          : "Add modules to generate a live base total.",
         label: "Total",
-        meta: selectedCustomModules.length
-          ? `${selectedCustomModules.length} module${
-              selectedCustomModules.length === 1 ? "" : "s"
+        meta: selectedCustomModulesCount
+          ? `${selectedCustomModulesCount} module${
+              selectedCustomModulesCount === 1 ? "" : "s"
             } included`
           : "",
-        value: formatInr(customBuildPricing.total),
+        value: selectedCustomModulesCount
+          ? formatInr(customBuildPricing.total)
+          : "Awaiting selection",
       },
       validationNote:
         "Select at least one custom module before continuing into the order summary.",
@@ -241,7 +248,7 @@ export default function Pricing() {
     activeBillingLabel,
     customBuildPricing,
     isPackagesMode,
-    selectedCustomModules.length,
+    selectedCustomModulesCount,
     selectedPlan,
   ]);
 
@@ -308,8 +315,33 @@ export default function Pricing() {
     });
   }
 
+  function handleSelectionGuidance() {
+    const selectionSurfaceId = isPackagesMode
+      ? PACKAGE_SELECTION_SECTION_ID
+      : CUSTOM_BUILD_SECTION_ID;
+    const target =
+      document.getElementById(selectionSurfaceId) ||
+      document.getElementById("builder");
+
+    if (!target) {
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    target.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  }
+
   return (
-    <div className="w-full scroll-mt-28 sm:scroll-mt-32" id="builder">
+    <div
+      className="w-full scroll-mt-28 pb-[calc(8.5rem+env(safe-area-inset-bottom))] sm:scroll-mt-32 xl:pb-0"
+      id="builder"
+    >
       <Section className="pt-3 sm:pt-4" width="full">
         <div className="space-y-10 sm:space-y-8">
           <div className="max-w-4xl space-y-4 sm:space-y-3">
@@ -516,7 +548,10 @@ export default function Pricing() {
                     </div>
                   </div>
 
-                  <div className="space-y-5 sm:space-y-4">
+                  <div
+                    className="space-y-5 sm:space-y-4"
+                    id={PACKAGE_SELECTION_SECTION_ID}
+                  >
                     <div className="max-w-3xl space-y-2">
                       <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
                         Starting Configurations
@@ -626,45 +661,47 @@ export default function Pricing() {
                   </Card>
                 </>
               ) : (
-                <Card className="p-5 sm:p-8 lg:p-10">
-                  <div className="space-y-9 sm:space-y-8">
-                    <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-                      <div className="max-w-3xl space-y-4">
-                        <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
-                          Custom Build
-                        </p>
-                        <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
-                          Build your custom setup
-                        </h2>
-                        <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-                          Select any module card to add or remove it from your
-                          system. The base total and delivery estimate update
-                          immediately as the active module set changes.
-                        </p>
+                <div id={CUSTOM_BUILD_SECTION_ID}>
+                  <Card className="p-5 sm:p-8 lg:p-10">
+                    <div className="space-y-9 sm:space-y-8">
+                      <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                        <div className="max-w-3xl space-y-4">
+                          <p className="text-xs font-medium uppercase tracking-[0.28em] text-[var(--accent-secondary)]">
+                            Custom Build
+                          </p>
+                          <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-4xl">
+                            Build your custom setup
+                          </h2>
+                          <p className="text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
+                            Select any module card to add or remove it from your
+                            system. The base total and delivery estimate update
+                            immediately as the active module set changes.
+                          </p>
+                        </div>
+
+                        <div className="theme-panel inline-flex w-fit items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
+                          <span className="theme-dot h-2 w-2 rounded-full" />
+                          {selectedCustomModulesLabel}
+                        </div>
                       </div>
 
-                      <div className="theme-panel inline-flex w-fit items-center gap-3 rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
-                        <span className="theme-dot h-2 w-2 rounded-full" />
-                        {selectedCustomModulesLabel}
+                      <div className="grid gap-5 sm:gap-5 md:grid-cols-2">
+                        {customBuildModules.map((module) => (
+                          <CustomBuildModuleCard
+                            isSelected={selectedCustomModuleIds.includes(module.id)}
+                            key={module.id}
+                            module={module}
+                            onToggle={handleCustomModuleToggle}
+                          />
+                        ))}
                       </div>
                     </div>
-
-                    <div className="grid gap-5 sm:gap-5 md:grid-cols-2">
-                      {customBuildModules.map((module) => (
-                        <CustomBuildModuleCard
-                          isSelected={selectedCustomModuleIds.includes(module.id)}
-                          key={module.id}
-                          module={module}
-                          onToggle={handleCustomModuleToggle}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                </div>
               )}
             </div>
 
-            <div className="min-w-0 xl:self-start">
+            <div className="hidden min-w-0 xl:block xl:self-start">
               <PricingSummaryPanel summary={summaryPanelData} />
             </div>
           </div>
@@ -674,6 +711,10 @@ export default function Pricing() {
       <RecentBuilds />
       <MetricsStrip />
       <WhatHappensNext />
+      <MobilePricingSummaryBar
+        onInvalidAction={handleSelectionGuidance}
+        summary={summaryPanelData}
+      />
     </div>
   );
 }

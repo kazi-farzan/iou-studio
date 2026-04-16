@@ -3,40 +3,32 @@
 ## Completed (Phase 1–5)
 
 1–20: System foundation, configurator, trust, refinement  
-21: Real Order Flow (COMPLETE)
+21: Real Order Flow  
+22: Mobile Persistent Summary
 
 ---
 
 ## CURRENT PHASE
 
-Phase 5 — Conversion System
+Phase 6 — System Structure
 
 ---
 
 ## Active Tasks (STRICT ORDER)
 
-### 22. Mobile Persistent Summary (CRITICAL)
-- bottom sticky summary bar
-- always visible price + timeline
-- expandable detail view
-
----
-
-## NEXT PHASE
-
-Phase 6 — System Structure
-
----
-
-### 23. Unified Config Schema
+### 23. Unified Config Schema (CRITICAL)
 - merge pricing + custom module data
-- single structured configuration system
-- support categories, modules, options
+- single configuration structure
+- support:
+  - categories
+  - modules
+  - options
+  - add-ons
 
 ---
 
 ### 24. Nested Options + Add-ons
-- deeper module configuration
+- add module-level configuration depth
 - dynamic pricing/timeline updates
 
 ---
@@ -46,29 +38,32 @@ Phase 6 — System Structure
   - modules
   - options
   - subtotals
-- improve provider clarity
+- improve clarity for users + providers
 
 ---
 
-## PHASE 7 — Platform Alignment
+## NEXT PHASE
+
+Phase 7 — Platform Alignment
+
+---
 
 ### 26. IA + Navigation Cleanup
-- simplify navigation
+- simplify nav
 - remove “Products”
 - Portfolio → Case Studies
-- add summary/checkout/confirmation routes
+- align routes with system flow
 
 ---
 
 ### 27. Copy System Alignment
-- remove agency language
-- unify system-first tone
+- remove agency-style language
+- unify system tone
 
 ---
 
 ### 28. Services → System Menu
-- replace card grids
-- modular service strips
+- convert services into modular menu
 - integrate with configurator
 
 ---
@@ -77,12 +72,12 @@ Phase 6 — System Structure
 
 ### 29. Real Case Studies
 - replace placeholders
-- real outputs and deliverables
+- real outputs and visuals
 
 ---
 
 ### 30. Deliverable Clarity Layer
-- show actual outputs per module
+- show what user receives
 - reflect in summary
 
 ---
@@ -91,25 +86,25 @@ Phase 6 — System Structure
 
 ### 31. Controlled 3D Layer
 - subtle hero 3D
-- ambient, not intrusive
+- ambient only
 
 ---
 
 ### 32. Visual Polish Pass
 - spacing
 - typography
-- reduce repetition
+- consistency
 
 ---
 
 ## PHASE 10 — Product Readiness
 
 ### 33. Submission Backend
-- Firebase / webhook / email
 - structured data output
+- Firebase / webhook / email
 
 ---
 
 ### 34. Confirmation + Onboarding UX
-- improve success state
-- guide next steps clearly
+- refine success flow
+- clarify next steps
