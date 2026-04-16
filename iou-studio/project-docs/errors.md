@@ -2,18 +2,15 @@
 
 ## Active (Critical)
 
-* No real submission flow (blocking product completion)
-* No order summary page
-* No confirmation state
-* Mobile summary not persistent
+* Mobile summary not persistent (price/timeline lost on scroll)
 
 ---
 
 ## Medium
 
-* Navigation too broad (agency-style IA)
+* Navigation still too broad (agency-style IA)
 * Copy inconsistency (agency vs system tone)
-* Services page not aligned with system structure
+* Services page not aligned with system menu structure
 * Case studies lack real proof assets
 
 ---
@@ -22,13 +19,14 @@
 
 * Minor visual inconsistencies across sections
 * Pricing formatting edge cases
-* Overuse of card-grid layouts
+* Repetitive card-grid layouts
 
 ---
 
 ## Watchlist
 
-* Ensure order flow state is preserved across routes
-* Prevent breaking pricing/timeline logic during refactor
-* Maintain mobile usability while adding new flow
-* Avoid reintroducing marketing-style patterns
+* Ensure order flow state is preserved across navigation
+* Prevent data loss between configurator → summary → confirmation
+* Validate submission form UX and edge cases
+* Maintain performance with added routes
+* Ensure mobile usability is not degraded

@@ -18,21 +18,23 @@
 
 ## Project State
 
-System is fully built up to:
-- configurator
-- pricing logic
-- summary panel
-- trust layers
-- step flow
+System now includes:
 
-Now transitioning into:
-→ real product behavior
+- configurator (modules + packages)
+- live pricing and timeline
+- summary panel (product-grade)
+- trust layers (process, proof, metrics)
+- step flow indicator
+- real order flow:
+  - Order Summary
+  - Submission
+  - Confirmation
 
 ---
 
 ## CURRENT PRIORITY
 
-Convert system into a real product:
+Stabilize and improve the product loop:
 
 Configure → Review → Submit → Confirm
 
@@ -40,71 +42,55 @@ Configure → Review → Submit → Confirm
 
 ## Product Direction (CRITICAL)
 
-This is NOT a marketing website.
+This is a system interface.
 
-It is:
-- a system interface
-- a configurator-driven product
-- a self-serve service platform
-
----
-
-## Interaction Principle
-
-User must always know:
-- what they selected
-- what it costs
-- how long it takes
-- what happens next
-- what to do next
+Users:
+- configure services
+- review structured output
+- submit without needing a call
 
 ---
 
 ## Conversion Principle
 
-Primary flow must be:
+The main flow must now be:
 
 1. Configure
-2. Review (Order Summary)
+2. Review
 3. Submit
-4. Confirmation
+4. Confirm
 
 Avoid:
 - contact-first flows
 - vague CTAs
-- dead-end interactions
+- broken transitions
 
 ---
 
 ## System Behavior Principle
 
 System must:
-- pass data between steps
-- preserve state
+- pass data across routes
+- preserve user selections
 - produce structured output
 
 ---
 
-## UI Principle
+## Next Evolution
 
-Design must feel:
-- calm
-- structured
-- product-like
-
-NOT:
-- agency
-- marketing-heavy
-- decorative
+System must become:
+- scalable (config schema)
+- deeper (nested options)
+- clearer (line-item summary)
+- consistent (IA + copy)
 
 ---
 
 ## Execution Mode
 
-- One task at a time
-- No unnecessary refactors
-- Preserve working logic
-- Expand carefully
+- one task at a time
+- preserve working logic
+- expand safely
 
 Goal:
-Turn current system into a real, usable product
+Turn current system into a scalable, production-ready product

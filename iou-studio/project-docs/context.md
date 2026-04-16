@@ -4,12 +4,13 @@
 
 IOU Labs is a productized service platform designed as an interactive system.
 
-Users should be able to:
+Users can now:
 - browse services like a menu
 - configure what they need
 - see pricing and timelines instantly
 - review their setup
-- submit a build request without needing a call
+- submit a structured build request
+- receive confirmation of their request
 
 This is NOT a marketing website.
 It is a system interface.
@@ -70,31 +71,34 @@ Users can:
 - trust system via Metrics
 - understand progression via Step Flow Indicator
 
+NEW:
+- move into Order Summary
+- review full build setup
+- submit structured request
+- receive confirmation
+
 ---
 
-## Current Limitation
+## System Flow (UPDATED)
 
-The system is NOT yet complete because:
-- no real submission flow exists
-- no order summary page exists
-- no confirmation state exists
-- providers do not yet receive structured output
+1. Configure (Pricing / Builder)
+2. Review (Order Summary)
+3. Submit (Request form)
+4. Confirm (Confirmation page)
 
 ---
 
 ## Current Phase
 
-Phase 5 — Conversion System
+Phase 5 — Conversion System (Active)
 
 Goal:
-Turn the configurator into a real product pipeline:
-
-Configure → Review → Submit → Confirm
+Complete the product loop and enable real user action.
 
 ---
 
 ## Immediate Focus
 
-- real order flow
-- structured output for providers
-- persistent pricing visibility (mobile)
+- mobile persistent summary
+- structured output clarity
+- preparing system for backend integration
