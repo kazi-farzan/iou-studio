@@ -5,20 +5,19 @@ import MetricsStrip from "../components/pricing/MetricsStrip.jsx";
 import MobilePricingSummaryBar from "../components/pricing/MobilePricingSummaryBar.jsx";
 import PricingPlanCard from "../components/pricing/PricingPlanCard.jsx";
 import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
-import PricingValueText from "../components/pricing/PricingValueText.jsx";
 import RecentBuilds from "../components/pricing/RecentBuilds.jsx";
 import StepFlowIndicator from "../components/pricing/StepFlowIndicator.jsx";
 import WhatHappensNext from "../components/pricing/WhatHappensNext.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
+import { groupModulesByCategory } from "../data/configuratorSchema.js";
 import { customBuildModules } from "../data/customBuildPricing.js";
 import {
   billingOptions,
   getCouponByCode,
   getCouponFeedback,
   getPlanPricing,
-  getPlanSnapshot,
   getPricingModeSummary,
   pricingPlans,
   validateCouponCode,
@@ -30,34 +29,20 @@ import {
 } from "../orderFlow/orderFlow.js";
 import { useOrderFlow } from "../orderFlow/useOrderFlow.js";
 
-const pricingNotes = [
-  {
-    label: "All selections update live",
-    detail:
-      "Billing mode, coupon checks, and the active starting configuration stay aligned as you adjust the setup.",
-  },
-  {
-    label: "Clear scope before you proceed",
-    detail:
-      "Review totals, billing terms, and delivery context in one place before moving into the next step.",
-  },
-  {
-    label: "Transparent inputs",
-    detail:
-      "Switch between billing modes, test available coupons, and see the resulting changes immediately.",
-  },
-];
-
 const configurationModes = [
   {
     id: ORDER_FLOW_MODE_PACKAGES,
     label: "Packages",
-    detail: "Start from preset configurations.",
+    detail: "Compare guided starting points.",
+    summary:
+      "Best when you want to compare preset scope, current price, and delivery timing before refining the build.",
   },
   {
     id: ORDER_FLOW_MODE_CUSTOM,
     label: "Custom Build",
-    detail: "Assemble a modular system build.",
+    detail: "Assemble the system module by module.",
+    summary:
+      "Best when you already know the parts you need and want options to appear only after each module is active.",
   },
 ];
 
@@ -78,20 +63,36 @@ function getSurfaceClasses(tone) {
 
 function getModeToggleClasses(isActive) {
   return [
-    "flex min-h-[108px] flex-1 flex-col justify-between rounded-[26px] border px-5 py-5 text-left transition-all duration-300 sm:min-h-[120px] sm:px-6 sm:py-6",
+    "flex min-h-[116px] flex-col justify-between rounded-[24px] border px-5 py-5 text-left transition-all duration-300 sm:min-h-[124px] sm:px-6 sm:py-6",
     isActive
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-accent-strong))] text-[var(--text-primary)] shadow-[var(--shadow-raised)]"
-      : "border-transparent bg-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-subtle)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
+      : "border-[color:var(--border-subtle)] bg-[var(--surface)] text-[var(--text-secondary)] hover:border-[color:var(--border-strong)] hover:text-[var(--text-primary)]",
   ].join(" ");
 }
 
 function getToggleClasses(isActive) {
   return [
-    "flex min-h-[94px] flex-col justify-between rounded-[24px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-[104px] sm:px-5 sm:py-5",
+    "flex min-h-[88px] flex-col justify-between rounded-[20px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-[94px] sm:px-5 sm:py-5",
     isActive
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-accent-strong))] text-[var(--text-primary)] shadow-[var(--shadow-accent)]"
-      : "border-transparent bg-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
+      : "border-[color:var(--border-subtle)] bg-[var(--surface)] text-[var(--text-secondary)] hover:border-[color:var(--border-strong)] hover:text-[var(--text-primary)]",
   ].join(" ");
+}
+
+function formatCountLabel(count, noun) {
+  return `${count} ${noun}${count === 1 ? "" : "s"}`;
+}
+
+function getCategorySelectionLabel(category, selectedModuleIds) {
+  const selectedCount = category.modules.filter((module) =>
+    selectedModuleIds.includes(module.id),
+  ).length;
+
+  if (selectedCount) {
+    return `${formatCountLabel(selectedCount, "module")} selected`;
+  }
+
+  return formatCountLabel(category.modules.length, "module");
 }
 
 export default function Pricing() {
@@ -138,6 +139,24 @@ export default function Pricing() {
     [appliedCoupon, billingMode],
   );
 
+  const customBuildModuleGroups = useMemo(
+    () => groupModulesByCategory(customBuildModules),
+    [],
+  );
+
+  const activeConfigurationMode = useMemo(
+    () =>
+      configurationModes.find((option) => option.id === mode) ??
+      configurationModes[0],
+    [mode],
+  );
+
+  const packageStatusNotice = appliedCoupon
+    ? couponFeedback
+    : pricingModeSummary;
+  const packageStatusLabel =
+    packageStatusNotice.label ?? packageStatusNotice.eyebrow;
+
   const isPackagesMode = mode === ORDER_FLOW_MODE_PACKAGES;
 
   const customBuildPricing = useMemo(
@@ -150,14 +169,11 @@ export default function Pricing() {
   const selectedCustomOptionCount = customBuildPricing?.selectedOptionCount ?? 0;
   const selectedCustomModulesLabel = selectedCustomModulesCount
     ? selectedCustomOptionCount
-      ? `${selectedCustomModulesCount} module${
-          selectedCustomModulesCount === 1 ? "" : "s"
-        } / ${selectedCustomOptionCount} customization${
-          selectedCustomOptionCount === 1 ? "" : "s"
-        }`
-      : `${selectedCustomModulesCount} module${
-          selectedCustomModulesCount === 1 ? "" : "s"
-        } selected`
+      ? `${formatCountLabel(selectedCustomModulesCount, "module")} / ${formatCountLabel(
+          selectedCustomOptionCount,
+          "customization",
+        )}`
+      : `${formatCountLabel(selectedCustomModulesCount, "module")} selected`
     : "Select modules to begin";
 
   const summaryPanelData = useMemo(
@@ -296,228 +312,202 @@ export default function Pricing() {
           <div className="grid gap-8 xl:grid-cols-[minmax(0,1.16fr)_minmax(360px,0.84fr)] xl:items-start 2xl:gap-12 2xl:grid-cols-[minmax(0,1.2fr)_minmax(392px,0.88fr)]">
             <div className="min-w-0 space-y-8 sm:space-y-10 xl:space-y-12">
               <Card className="p-6 sm:p-7 lg:p-8 xl:p-9">
-                <div className="grid gap-6 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:gap-8">
+                <div className="grid gap-6 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:items-start xl:gap-8">
                   <div className="max-w-2xl space-y-4 sm:space-y-5">
-                    <p className="type-kicker">Select</p>
+                    <p className="type-kicker">Start path</p>
                     <h2 className="type-section-title max-w-[15ch]">
-                      Choose how you want to start the build.
+                      Choose a guided package or build the system module by
+                      module.
                     </h2>
                     <p className="max-w-[52ch] text-base leading-8 text-[var(--text-secondary)]">
-                      Pick a package baseline or open the custom builder. The
-                      active configuration surface below and the review summary
-                      stay synchronized as you work.
+                      Switch between the two routes without losing the live
+                      summary. Packages are faster to compare. Custom Build is
+                      for selecting specific sections and revealing options only
+                      where they matter.
                     </p>
                   </div>
 
-                  <div className="theme-panel flex flex-col gap-3 rounded-[30px] border border-[color:var(--border-subtle)] p-3 sm:p-4">
-                    {configurationModes.map((option) => (
-                      <button
-                        key={option.id}
-                        aria-pressed={mode === option.id}
-                        className={getModeToggleClasses(mode === option.id)}
-                        onClick={() => setMode(option.id)}
-                        type="button"
-                      >
-                        <span className="block text-base font-semibold tracking-[0.01em]">
-                          {option.label}
-                        </span>
-                        <span className="mt-2 block max-w-[22ch] text-sm leading-7 opacity-85">
-                          {option.detail}
-                        </span>
-                      </button>
-                    ))}
+                  <div className="space-y-4">
+                    <div className="theme-panel rounded-[28px] border border-[color:var(--border-subtle)] p-3 sm:p-4">
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {configurationModes.map((option) => (
+                          <button
+                            key={option.id}
+                            aria-pressed={mode === option.id}
+                            className={getModeToggleClasses(mode === option.id)}
+                            onClick={() => setMode(option.id)}
+                            type="button"
+                          >
+                            <span className="flex items-center justify-between gap-3">
+                              <span className="text-base font-semibold tracking-[0.01em]">
+                                {option.label}
+                              </span>
+                              {mode === option.id ? (
+                                <span className="rounded-full border border-[color:var(--border-accent)] bg-[var(--surface)] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--accent-secondary)]">
+                                  Active
+                                </span>
+                              ) : null}
+                            </span>
+                            <span className="mt-3 block max-w-[26ch] text-sm leading-7 opacity-90">
+                              {option.detail}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] px-5 py-4 sm:px-6">
+                      <p className="type-label">Current path</p>
+                      <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
+                        {activeConfigurationMode.label}
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                        {activeConfigurationMode.summary}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </Card>
 
               {isPackagesMode ? (
                 <>
-                  <div className="grid gap-6 xl:grid-cols-[minmax(0,1.14fr)_minmax(320px,0.86fr)] xl:items-start xl:gap-7 2xl:grid-cols-[minmax(0,1.18fr)_minmax(340px,0.9fr)]">
+                  <div id={PACKAGE_SELECTION_SECTION_ID}>
                     <Card className="p-6 sm:p-7 xl:p-8">
-                      <div className="space-y-8">
-                        <div className="max-w-3xl space-y-4">
-                          <div className="theme-panel inline-flex items-center gap-3 rounded-full px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
-                            <span className="theme-dot h-2 w-2 rounded-full" />
-                            Configuration Overview
-                          </div>
-
-                          <h2 className="type-section-title max-w-[15ch]">
-                            Configure a package baseline with live scope
-                            clarity.
-                          </h2>
-
-                          <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
-                            Switch billing, test coupon rules, and review
-                            starting configurations in one place. Every change
-                            updates the active totals immediately so the setup
-                            stays easy to read while you work.
-                          </p>
-                        </div>
-
-                        <div className="grid gap-4 xl:grid-cols-3">
-                          {pricingNotes.map((note) => (
-                            <div
-                              className="theme-panel-contrast rounded-[26px] p-5 sm:p-6"
-                              key={note.label}
-                            >
-                              <p className="type-kicker">{note.label}</p>
-                              <p className="mt-3 text-base leading-7 text-[var(--text-secondary)]">
-                                {note.detail}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
+                      <div className="grid gap-7 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.92fr)] xl:items-start">
+                      <div className="max-w-3xl space-y-4">
+                        <p className="type-kicker">Packages</p>
+                        <h2 className="type-section-title max-w-[15ch]">
+                          Compare starting configurations without the noise.
+                        </h2>
+                        <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
+                          Each card shows who the package is for, the current
+                          price view, the delivery window, and the core scope.
+                          Billing and coupon changes update the same cards and
+                          the live summary immediately.
+                        </p>
                       </div>
-                    </Card>
 
-                    <div className="grid gap-5">
-                      <Card className="p-5 sm:p-6 xl:p-7">
+                      <div className="theme-panel rounded-[28px] border border-[color:var(--border-subtle)] p-5 sm:p-6">
                         <div className="space-y-5">
                           <div className="space-y-3">
-                            <p className="type-kicker">Configure</p>
-                            <p className="text-sm leading-7 text-[var(--text-secondary)]">
-                              Switch how pricing is expressed without losing the
-                              active selection or summary state.
-                            </p>
+                            <p className="type-label">Billing</p>
+                            <div className="grid grid-cols-2 gap-3">
+                              {billingOptions.map((option) => (
+                                <button
+                                  key={option.id}
+                                  aria-pressed={billingMode === option.id}
+                                  className={getToggleClasses(
+                                    billingMode === option.id,
+                                  )}
+                                  onClick={() => setBillingMode(option.id)}
+                                  type="button"
+                                >
+                                  <span className="block text-[0.95rem] font-semibold tracking-[0.01em]">
+                                    {option.label}
+                                  </span>
+                                  <span className="mt-2 block text-sm leading-6 opacity-80">
+                                    {option.note}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
                           </div>
 
-                          <div className="grid grid-cols-2 gap-3">
-                            {billingOptions.map((option) => (
-                              <button
-                                key={option.id}
-                                aria-pressed={billingMode === option.id}
-                                className={getToggleClasses(
-                                  billingMode === option.id,
-                                )}
-                                onClick={() => setBillingMode(option.id)}
-                                type="button"
-                              >
-                                <span className="block text-[0.95rem] font-semibold tracking-[0.01em]">
-                                  {option.label}
-                                </span>
-                                <span className="mt-2 block text-sm leading-6 opacity-80">
-                                  {option.note}
-                                </span>
-                              </button>
-                            ))}
-                          </div>
+                          <div className="border-t border-[color:var(--border-subtle)] pt-5">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="space-y-2">
+                                <p className="type-label">Coupon</p>
+                                <p className="text-sm leading-6 text-[var(--text-secondary)]">
+                                  Try{" "}
+                                  <span className="font-medium text-[var(--text-primary)]">
+                                    FIRST3
+                                  </span>{" "}
+                                  or{" "}
+                                  <span className="font-medium text-[var(--text-primary)]">
+                                    TRYONCE
+                                  </span>
+                                  .
+                                </p>
+                              </div>
 
-                          <div
-                            className={[
-                              "rounded-[24px] border p-5 sm:p-6",
-                              getSurfaceClasses(pricingModeSummary.tone),
-                            ].join(" ")}
-                          >
-                            <p className="type-kicker">
-                              {pricingModeSummary.eyebrow}
-                            </p>
-                            <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
-                              {pricingModeSummary.title}
-                            </p>
-                            <p className="mt-2 text-sm leading-7 text-[var(--text-secondary)]">
-                              {pricingModeSummary.detail}
-                            </p>
-                          </div>
-                        </div>
-                      </Card>
-
-                      <Card className="p-5 sm:p-6 xl:p-7">
-                        <div className="space-y-5">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="space-y-3">
-                              <p className="type-kicker">Coupon Simulation</p>
-                              <p className="text-sm leading-7 text-[var(--text-secondary)]">
-                                Try{" "}
-                                <span className="font-medium text-[var(--text-primary)]">
-                                  FIRST3
-                                </span>{" "}
-                                or{" "}
-                                <span className="font-medium text-[var(--text-primary)]">
-                                  TRYONCE
-                                </span>
-                                .
-                              </p>
+                              {appliedCoupon ? (
+                                <button
+                                  className="text-sm font-medium text-[var(--accent-secondary)] transition-colors duration-300 hover:text-[var(--text-primary)]"
+                                  onClick={handleCouponClear}
+                                  type="button"
+                                >
+                                  Clear
+                                </button>
+                              ) : null}
                             </div>
 
-                            {appliedCoupon ? (
-                              <button
-                                className="text-sm font-medium text-[var(--accent-secondary)] transition-colors duration-300 hover:text-[var(--text-primary)]"
-                                onClick={handleCouponClear}
-                                type="button"
+                            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                              <input
+                                className={[
+                                  "theme-input min-h-[54px] flex-1 rounded-full px-5 py-3 text-sm tracking-[0.08em] uppercase",
+                                  couponError
+                                    ? "border-[rgba(217,93,106,0.38)] bg-[rgba(217,93,106,0.08)]"
+                                    : "",
+                                ]
+                                  .filter(Boolean)
+                                  .join(" ")}
+                                onChange={handleCouponChange}
+                                placeholder="Enter coupon code"
+                                value={couponInput}
+                              />
+
+                              <Button
+                                className="sm:min-w-[132px]"
+                                onClick={handleCouponApply}
+                                size="lg"
                               >
-                                Clear
-                              </button>
+                                Apply
+                              </Button>
+                            </div>
+
+                            {couponError ? (
+                              <div className="mt-4 rounded-[20px] border border-[rgba(217,93,106,0.32)] bg-[rgba(217,93,106,0.08)] px-4 py-3">
+                                <p className="text-sm leading-6 text-[var(--text-primary)]">
+                                  {couponError}
+                                </p>
+                              </div>
                             ) : null}
                           </div>
 
-                          <div className="flex flex-col gap-3.5 sm:flex-row">
-                            <input
-                              className={[
-                                "theme-input min-h-[54px] rounded-full px-5 py-3 text-sm tracking-[0.08em] uppercase",
-                                couponError
-                                  ? "border-[rgba(217,93,106,0.38)] bg-[rgba(217,93,106,0.08)]"
-                                  : "",
-                              ]
-                                .filter(Boolean)
-                                .join(" ")}
-                              onChange={handleCouponChange}
-                              placeholder="Enter coupon code"
-                              value={couponInput}
-                            />
-
-                            <Button
-                              className="sm:min-w-[132px]"
-                              onClick={handleCouponApply}
-                              size="lg"
-                            >
-                              Apply
-                            </Button>
-                          </div>
-
-                          {couponError ? (
-                            <div className="rounded-[20px] border border-[rgba(217,93,106,0.32)] bg-[rgba(217,93,106,0.08)] px-4 py-3">
-                              <p className="text-sm leading-6 text-[var(--text-primary)]">
-                                {couponError}
-                              </p>
-                            </div>
-                          ) : null}
-
                           <div
                             className={[
-                              "rounded-[24px] border p-5 sm:p-6",
-                              getSurfaceClasses(couponFeedback.tone),
+                              "rounded-[24px] border p-5",
+                              getSurfaceClasses(packageStatusNotice.tone),
                             ].join(" ")}
                           >
-                            <p className="type-kicker">{couponFeedback.label}</p>
-                            <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
-                              {couponFeedback.title}
+                            <p className="type-kicker">{packageStatusLabel}</p>
+                            <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
+                              {packageStatusNotice.title}
                             </p>
-                            <p className="mt-2 text-sm leading-7 text-[var(--text-secondary)]">
-                              {couponFeedback.detail}
+                            <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                              {packageStatusNotice.detail}
                             </p>
                           </div>
                         </div>
-                      </Card>
-                    </div>
+                      </div>
+                      </div>
+                    </Card>
                   </div>
 
-                  <div
-                    className="space-y-6 sm:space-y-7"
-                    id={PACKAGE_SELECTION_SECTION_ID}
-                  >
+                  <div className="space-y-6 sm:space-y-7">
                     <div className="max-w-4xl space-y-4">
-                      <p className="type-kicker">Configure</p>
+                      <p className="type-kicker">Package selection</p>
                       <h2 className="type-section-title max-w-[14ch]">
-                        Select a starting configuration.
+                        Pick the starting point that matches your scope.
                       </h2>
                       <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
-                        Choose a baseline setup. The summary panel follows the
-                        active configuration so pricing and timeline stay in
-                        view while you compare options.
+                        Use the cards below to compare the three paths. The
+                        selected package feeds the summary on the right
+                        immediately, so you can choose quickly and continue.
                       </p>
                     </div>
 
-                    <div className="grid gap-6 xl:grid-cols-2">
+                    <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
                       {plans.map((plan) => (
                         <PricingPlanCard
                           isSelected={selectedPlanId === plan.id}
@@ -528,143 +518,82 @@ export default function Pricing() {
                       ))}
                     </div>
                   </div>
-
-                  <Card className="p-6 sm:p-8 xl:p-9">
-                    <div className="space-y-7">
-                      <div className="max-w-4xl space-y-4">
-                        <p className="type-kicker">Review</p>
-                        <h2 className="type-section-title max-w-[15ch]">
-                          Compare the active billing view without re-reading
-                          every card.
-                        </h2>
-                        <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
-                          The selected billing mode and coupon logic update
-                          every number below, so this comparison stays aligned
-                          with the plan cards and the live summary.
-                        </p>
-                      </div>
-
-                      <div className="space-y-4">
-                        {plans.map((plan) => {
-                          const snapshot = getPlanSnapshot(plan);
-                          const isSelected = plan.id === selectedPlanId;
-
-                          return (
-                            <div
-                              key={plan.id}
-                              className={[
-                                "rounded-[28px] border p-5 transition-all duration-300 sm:p-6 lg:p-7",
-                                isSelected
-                                  ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] shadow-[var(--shadow-accent)]"
-                                  : "theme-panel",
-                              ].join(" ")}
-                            >
-                              <div className="flex min-w-0 flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-                                <div className="max-w-sm min-w-0">
-                                  <div className="flex flex-wrap items-center gap-2">
-                                    <p className="text-lg font-semibold text-[var(--text-primary)]">
-                                      {plan.name}
-                                    </p>
-
-                                    {plan.isMostPopular ? (
-                                      <span className="theme-chip-strong rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em]">
-                                        Most Popular
-                                      </span>
-                                    ) : null}
-
-                                    {isSelected ? (
-                                      <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
-                                        Selected
-                                      </span>
-                                    ) : null}
-                                  </div>
-
-                                  <p className="mt-2 text-base leading-7 text-[var(--text-secondary)]">
-                                    {plan.audience}
-                                  </p>
-                                  <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
-                                    {snapshot.note}
-                                  </p>
-                                </div>
-
-                                <div className="grid min-w-0 flex-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                                  {snapshot.metrics.map((metric) => (
-                                    <div
-                                      className="theme-panel-contrast min-w-0 rounded-[22px] p-4 sm:p-5"
-                                      key={metric.label}
-                                    >
-                                      <p className="type-label">
-                                        {metric.label}
-                                      </p>
-                                      <div className="mt-2 min-w-0">
-                                        <PricingValueText
-                                          size="md"
-                                          value={metric.value}
-                                        />
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </Card>
                 </>
               ) : (
                 <div
                   className="space-y-6 sm:space-y-7"
                   id={CUSTOM_BUILD_SECTION_ID}
                 >
-                  <div className="max-w-4xl space-y-4">
-                    <p className="type-kicker">Configure</p>
-                    <h2 className="type-section-title max-w-[14ch]">
-                      Shape a custom system build.
-                    </h2>
-                    <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
-                      Select the modules you need, reveal focused options only
-                      when they matter, and keep the live summary visible while
-                      pricing and timeline update in real time.
-                    </p>
-                  </div>
+                  <Card className="p-6 sm:p-7 lg:p-8">
+                    <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                      <div className="max-w-3xl space-y-4">
+                        <p className="type-kicker">Custom Build</p>
+                        <h2 className="type-section-title max-w-[15ch]">
+                          Build the system by section, then refine only the
+                          active modules.
+                        </h2>
+                        <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
+                          Modules are grouped by function so you can scan the
+                          build in steps. Once a module is active, its add-ons
+                          and configuration controls appear inline without
+                          fragmenting the page into stacks of mini cards.
+                        </p>
+                      </div>
 
-                  <Card className="p-6 sm:p-8 lg:p-9 xl:p-10">
-                    <div className="space-y-8">
-                      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-                        <div className="max-w-3xl space-y-4">
-                          <p className="type-kicker">Custom Build Modules</p>
-                          <p className="text-base leading-8 text-[var(--text-secondary)]">
-                            Select any module card to add or remove it from
-                            your system. Selected modules reveal focused options
-                            and add-ons inline, and every price and timeline
-                            change updates immediately.
-                          </p>
-                        </div>
-
-                        <div className="theme-panel inline-flex w-fit items-center gap-3 rounded-full px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
-                          <span className="theme-dot h-2 w-2 rounded-full" />
+                      <div className="rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] px-5 py-4 sm:min-w-[16rem] sm:px-6">
+                        <p className="type-label">Selection status</p>
+                        <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
                           {selectedCustomModulesLabel}
-                        </div>
+                        </p>
+                        <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                          Select a module to reveal the relevant add-ons and
+                          tier choices below it.
+                        </p>
                       </div>
+                    </div>
+                  </Card>
 
-                      <div className="grid gap-6 xl:grid-cols-2">
-                        {customBuildModules.map((module) => (
-                          <CustomBuildModuleCard
-                            isSelected={selectedCustomModuleIds.includes(
-                              module.id,
-                            )}
-                            key={module.id}
-                            module={module}
-                            onOptionChange={handleCustomModuleOptionChange}
-                            onToggle={handleCustomModuleToggle}
-                            optionSelections={
-                              selectedCustomModuleOptions[module.id] ?? {}
-                            }
-                          />
-                        ))}
-                      </div>
+                  <Card className="overflow-hidden p-0">
+                    <div className="divide-y divide-[color:var(--border-subtle)]">
+                      {customBuildModuleGroups.map((category) => (
+                        <section
+                          className="px-6 py-6 sm:px-7 sm:py-7 lg:px-8 lg:py-8"
+                          key={category.id}
+                        >
+                          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                            <div className="max-w-3xl space-y-2">
+                              <p className="type-kicker">{category.title}</p>
+                              <p className="text-sm leading-7 text-[var(--text-secondary)]">
+                                {category.description}
+                              </p>
+                            </div>
+
+                            <div className="rounded-full border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                              {getCategorySelectionLabel(
+                                category,
+                                selectedCustomModuleIds,
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="mt-5 grid gap-4 xl:grid-cols-2">
+                            {category.modules.map((module) => (
+                              <CustomBuildModuleCard
+                                isSelected={selectedCustomModuleIds.includes(
+                                  module.id,
+                                )}
+                                key={module.id}
+                                module={module}
+                                onOptionChange={handleCustomModuleOptionChange}
+                                onToggle={handleCustomModuleToggle}
+                                optionSelections={
+                                  selectedCustomModuleOptions[module.id] ?? {}
+                                }
+                              />
+                            ))}
+                          </div>
+                        </section>
+                      ))}
                     </div>
                   </Card>
                 </div>

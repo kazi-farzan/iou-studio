@@ -21,7 +21,9 @@
 32: Visual Polish Pass
    Tightened the shared visual system across typography, spacing rhythm, section shells, action hierarchy, panel language, and configurator summary surfaces without changing the underlying flow or selection logic.
 32A: Pricing Shell Readability Tune
-   Rebalanced the Build / Pricing page shell with a wider desktop layout, clearer Select -> Configure -> Review hierarchy, calmer spacing rhythm, and a roomier sticky summary column without changing pricing, timeline, or selection logic.
+   Rebalanced the Build / Pricing page shell with a wider desktop container, clearer Select -> Configure -> Review hierarchy, and a roomier sticky summary column.
+32B: Configurator Decision Clarity Pass
+   Simplified package cards into clearer decision units, pushed deeper package detail behind disclosure, grouped custom-build modules by category, and reduced nested option noise without changing pricing or timeline logic.
 
 ---
 

@@ -1,11 +1,12 @@
+import { useState } from "react";
+import { formatInr } from "../../data/pricing.js";
 import Button from "../ui/Button.jsx";
 import Card from "../ui/Card.jsx";
-import { formatInr } from "../../data/pricing.js";
 import DeliverableList from "./DeliverableList.jsx";
 
 function getCardClasses({ isMostPopular, isSelected }) {
   return [
-    "group relative h-full overflow-hidden p-5 sm:p-7",
+    "h-full overflow-hidden p-5 sm:p-6 xl:p-7",
     isSelected
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface),var(--surface-soft))] shadow-[var(--shadow-soft)]"
       : "",
@@ -17,16 +18,98 @@ function getCardClasses({ isMostPopular, isSelected }) {
     .join(" ");
 }
 
-function getCalloutClasses(tone) {
-  if (tone === "accent") {
-    return "border-[color:var(--border-accent)] bg-[var(--surface-accent)]";
+function formatTimelineLabel(label = "") {
+  return label.replace(/^Estimated delivery:\s*/i, "").trim();
+}
+
+function getUniqueItems(items = []) {
+  return [...new Set(items.filter(Boolean))];
+}
+
+function getCoreInclusions(plan) {
+  const packageDeliverables = (plan.packageDeliverableSections ?? []).flatMap(
+    (section) => section.items ?? [],
+  );
+
+  return getUniqueItems([
+    ...packageDeliverables,
+    ...(plan.features ?? []),
+  ]).slice(0, 4);
+}
+
+function getAdditionalCoverage(plan, coreInclusions) {
+  return (plan.features ?? []).filter(
+    (feature) => !coreInclusions.includes(feature),
+  );
+}
+
+function getPlanCardOverview(plan) {
+  const { base, coupon, effective } = plan;
+
+  if (base.isYearly) {
+    return {
+      billingNote: base.billingLine,
+      contextNote: `Save ${formatInr(base.yearlySavings)} a year with yearly billing.`,
+      label: "Effective rate",
+      value: `${formatInr(base.monthlyEquivalent)}/month`,
+    };
   }
 
-  if (tone === "muted") {
-    return "border-[color:var(--border-subtle)] bg-[var(--surface-contrast)]";
+  if (coupon?.status === "active" && coupon.code === "FIRST3") {
+    return {
+      billingNote: `Then ${formatInr(coupon.recurringCharge)}/month from month 4`,
+      contextNote: "FIRST3 is applied to the current rate.",
+      label: "Starting rate",
+      value: `${formatInr(coupon.todayCharge)}/month`,
+    };
   }
 
-  return "border-[color:var(--border-subtle)] bg-[var(--surface-contrast)]";
+  if (coupon?.status === "active" && coupon.code === "TRYONCE") {
+    return {
+      billingNote: `Then ${formatInr(coupon.recurringCharge)}/month from month 2`,
+      contextNote: "TRYONCE removes the first monthly invoice.",
+      label: "Starting rate",
+      value: "Free",
+    };
+  }
+
+  return {
+    billingNote: base.billingLine,
+    contextNote: `Switch to yearly for ${formatInr(base.monthlyEquivalent)}/month effective.`,
+    label: "Current rate",
+    value: `${formatInr(effective.todayCharge)}/month`,
+  };
+}
+
+function getDetailToggleClasses(isOpen) {
+  return [
+    "inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-medium transition-[background-color,border-color,color] duration-200",
+    isOpen
+      ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] text-[var(--text-primary)]"
+      : "border-[color:var(--border-subtle)] bg-[var(--surface)] text-[var(--text-secondary)] hover:border-[color:var(--border-strong)] hover:text-[var(--text-primary)]",
+  ].join(" ");
+}
+
+function DetailList({ items = [], label }) {
+  if (!items.length) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-3">
+      <p className="type-label">{label}</p>
+      <ul className="space-y-2.5">
+        {items.map((item) => (
+          <li className="flex items-start gap-3" key={item}>
+            <span className="theme-dot mt-2 h-1.5 w-1.5 shrink-0 rounded-full" />
+            <span className="text-sm leading-6 text-[var(--text-secondary)]">
+              {item}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 function IncludedModules({ modules = [] }) {
@@ -35,21 +118,18 @@ function IncludedModules({ modules = [] }) {
   }
 
   return (
-    <div className="rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5">
-      <p className="type-label">
-        Modules included
-      </p>
-
-      <div className="mt-3 flex flex-wrap gap-2">
+    <div className="space-y-3">
+      <p className="type-label">Included modules</p>
+      <ul className="grid gap-2 sm:grid-cols-2">
         {modules.map((module) => (
-          <span
-            className="rounded-full border border-[color:var(--border-subtle)] bg-[var(--surface)] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--text-secondary)]"
+          <li
+            className="rounded-[18px] border border-[color:var(--border-subtle)] bg-[var(--surface)] px-4 py-3 text-sm font-medium text-[var(--text-primary)]"
             key={module.id}
           >
             {module.title}
-          </span>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
@@ -59,149 +139,151 @@ export default function PricingPlanCard({
   onSelect,
   plan,
 }) {
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const cardClasses = getCardClasses({
     isMostPopular: plan.isMostPopular,
     isSelected,
   });
+  const cardOverview = getPlanCardOverview(plan);
+  const timelineLabel = formatTimelineLabel(plan.timelineEstimate?.label);
+  const coreInclusions = getCoreInclusions(plan);
+  const additionalCoverage = getAdditionalCoverage(plan, coreInclusions);
 
   return (
     <Card className={cardClasses} interactive>
-      {isSelected ? (
-        <div
-          aria-hidden="true"
-          className="theme-ambient-orb-2 pointer-events-none absolute right-[-2rem] top-[-2.5rem] h-28 w-28 rounded-full blur-2xl"
-        />
-      ) : null}
-
-      <div className="relative flex h-full min-w-0 flex-col">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="space-y-3">
-            <p className="type-label">
-              {plan.audience}
-            </p>
-            <h2 className="text-[2rem] font-semibold tracking-[-0.045em] text-[var(--text-primary)]">
+      <div className="flex h-full min-w-0 flex-col">
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-2.5">
+            <p className="type-label">For {plan.audience}</p>
+            <h2 className="text-[1.9rem] font-semibold tracking-[-0.05em] text-[var(--text-primary)]">
               {plan.name}
             </h2>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 self-start">
+          <div className="flex flex-wrap items-center justify-end gap-2">
             {plan.isMostPopular ? (
               <span className="theme-chip-strong rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em]">
-                Most Selected
+                Most selected
               </span>
             ) : null}
 
             {isSelected ? (
               <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
-                Active
+                Selected
               </span>
             ) : null}
           </div>
         </div>
 
-        <p className="mt-6 text-sm leading-7 text-[var(--text-secondary)] sm:text-base">
-          {plan.description}
-        </p>
-
-        <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">
-          This is a starting configuration. You can customize this setup later.
-        </p>
-
-        <div className="mt-7 rounded-[26px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5 sm:p-6">
-          <p className="type-label">
-            Starting configuration
-          </p>
-
-          <div className="mt-3 flex flex-wrap items-end gap-x-2 gap-y-1">
-            <span className="break-words text-[2.5rem] font-semibold leading-none tracking-[-0.05em] text-[var(--text-primary)] sm:text-5xl">
-              {formatInr(plan.base.headlinePrice)}
-            </span>
-            <span className="pb-1 text-sm font-medium tracking-[0.01em] text-[var(--text-muted)]">
-              {plan.base.headlineSuffix}
-            </span>
-          </div>
-
-          <p className="mt-3 text-sm font-medium text-[var(--text-primary)]">
-            {plan.base.billingLine}
-          </p>
-          <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-            {plan.base.supportLine}
-          </p>
-        </div>
-
-        <div
-          className={[
-            "mt-6 rounded-[24px] border p-5",
-            getCalloutClasses(plan.callout.tone),
-          ].join(" ")}
-        >
-          <p className="type-kicker">
-            {plan.callout.eyebrow}
-          </p>
-          <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
-            {plan.callout.title}
-          </p>
-          <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
-            {plan.callout.detail}
-          </p>
-        </div>
-
-        <div className="mt-6 space-y-4">
-          <IncludedModules modules={plan.includedModules} />
-
-          <DeliverableList
-            compact
-            label="Deliverables"
-            maxItemsPerSection={2}
-            sections={plan.packageDeliverableSections}
-            surface="contrast"
-          />
-        </div>
-
-        <div className="mt-7 space-y-4 border-t border-[color:var(--border-subtle)] pt-6">
-          {plan.features.map((feature) => (
-            <div key={feature} className="flex items-start gap-3">
-              <span className="theme-dot mt-2 h-2 w-2 shrink-0 rounded-full" />
-              <p className="text-sm leading-7 text-[var(--text-secondary)]">{feature}</p>
+        <div className="mt-6 rounded-[28px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5 sm:p-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="space-y-2">
+              <p className="type-label">{cardOverview.label}</p>
+              <p className="break-words text-[2.45rem] font-semibold leading-none tracking-[-0.06em] text-[var(--text-primary)] sm:text-[2.85rem]">
+                {cardOverview.value}
+              </p>
+              <p className="text-sm leading-6 text-[var(--text-secondary)]">
+                {cardOverview.billingNote}
+              </p>
             </div>
-          ))}
+
+            {timelineLabel ? (
+              <div className="rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface)] px-4 py-3 sm:min-w-[11.5rem] sm:text-right">
+                <p className="type-label">Timeline</p>
+                <p className="mt-1 text-sm font-medium text-[var(--text-primary)]">
+                  {timelineLabel}
+                </p>
+              </div>
+            ) : null}
+          </div>
+
+          {cardOverview.contextNote ? (
+            <p className="mt-4 text-sm leading-6 text-[var(--text-secondary)]">
+              {cardOverview.contextNote}
+            </p>
+          ) : null}
         </div>
 
-        {plan.coupon ? (
-          <div
-            className={[
-              "mt-6 rounded-[24px] border p-5",
-              getCalloutClasses(plan.coupon.tone),
-            ].join(" ")}
+        <div className="mt-6 space-y-3">
+          <p className="type-label">Core included</p>
+
+          <ul className="space-y-3">
+            {coreInclusions.map((item) => (
+              <li className="flex items-start gap-3" key={item}>
+                <span className="theme-dot mt-2 h-1.5 w-1.5 shrink-0 rounded-full" />
+                <span className="text-sm leading-6 text-[var(--text-secondary)]">
+                  {item}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-6 border-t border-[color:var(--border-subtle)] pt-5">
+          <button
+            aria-expanded={isDetailsOpen}
+            className={getDetailToggleClasses(isDetailsOpen)}
+            onClick={() => setIsDetailsOpen((current) => !current)}
+            type="button"
           >
-            <p className="type-kicker">
-              {plan.coupon.badgeLabel}
-            </p>
+            <span>{isDetailsOpen ? "Hide details" : "View details"}</span>
+            <svg
+              aria-hidden="true"
+              className={[
+                "h-4 w-4 transition-transform duration-200",
+                isDetailsOpen ? "rotate-180" : "rotate-0",
+              ].join(" ")}
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M5 7.5L10 12.5L15 7.5"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.6"
+              />
+            </svg>
+          </button>
 
-            <p className="mt-2 text-sm font-medium text-[var(--text-primary)]">
-              {plan.coupon.title}
-            </p>
+          {isDetailsOpen ? (
+            <div className="mt-5 space-y-5">
+              <p className="text-sm leading-6 text-[var(--text-secondary)]">
+                {plan.description}
+              </p>
 
-            <p className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">
-              {plan.coupon.note}
-            </p>
-          </div>
-        ) : null}
+              <DeliverableList
+                compact
+                label="Package details"
+                maxItemsPerSection={3}
+                sections={plan.packageDeliverableSections}
+                surface="contrast"
+              />
 
-        <div className="mt-auto space-y-4 pt-8">
+              <IncludedModules modules={plan.includedModules} />
+
+              <DetailList
+                items={additionalCoverage}
+                label="Additional coverage"
+              />
+            </div>
+          ) : null}
+        </div>
+
+        <div className="mt-auto pt-7">
           <Button
             className="w-full"
             onClick={() => onSelect(plan.id)}
             size="lg"
             variant={isSelected ? "primary" : "secondary"}
           >
-            {isSelected ? "Customize This Setup" : "Start with this"}
+            {isSelected ? "Selected package" : plan.ctaLabel || "Select package"}
           </Button>
 
-          <p className="text-sm leading-6 text-[var(--text-secondary)]">
+          <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
             {isSelected
-              ? "This configuration is active below and can still be refined."
-              : "Use this as a base setup, then adjust the details as needed."}
+              ? "This package is active in the summary and can still be refined before review."
+              : "Use this as the starting point, then continue into review with the live summary in sync."}
           </p>
         </div>
       </div>

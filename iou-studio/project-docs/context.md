@@ -71,7 +71,10 @@ Shared order-flow state now supports:
 - package preselection from Services
 - persistence across Configure -> Review -> Submit -> Confirm
 - deliverable-aware build specifications across pricing and order review
-- a clearer Select -> Configure -> Review shell on the Pricing page with wider layout balance and calmer scan paths
+- a clearer Select -> Configure -> Review shell on the Pricing page
+- calmer package comparison cards with optional detail disclosure instead of always-on dense stacks
+- category-grouped custom-build sections that reveal add-ons and tier controls only after module selection
+- summary-synced pricing presentation so package cards and the live summary speak with the same billing and coupon state
 
 The homepage hero now includes a controlled identity layer:
 - a lightweight Three.js ambient node field inside the System State card
@@ -113,6 +116,7 @@ The product is now:
 - identity-layered with controlled ambient 3D in the hero
 - visually polished across shared surfaces, spacing, typography, and action hierarchy
 - more readable on the Build / Pricing page with a roomier shell, stronger section hierarchy, and a healthier summary-column balance
+- calmer inside the configurator itself, with clearer package hierarchy, reduced card density, grouped custom-build sections, and lighter nested-option treatment
 - consistent from entry layer to submission
 
 ---
@@ -129,8 +133,7 @@ Phase 9 - Identity + Wow is complete.
 
 - Task 33: Submission Backend
 - QA the visual polish pass across mobile, tablet, desktop, light, and dark themes
-- Monitor desktop hero performance and bundle impact from the controlled 3D layer
-- QA the widened Pricing shell across desktop, tablet, mobile, and both themes
-- QA dense configurator and order summary states for readability after the shell-balance pass
-- Watch long custom-build summaries and sticky summary behavior for crowding or overflow regressions
-- Keep case study records and future schema changes aligned with deliverable terminology
+- QA the configurator clarity pass across package mode and custom build mode
+- monitor package detail disclosure states, grouped custom-module sections, and responsive tap clarity
+- watch long custom-build summaries and sticky summary behavior for crowding or overflow regressions
+- keep case study records and future schema changes aligned with deliverable terminology and package wording
