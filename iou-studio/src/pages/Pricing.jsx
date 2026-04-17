@@ -4,17 +4,15 @@ import CustomBuildModuleCard from "../components/pricing/CustomBuildModuleCard.j
 import MetricsStrip from "../components/pricing/MetricsStrip.jsx";
 import MobilePricingSummaryBar from "../components/pricing/MobilePricingSummaryBar.jsx";
 import PricingPlanCard from "../components/pricing/PricingPlanCard.jsx";
-import RecentBuilds from "../components/pricing/RecentBuilds.jsx";
 import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
 import PricingValueText from "../components/pricing/PricingValueText.jsx";
+import RecentBuilds from "../components/pricing/RecentBuilds.jsx";
 import StepFlowIndicator from "../components/pricing/StepFlowIndicator.jsx";
 import WhatHappensNext from "../components/pricing/WhatHappensNext.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
-import {
-  customBuildModules,
-} from "../data/customBuildPricing.js";
+import { customBuildModules } from "../data/customBuildPricing.js";
 import {
   billingOptions,
   getCouponByCode,
@@ -25,25 +23,28 @@ import {
   pricingPlans,
   validateCouponCode,
 } from "../data/pricing.js";
-import { useOrderFlow } from "../orderFlow/useOrderFlow.js";
 import {
   buildOrderFlowSteps,
   ORDER_FLOW_MODE_CUSTOM,
   ORDER_FLOW_MODE_PACKAGES,
 } from "../orderFlow/orderFlow.js";
+import { useOrderFlow } from "../orderFlow/useOrderFlow.js";
 
 const pricingNotes = [
   {
     label: "All selections update live",
-    detail: "Billing mode, coupon checks, and the active starting configuration stay aligned as you adjust the setup.",
+    detail:
+      "Billing mode, coupon checks, and the active starting configuration stay aligned as you adjust the setup.",
   },
   {
     label: "Clear scope before you proceed",
-    detail: "Review totals, billing terms, and delivery context in one place before moving into the next step.",
+    detail:
+      "Review totals, billing terms, and delivery context in one place before moving into the next step.",
   },
   {
     label: "Transparent inputs",
-    detail: "Switch between billing modes, test available coupons, and see the resulting changes immediately.",
+    detail:
+      "Switch between billing modes, test available coupons, and see the resulting changes immediately.",
   },
 ];
 
@@ -77,7 +78,7 @@ function getSurfaceClasses(tone) {
 
 function getModeToggleClasses(isActive) {
   return [
-    "flex min-h-[96px] flex-1 flex-col justify-center rounded-[24px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-0 sm:px-5 sm:py-4",
+    "flex min-h-[108px] flex-1 flex-col justify-between rounded-[26px] border px-5 py-5 text-left transition-all duration-300 sm:min-h-[120px] sm:px-6 sm:py-6",
     isActive
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-accent-strong))] text-[var(--text-primary)] shadow-[var(--shadow-raised)]"
       : "border-transparent bg-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-subtle)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
@@ -86,7 +87,7 @@ function getModeToggleClasses(isActive) {
 
 function getToggleClasses(isActive) {
   return [
-    "flex min-h-[88px] flex-col justify-center rounded-[24px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-0",
+    "flex min-h-[94px] flex-col justify-between rounded-[24px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-[104px] sm:px-5 sm:py-5",
     isActive
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-accent-strong))] text-[var(--text-primary)] shadow-[var(--shadow-accent)]"
       : "border-transparent bg-transparent text-[var(--text-secondary)] hover:border-[color:var(--border-accent)] hover:bg-[var(--surface)] hover:text-[var(--text-primary)]",
@@ -131,7 +132,9 @@ export default function Pricing() {
 
   const plans = useMemo(
     () =>
-      pricingPlans.map((plan) => getPlanPricing(plan, billingMode, appliedCoupon)),
+      pricingPlans.map((plan) =>
+        getPlanPricing(plan, billingMode, appliedCoupon),
+      ),
     [appliedCoupon, billingMode],
   );
 
@@ -262,86 +265,103 @@ export default function Pricing() {
       className="w-full scroll-mt-28 pb-[calc(8.5rem+env(safe-area-inset-bottom))] sm:scroll-mt-32 xl:pb-0"
       id="builder"
     >
-      <Section spacing="hero" width="full">
-        <div className="space-y-8 sm:space-y-10">
-          <div className="max-w-4xl space-y-4 sm:space-y-5">
-            <p className="type-kicker">
-              Start Build
-            </p>
+      <Section
+        spacing="hero"
+        width="full"
+        contentClassName="mx-auto max-w-[82rem] gap-10 sm:gap-12 2xl:gap-14"
+      >
+        <div className="space-y-10 sm:space-y-12 xl:space-y-14">
+          <div className="max-w-5xl space-y-5 sm:space-y-6">
+            <p className="type-kicker">Start Build</p>
 
-            <h1 className="type-page-title max-w-[12ch]">
+            <h1 className="type-page-title max-w-[13ch]">
               Configure your build
             </h1>
 
-            <p className="type-body-lg max-w-3xl">
+            <p className="max-w-[58ch] text-[1.02rem] leading-8 text-[var(--text-secondary)] sm:text-[1.12rem]">
               Select a starting configuration or assemble a custom system build.
-              <span className="block">
-                Pricing and timeline update live while the setup takes shape.
-              </span>
+              Keep the active scope, totals, and delivery timing visible while
+              you configure, then move into review with the current build
+              already clarified.
             </p>
 
-            <p className="type-label">
-              Live scope. Clear totals. Direct next step.
-            </p>
+            <p className="type-label">Select. Configure. Review.</p>
           </div>
 
           <StepFlowIndicator
-            description="Configure the active build, move into review, submit the request, then land on confirmation."
+            description="Choose a starting path, configure the active scope, then move into review before submission and confirmation."
             steps={stepFlowSteps}
           />
 
-          <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_360px] xl:items-start xl:gap-10">
-            <div className="min-w-0 space-y-8 sm:space-y-10">
-              <div className="max-w-4xl space-y-4">
-                <p className="type-kicker">
-                  Configuration Mode
-                </p>
+          <div className="grid gap-8 xl:grid-cols-[minmax(0,1.16fr)_minmax(360px,0.84fr)] xl:items-start 2xl:gap-12 2xl:grid-cols-[minmax(0,1.2fr)_minmax(392px,0.88fr)]">
+            <div className="min-w-0 space-y-8 sm:space-y-10 xl:space-y-12">
+              <Card className="p-6 sm:p-7 lg:p-8 xl:p-9">
+                <div className="grid gap-6 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:gap-8">
+                  <div className="max-w-2xl space-y-4 sm:space-y-5">
+                    <p className="type-kicker">Select</p>
+                    <h2 className="type-section-title max-w-[15ch]">
+                      Choose how you want to start the build.
+                    </h2>
+                    <p className="max-w-[52ch] text-base leading-8 text-[var(--text-secondary)]">
+                      Pick a package baseline or open the custom builder. The
+                      active configuration surface below and the review summary
+                      stay synchronized as you work.
+                    </p>
+                  </div>
 
-                <div className="theme-panel flex flex-col gap-2.5 rounded-[30px] border border-[color:var(--border-subtle)] p-2.5 sm:flex-row">
-                  {configurationModes.map((option) => (
-                    <button
-                      key={option.id}
-                      aria-pressed={mode === option.id}
-                      className={getModeToggleClasses(mode === option.id)}
-                      onClick={() => setMode(option.id)}
-                      type="button"
-                    >
-                      <span className="block text-sm font-semibold tracking-[0.01em]">
-                        {option.label}
-                      </span>
-                      <span className="mt-1 block text-xs leading-5 opacity-80">
-                        {option.detail}
-                      </span>
-                    </button>
-                  ))}
+                  <div className="theme-panel flex flex-col gap-3 rounded-[30px] border border-[color:var(--border-subtle)] p-3 sm:p-4">
+                    {configurationModes.map((option) => (
+                      <button
+                        key={option.id}
+                        aria-pressed={mode === option.id}
+                        className={getModeToggleClasses(mode === option.id)}
+                        onClick={() => setMode(option.id)}
+                        type="button"
+                      >
+                        <span className="block text-base font-semibold tracking-[0.01em]">
+                          {option.label}
+                        </span>
+                        <span className="mt-2 block max-w-[22ch] text-sm leading-7 opacity-85">
+                          {option.detail}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </Card>
 
               {isPackagesMode ? (
                 <>
-                  <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(280px,0.7fr)] lg:items-start">
-                    <Card className="p-6 sm:p-7 lg:p-8">
-                      <div className="space-y-6">
+                  <div className="grid gap-6 xl:grid-cols-[minmax(0,1.14fr)_minmax(320px,0.86fr)] xl:items-start xl:gap-7 2xl:grid-cols-[minmax(0,1.18fr)_minmax(340px,0.9fr)]">
+                    <Card className="p-6 sm:p-7 xl:p-8">
+                      <div className="space-y-8">
                         <div className="max-w-3xl space-y-4">
                           <div className="theme-panel inline-flex items-center gap-3 rounded-full px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.26em] text-[var(--accent-secondary)]">
                             <span className="theme-dot h-2 w-2 rounded-full" />
                             Configuration Overview
                           </div>
 
-                          <p className="type-body max-w-[52ch]">
-                            Use this surface to switch billing, test coupon rules, and review
-                            starting configurations in one place. Every change updates the
-                            active totals immediately, so the setup stays clear while you work.
+                          <h2 className="type-section-title max-w-[15ch]">
+                            Configure a package baseline with live scope
+                            clarity.
+                          </h2>
+
+                          <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
+                            Switch billing, test coupon rules, and review
+                            starting configurations in one place. Every change
+                            updates the active totals immediately so the setup
+                            stays easy to read while you work.
                           </p>
                         </div>
 
-                        <div className="grid gap-4 md:grid-cols-3">
+                        <div className="grid gap-4 xl:grid-cols-3">
                           {pricingNotes.map((note) => (
-                            <div key={note.label} className="theme-panel-contrast rounded-[24px] p-5">
-                              <p className="type-kicker">
-                                {note.label}
-                              </p>
-                              <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+                            <div
+                              className="theme-panel-contrast rounded-[26px] p-5 sm:p-6"
+                              key={note.label}
+                            >
+                              <p className="type-kicker">{note.label}</p>
+                              <p className="mt-3 text-base leading-7 text-[var(--text-secondary)]">
                                 {note.detail}
                               </p>
                             </div>
@@ -350,22 +370,32 @@ export default function Pricing() {
                       </div>
                     </Card>
 
-                    <div className="space-y-4">
-                      <Card className="p-5 sm:p-6">
-                        <div className="space-y-4">
-                          <div className="grid grid-cols-2 gap-2.5">
+                    <div className="grid gap-5">
+                      <Card className="p-5 sm:p-6 xl:p-7">
+                        <div className="space-y-5">
+                          <div className="space-y-3">
+                            <p className="type-kicker">Configure</p>
+                            <p className="text-sm leading-7 text-[var(--text-secondary)]">
+                              Switch how pricing is expressed without losing the
+                              active selection or summary state.
+                            </p>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-3">
                             {billingOptions.map((option) => (
                               <button
                                 key={option.id}
                                 aria-pressed={billingMode === option.id}
-                                className={getToggleClasses(billingMode === option.id)}
+                                className={getToggleClasses(
+                                  billingMode === option.id,
+                                )}
                                 onClick={() => setBillingMode(option.id)}
                                 type="button"
                               >
-                                <span className="block text-sm font-semibold tracking-[0.01em]">
+                                <span className="block text-[0.95rem] font-semibold tracking-[0.01em]">
                                   {option.label}
                                 </span>
-                                <span className="mt-1 block text-xs leading-5 opacity-80">
+                                <span className="mt-2 block text-sm leading-6 opacity-80">
                                   {option.note}
                                 </span>
                               </button>
@@ -374,33 +404,38 @@ export default function Pricing() {
 
                           <div
                             className={[
-                              "rounded-[24px] border p-5",
+                              "rounded-[24px] border p-5 sm:p-6",
                               getSurfaceClasses(pricingModeSummary.tone),
                             ].join(" ")}
                           >
                             <p className="type-kicker">
                               {pricingModeSummary.eyebrow}
                             </p>
-                            <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
+                            <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
                               {pricingModeSummary.title}
                             </p>
-                            <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                            <p className="mt-2 text-sm leading-7 text-[var(--text-secondary)]">
                               {pricingModeSummary.detail}
                             </p>
                           </div>
                         </div>
                       </Card>
 
-                      <Card className="p-5 sm:p-6">
-                        <div className="space-y-4">
+                      <Card className="p-5 sm:p-6 xl:p-7">
+                        <div className="space-y-5">
                           <div className="flex items-start justify-between gap-4">
-                            <div>
-                              <p className="type-kicker">
-                                Coupon Simulation
-                              </p>
-                              <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                                Try <span className="font-medium text-[var(--text-primary)]">FIRST3</span> or{" "}
-                                <span className="font-medium text-[var(--text-primary)]">TRYONCE</span>.
+                            <div className="space-y-3">
+                              <p className="type-kicker">Coupon Simulation</p>
+                              <p className="text-sm leading-7 text-[var(--text-secondary)]">
+                                Try{" "}
+                                <span className="font-medium text-[var(--text-primary)]">
+                                  FIRST3
+                                </span>{" "}
+                                or{" "}
+                                <span className="font-medium text-[var(--text-primary)]">
+                                  TRYONCE
+                                </span>
+                                .
                               </p>
                             </div>
 
@@ -418,7 +453,7 @@ export default function Pricing() {
                           <div className="flex flex-col gap-3.5 sm:flex-row">
                             <input
                               className={[
-                                "theme-input min-h-[52px] rounded-full px-5 py-3 text-sm tracking-[0.08em] uppercase",
+                                "theme-input min-h-[54px] rounded-full px-5 py-3 text-sm tracking-[0.08em] uppercase",
                                 couponError
                                   ? "border-[rgba(217,93,106,0.38)] bg-[rgba(217,93,106,0.08)]"
                                   : "",
@@ -449,17 +484,15 @@ export default function Pricing() {
 
                           <div
                             className={[
-                              "rounded-[24px] border p-5",
+                              "rounded-[24px] border p-5 sm:p-6",
                               getSurfaceClasses(couponFeedback.tone),
                             ].join(" ")}
                           >
-                            <p className="type-kicker">
-                              {couponFeedback.label}
-                            </p>
-                            <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
+                            <p className="type-kicker">{couponFeedback.label}</p>
+                            <p className="mt-2 text-lg font-semibold text-[var(--text-primary)]">
                               {couponFeedback.title}
                             </p>
-                            <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                            <p className="mt-2 text-sm leading-7 text-[var(--text-secondary)]">
                               {couponFeedback.detail}
                             </p>
                           </div>
@@ -469,20 +502,22 @@ export default function Pricing() {
                   </div>
 
                   <div
-                    className="space-y-5 sm:space-y-4"
+                    className="space-y-6 sm:space-y-7"
                     id={PACKAGE_SELECTION_SECTION_ID}
                   >
-                    <div className="max-w-3xl space-y-3">
-                      <p className="type-kicker">
-                        Starting Configurations
-                      </p>
-                      <p className="type-body max-w-[50ch]">
-                        Choose a baseline setup. The summary panel follows the active
-                        configuration so you always have the current state in view.
+                    <div className="max-w-4xl space-y-4">
+                      <p className="type-kicker">Configure</p>
+                      <h2 className="type-section-title max-w-[14ch]">
+                        Select a starting configuration.
+                      </h2>
+                      <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
+                        Choose a baseline setup. The summary panel follows the
+                        active configuration so pricing and timeline stay in
+                        view while you compare options.
                       </p>
                     </div>
 
-                    <div className="grid gap-6 sm:gap-5 lg:grid-cols-2 2xl:grid-cols-3">
+                    <div className="grid gap-6 xl:grid-cols-2">
                       {plans.map((plan) => (
                         <PricingPlanCard
                           isSelected={selectedPlanId === plan.id}
@@ -494,20 +529,18 @@ export default function Pricing() {
                     </div>
                   </div>
 
-                  <Card className="p-6 sm:p-8">
-                    <div className="space-y-6">
-                      <div className="max-w-3xl space-y-4">
-                        <p className="type-kicker">
-                          Live Comparison
-                        </p>
-                        <h2 className="type-section-title max-w-[16ch]">
-                          Compare the active billing view without re-reading every
-                          card.
+                  <Card className="p-6 sm:p-8 xl:p-9">
+                    <div className="space-y-7">
+                      <div className="max-w-4xl space-y-4">
+                        <p className="type-kicker">Review</p>
+                        <h2 className="type-section-title max-w-[15ch]">
+                          Compare the active billing view without re-reading
+                          every card.
                         </h2>
-                        <p className="type-body max-w-[52ch]">
-                          The selected billing mode and coupon logic update every number
-                          below, so this comparison stays aligned with the plan cards
-                          and the summary panel.
+                        <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
+                          The selected billing mode and coupon logic update
+                          every number below, so this comparison stays aligned
+                          with the plan cards and the live summary.
                         </p>
                       </div>
 
@@ -520,7 +553,7 @@ export default function Pricing() {
                             <div
                               key={plan.id}
                               className={[
-                                "rounded-[28px] border p-5 transition-all duration-300 sm:p-6",
+                                "rounded-[28px] border p-5 transition-all duration-300 sm:p-6 lg:p-7",
                                 isSelected
                                   ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] shadow-[var(--shadow-accent)]"
                                   : "theme-panel",
@@ -529,7 +562,7 @@ export default function Pricing() {
                               <div className="flex min-w-0 flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
                                 <div className="max-w-sm min-w-0">
                                   <div className="flex flex-wrap items-center gap-2">
-                                    <p className="text-base font-semibold text-[var(--text-primary)]">
+                                    <p className="text-lg font-semibold text-[var(--text-primary)]">
                                       {plan.name}
                                     </p>
 
@@ -546,7 +579,7 @@ export default function Pricing() {
                                     ) : null}
                                   </div>
 
-                                  <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                                  <p className="mt-2 text-base leading-7 text-[var(--text-secondary)]">
                                     {plan.audience}
                                   </p>
                                   <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
@@ -581,22 +614,32 @@ export default function Pricing() {
                   </Card>
                 </>
               ) : (
-                <div id={CUSTOM_BUILD_SECTION_ID}>
-                  <Card className="p-6 sm:p-8 lg:p-10">
-                    <div className="space-y-9 sm:space-y-8">
-                      <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                <div
+                  className="space-y-6 sm:space-y-7"
+                  id={CUSTOM_BUILD_SECTION_ID}
+                >
+                  <div className="max-w-4xl space-y-4">
+                    <p className="type-kicker">Configure</p>
+                    <h2 className="type-section-title max-w-[14ch]">
+                      Shape a custom system build.
+                    </h2>
+                    <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
+                      Select the modules you need, reveal focused options only
+                      when they matter, and keep the live summary visible while
+                      pricing and timeline update in real time.
+                    </p>
+                  </div>
+
+                  <Card className="p-6 sm:p-8 lg:p-9 xl:p-10">
+                    <div className="space-y-8">
+                      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
                         <div className="max-w-3xl space-y-4">
-                          <p className="type-kicker">
-                            Custom Build
-                          </p>
-                          <h2 className="type-section-title max-w-[14ch]">
-                            Build your custom setup
-                          </h2>
-                          <p className="type-body max-w-[56ch]">
-                            Select any module card to add or remove it from your
-                            system. Selected modules reveal focused options and
-                            add-ons inline, and every price and timeline change
-                            updates immediately.
+                          <p className="type-kicker">Custom Build Modules</p>
+                          <p className="text-base leading-8 text-[var(--text-secondary)]">
+                            Select any module card to add or remove it from
+                            your system. Selected modules reveal focused options
+                            and add-ons inline, and every price and timeline
+                            change updates immediately.
                           </p>
                         </div>
 
@@ -606,15 +649,19 @@ export default function Pricing() {
                         </div>
                       </div>
 
-                      <div className="grid gap-5 sm:gap-5 md:grid-cols-2">
+                      <div className="grid gap-6 xl:grid-cols-2">
                         {customBuildModules.map((module) => (
                           <CustomBuildModuleCard
-                            isSelected={selectedCustomModuleIds.includes(module.id)}
+                            isSelected={selectedCustomModuleIds.includes(
+                              module.id,
+                            )}
                             key={module.id}
                             module={module}
                             onOptionChange={handleCustomModuleOptionChange}
-                            optionSelections={selectedCustomModuleOptions[module.id] ?? {}}
                             onToggle={handleCustomModuleToggle}
+                            optionSelections={
+                              selectedCustomModuleOptions[module.id] ?? {}
+                            }
                           />
                         ))}
                       </div>

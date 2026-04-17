@@ -9,10 +9,10 @@
 ## Medium
 
 * Repeated Services -> Configure entry needs regression QA across package and custom modes
-* Dense custom configurations still need regression QA on smaller screens even after the visual density pass
+* Dense custom configurations still need regression QA on smaller screens after the pricing shell readability pass
 * Case study records use representative proof surfaces until live project captures are available
 * Hero 3D layer needs contrast QA in both themes so motion stays ambient behind the System State content
-* Visual polish pass needs cross-device QA to confirm spacing rhythm and CTA grouping stay consistent in light and dark themes
+* Pricing shell readability pass needs cross-device QA to confirm wider layout balance, sticky summary behavior, and spacing rhythm stay stable in light and dark themes
 
 ---
 
@@ -31,7 +31,8 @@
 * Keep case study metrics, configured details, module names, and deliverables aligned with the shared schema
 * Ensure every CTA still points to a live step in the build flow
 * Maintain summary readability when many modules, options, and deliverable sections are active
+* Validate the widened Pricing shell with long plan notes, coupon feedback, and tall custom-build summaries
 * Confirm starting setup labels and package deliverables stay aligned with future schema changes
 * Keep deliverable output synchronized across configurator, summary, order review, confirmation, and submission payloads
 * Keep hero motion passive on desktop and confirm the static fallback remains clean on smaller or lower-power devices
-* Regression check the new shared spacing and button hierarchy in both themes before backend wiring lands
+* Regression check the new shared spacing, button hierarchy, and sticky summary offset in both themes before backend wiring lands

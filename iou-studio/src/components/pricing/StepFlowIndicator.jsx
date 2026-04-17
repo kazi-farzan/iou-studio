@@ -52,15 +52,15 @@ export default function StepFlowIndicator({
   const mobileColumns = steps.length >= 4 ? 2 : Math.max(steps.length, 1);
 
   return (
-    <div className="theme-panel rounded-[30px] border border-[color:var(--border-subtle)] px-5 py-5 sm:px-6 sm:py-6">
-      <div className="space-y-5">
-        <div className="space-y-3">
+    <div className="theme-panel rounded-[32px] border border-[color:var(--border-subtle)] px-5 py-6 sm:px-7 sm:py-7 lg:px-8">
+      <div className="space-y-6 sm:space-y-7">
+        <div className="max-w-4xl space-y-3">
           <p className="type-kicker">
             System Flow
           </p>
 
           {description ? (
-            <p className="max-w-3xl text-sm leading-7 text-[var(--text-secondary)]">
+            <p className="text-[0.98rem] leading-7 text-[var(--text-secondary)] sm:text-base sm:leading-8">
               {description}
             </p>
           ) : null}
@@ -68,7 +68,7 @@ export default function StepFlowIndicator({
 
         <ol
           aria-label="Configurator step flow"
-          className="grid gap-3 sm:gap-4 [grid-template-columns:repeat(var(--step-columns-mobile),minmax(0,1fr))] lg:[grid-template-columns:repeat(var(--step-columns-desktop),minmax(0,1fr))]"
+          className="grid gap-4 lg:gap-5 [grid-template-columns:repeat(var(--step-columns-mobile),minmax(0,1fr))] lg:[grid-template-columns:repeat(var(--step-columns-desktop),minmax(0,1fr))]"
           style={{
             "--step-columns-desktop": String(Math.max(steps.length, 1)),
             "--step-columns-mobile": String(mobileColumns),
@@ -91,7 +91,7 @@ export default function StepFlowIndicator({
                   <span
                     aria-hidden="true"
                     className={[
-                      "absolute left-[calc(50%+1.4rem)] right-[-1rem] top-[1.25rem] hidden h-px lg:block",
+                      "absolute left-[calc(50%+1.6rem)] right-[-1.4rem] top-[1.45rem] hidden h-px lg:block",
                       connectorClasses,
                     ].join(" ")}
                   />
@@ -99,20 +99,20 @@ export default function StepFlowIndicator({
 
                 <div
                   className={[
-                    "relative flex h-full min-w-0 flex-col gap-3 rounded-[24px] border px-4 py-4 sm:px-5 sm:py-5",
+                    "relative flex h-full min-w-0 flex-col gap-4 rounded-[26px] border px-5 py-5 sm:px-6 sm:py-6",
                     classes.container,
                   ].join(" ")}
                 >
                   <span
                     className={[
-                      "inline-flex h-10 w-10 items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.18em]",
+                      "inline-flex h-11 w-11 items-center justify-center rounded-full border text-[11px] font-semibold tracking-[0.18em]",
                       classes.indicator,
                     ].join(" ")}
                   >
                     {String(index + 1).padStart(2, "0")}
                   </span>
 
-                  <div className="min-w-0">
+                  <div className="min-w-0 space-y-2">
                     <p
                       className={[
                         "text-[10px] font-medium uppercase tracking-[0.24em]",
@@ -123,7 +123,7 @@ export default function StepFlowIndicator({
                     </p>
                     <p
                       className={[
-                        "mt-2 text-sm font-semibold tracking-[0.01em] sm:text-base",
+                        "text-base font-semibold tracking-[0.01em] sm:text-[1.05rem]",
                         classes.label,
                       ].join(" ")}
                     >

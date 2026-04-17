@@ -71,6 +71,7 @@ Shared order-flow state now supports:
 - package preselection from Services
 - persistence across Configure -> Review -> Submit -> Confirm
 - deliverable-aware build specifications across pricing and order review
+- a clearer Select -> Configure -> Review shell on the Pricing page with wider layout balance and calmer scan paths
 
 The homepage hero now includes a controlled identity layer:
 - a lightweight Three.js ambient node field inside the System State card
@@ -111,6 +112,7 @@ The product is now:
 - deliverable-explicit in configure and review flows
 - identity-layered with controlled ambient 3D in the hero
 - visually polished across shared surfaces, spacing, typography, and action hierarchy
+- more readable on the Build / Pricing page with a roomier shell, stronger section hierarchy, and a healthier summary-column balance
 - consistent from entry layer to submission
 
 ---
@@ -128,5 +130,7 @@ Phase 9 - Identity + Wow is complete.
 - Task 33: Submission Backend
 - QA the visual polish pass across mobile, tablet, desktop, light, and dark themes
 - Monitor desktop hero performance and bundle impact from the controlled 3D layer
-- QA dense configurator and order summary states for readability after the spacing pass
+- QA the widened Pricing shell across desktop, tablet, mobile, and both themes
+- QA dense configurator and order summary states for readability after the shell-balance pass
+- Watch long custom-build summaries and sticky summary behavior for crowding or overflow regressions
 - Keep case study records and future schema changes aligned with deliverable terminology
