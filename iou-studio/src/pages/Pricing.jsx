@@ -286,88 +286,94 @@ export default function Pricing() {
             steps={stepFlowSteps}
           />
 
-          <div className="grid gap-8 xl:grid-cols-[minmax(0,1.16fr)_minmax(360px,0.84fr)] xl:items-start 2xl:gap-12 2xl:grid-cols-[minmax(0,1.2fr)_minmax(392px,0.88fr)]">
-            <div className="min-w-0 space-y-8 sm:space-y-10 xl:space-y-12">
-              <Card className="p-6 sm:p-7 lg:p-8 xl:p-9">
-                <div className="flex flex-col gap-6 sm:gap-7">
-                  <div className="space-y-4 sm:space-y-5">
-                    <p className="type-kicker">Start path</p>
-                    <h2 className="type-section-title max-w-[15ch]">
-                      Choose a guided package or build the system module by
-                      module.
-                    </h2>
-                    <p className="max-w-[52ch] text-base leading-8 text-[var(--text-secondary)]">
-                      Switch between the two routes without losing the live
-                      summary. Packages are faster to compare. Custom Build is
-                      for selecting specific sections and revealing options only
-                      where they matter.
-                    </p>
-                  </div>
+          <div className="space-y-8 sm:space-y-10 xl:space-y-12">
+            <div className="grid gap-8 xl:grid-cols-[minmax(0,1.16fr)_minmax(360px,0.84fr)] xl:items-start 2xl:gap-12 2xl:grid-cols-[minmax(0,1.2fr)_minmax(392px,0.88fr)]">
+              <div className="min-w-0">
+                <Card className="p-6 sm:p-7 lg:p-8 xl:p-9">
+                  <div className="flex flex-col gap-6 sm:gap-7">
+                    <div className="space-y-4 sm:space-y-5">
+                      <p className="type-kicker">Start path</p>
+                      <h2 className="type-section-title max-w-[15ch]">
+                        Choose a guided package or build the system module by
+                        module.
+                      </h2>
+                      <p className="max-w-[52ch] text-base leading-8 text-[var(--text-secondary)]">
+                        Switch between the two routes without losing the live
+                        summary. Packages are faster to compare. Custom Build
+                        is for selecting specific sections and revealing options
+                        only where they matter.
+                      </p>
+                    </div>
 
-                  <div className="w-full">
-                    <div className="theme-panel w-full rounded-[28px] border border-[color:var(--border-subtle)] p-3 sm:p-4">
-                      <div className="flex flex-row gap-3">
-                        {configurationModes.map((option) => (
-                          <button
-                            key={option.id}
-                            aria-pressed={mode === option.id}
-                            className={[getModeToggleClasses(mode === option.id), "min-w-0 flex-1"].join(
-                              " ",
-                            )}
-                            onClick={() => setMode(option.id)}
-                            type="button"
-                          >
-                            <span className="flex items-center justify-between gap-3">
-                              <span className="text-base font-semibold tracking-[0.01em]">
-                                {option.label}
-                              </span>
-                              {mode === option.id ? (
-                                <span className="rounded-full border border-[color:var(--border-accent)] bg-[var(--surface)] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--accent-secondary)]">
-                                  Active
+                    <div className="w-full">
+                      <div className="theme-panel w-full rounded-[28px] border border-[color:var(--border-subtle)] p-3 sm:p-4">
+                        <div className="flex flex-row gap-3">
+                          {configurationModes.map((option) => (
+                            <button
+                              key={option.id}
+                              aria-pressed={mode === option.id}
+                              className={[getModeToggleClasses(mode === option.id), "min-w-0 flex-1"].join(
+                                " ",
+                              )}
+                              onClick={() => setMode(option.id)}
+                              type="button"
+                            >
+                              <span className="flex items-center justify-between gap-3">
+                                <span className="text-base font-semibold tracking-[0.01em]">
+                                  {option.label}
                                 </span>
-                              ) : null}
-                            </span>
-                            <span className="mt-3 block max-w-[28ch] text-sm leading-7 opacity-90">
-                              {option.detail}
-                            </span>
-                          </button>
-                        ))}
+                                {mode === option.id ? (
+                                  <span className="rounded-full border border-[color:var(--border-accent)] bg-[var(--surface)] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--accent-secondary)]">
+                                    Active
+                                  </span>
+                                ) : null}
+                              </span>
+                              <span className="mt-3 block max-w-[28ch] text-sm leading-7 opacity-90">
+                                {option.detail}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="w-full rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] px-5 py-4 sm:px-6">
-                    <p className="type-label">Current path</p>
-                    <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
-                      {activeConfigurationMode.label}
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                      {activeConfigurationMode.summary}
-                    </p>
+                    <div className="w-full rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] px-5 py-4 sm:px-6">
+                      <p className="type-label">Current path</p>
+                      <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
+                        {activeConfigurationMode.label}
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                        {activeConfigurationMode.summary}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </div>
 
+              <div className="hidden min-w-0 xl:block xl:self-start">
+                <PricingSummaryPanel summary={summaryPanelData} />
+              </div>
+            </div>
+
+            <div className="min-w-0 space-y-8 sm:space-y-10 xl:space-y-12">
               {isPackagesMode ? (
-                <>
-                  <PackageComparisonSection
-                    appliedCoupon={appliedCoupon}
-                    billingMode={billingMode}
-                    billingOptions={billingOptions}
-                    couponError={couponError}
-                    couponInput={couponInput}
-                    id={PACKAGE_SELECTION_SECTION_ID}
-                    onBillingModeChange={setBillingMode}
-                    onCouponApply={handleCouponApply}
-                    onCouponChange={handleCouponChange}
-                    onCouponClear={handleCouponClear}
-                    onSelectPlan={setSelectedPlanId}
-                    packageStatusLabel={packageStatusLabel}
-                    packageStatusNotice={packageStatusNotice}
-                    plans={plans}
-                    selectedPlanId={selectedPlanId}
-                  />
-                </>
+                <PackageComparisonSection
+                  appliedCoupon={appliedCoupon}
+                  billingMode={billingMode}
+                  billingOptions={billingOptions}
+                  couponError={couponError}
+                  couponInput={couponInput}
+                  id={PACKAGE_SELECTION_SECTION_ID}
+                  onBillingModeChange={setBillingMode}
+                  onCouponApply={handleCouponApply}
+                  onCouponChange={handleCouponChange}
+                  onCouponClear={handleCouponClear}
+                  onSelectPlan={setSelectedPlanId}
+                  packageStatusLabel={packageStatusLabel}
+                  packageStatusNotice={packageStatusNotice}
+                  plans={plans}
+                  selectedPlanId={selectedPlanId}
+                />
               ) : (
                 <div
                   className="space-y-6 sm:space-y-7"
@@ -447,10 +453,6 @@ export default function Pricing() {
                   </Card>
                 </div>
               )}
-            </div>
-
-            <div className="hidden min-w-0 xl:block xl:self-start">
-              <PricingSummaryPanel summary={summaryPanelData} />
             </div>
           </div>
         </div>
