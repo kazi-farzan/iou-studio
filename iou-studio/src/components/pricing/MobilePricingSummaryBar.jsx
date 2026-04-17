@@ -9,9 +9,7 @@ const SHEET_CLOSE_BUTTON_CLASSNAME =
   "inline-flex min-h-[44px] items-center justify-center rounded-[18px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 text-sm font-medium text-[var(--text-primary)] transition-colors duration-200 hover:border-[color:var(--border-strong)] hover:bg-[var(--surface-overlay)]";
 
 function getCollapsedStatusLine(summary) {
-  const parts = [summary.modeLabel, summary.statusLabel].filter(Boolean);
-
-  return parts.join(" / ");
+  return summary.total?.meta || summary.statusLabel || summary.modeLabel || "";
 }
 
 export default function MobilePricingSummaryBar({
@@ -76,17 +74,17 @@ export default function MobilePricingSummaryBar({
               >
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-[var(--accent-secondary)]">
-                    Build Summary
+                    Current build
                   </p>
 
-                  {statusLine ? (
+                  {summary.modeLabel ? (
                     <p className="truncate text-[11px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
-                      {statusLine}
+                      {summary.modeLabel}
                     </p>
                   ) : null}
                 </div>
 
-                <div className="mt-2 grid grid-cols-2 gap-3">
+                <div className="mt-2 grid grid-cols-[minmax(0,1fr)_auto] gap-3">
                   <div className="min-w-0">
                     <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
                       {summary.total.label}
@@ -94,9 +92,14 @@ export default function MobilePricingSummaryBar({
                     <p className="mt-1 truncate text-sm font-semibold text-[var(--text-primary)] tabular-nums sm:text-base">
                       {summary.total.value}
                     </p>
+                    {statusLine ? (
+                      <p className="mt-1 truncate text-xs leading-5 text-[var(--text-secondary)]">
+                        {statusLine}
+                      </p>
+                    ) : null}
                   </div>
 
-                  <div className="min-w-0">
+                  <div className="min-w-0 text-right">
                     <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--text-muted)]">
                       {summary.timeline.label}
                     </p>
@@ -158,7 +161,7 @@ export default function MobilePricingSummaryBar({
             <div
               aria-labelledby={titleId}
               aria-modal="true"
-              className="overflow-hidden rounded-[32px] border border-[color:var(--border-strong)] bg-[var(--surface-strong)] shadow-[var(--shadow-card)] backdrop-blur-xl"
+              className="flex max-h-[min(82vh,46rem)] flex-col overflow-hidden rounded-[32px] border border-[color:var(--border-strong)] bg-[var(--surface-strong)] shadow-[var(--shadow-card)] backdrop-blur-xl"
               id={dialogId}
               role="dialog"
             >
@@ -166,23 +169,21 @@ export default function MobilePricingSummaryBar({
                 <span className="h-1.5 w-12 rounded-full bg-[var(--border-strong)]" />
               </div>
 
-              <div className="max-h-[min(78vh,42rem)] overflow-y-auto">
-                <PricingSummarySurface
-                  ctaButtonLabel={expandedActionLabel}
-                  headerAction={
-                    <button
-                      className={SHEET_CLOSE_BUTTON_CLASSNAME}
-                      onClick={() => setIsOpen(false)}
-                      type="button"
-                    >
-                      Close
-                    </button>
-                  }
-                  onInvalidAction={handleInvalidSelectionAction}
-                  summary={summary}
-                  titleId={titleId}
-                />
-              </div>
+              <PricingSummarySurface
+                ctaButtonLabel={expandedActionLabel}
+                headerAction={
+                  <button
+                    className={SHEET_CLOSE_BUTTON_CLASSNAME}
+                    onClick={() => setIsOpen(false)}
+                    type="button"
+                  >
+                    Close
+                  </button>
+                }
+                onInvalidAction={handleInvalidSelectionAction}
+                summary={summary}
+                titleId={titleId}
+              />
             </div>
           </div>
         </div>

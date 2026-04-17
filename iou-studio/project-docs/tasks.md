@@ -24,6 +24,8 @@
    Rebalanced the Build / Pricing page shell with a wider desktop container, clearer Select -> Configure -> Review hierarchy, and a roomier sticky summary column.
 32B: Configurator Decision Clarity Pass
    Simplified package cards into clearer decision units, pushed deeper package detail behind disclosure, grouped custom-build modules by category, and reduced nested option noise without changing pricing or timeline logic.
+32C: Summary Panel Clarity Pass
+   Refactored the live summary into a calmer control panel with a dominant cost/timeline block, separated Current Setup -> Build Breakdown -> Deliverables -> Timeline sections, progressive disclosure for dense detail, and aligned desktop/mobile behavior.
 
 ---
 

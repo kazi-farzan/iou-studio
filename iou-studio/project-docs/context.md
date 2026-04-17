@@ -75,6 +75,7 @@ Shared order-flow state now supports:
 - calmer package comparison cards with optional detail disclosure instead of always-on dense stacks
 - category-grouped custom-build sections that reveal add-ons and tier controls only after module selection
 - summary-synced pricing presentation so package cards and the live summary speak with the same billing and coupon state
+- a control-panel-style summary surface with a dominant total/timeline block, clearer section grouping, and collapsed detail by default on desktop and mobile
 
 The homepage hero now includes a controlled identity layer:
 - a lightweight Three.js ambient node field inside the System State card
@@ -117,6 +118,7 @@ The product is now:
 - visually polished across shared surfaces, spacing, typography, and action hierarchy
 - more readable on the Build / Pricing page with a roomier shell, stronger section hierarchy, and a healthier summary-column balance
 - calmer inside the configurator itself, with clearer package hierarchy, reduced card density, grouped custom-build sections, and lighter nested-option treatment
+- calmer inside the summary itself, with price and timeline surfaced first, cleaner Current Setup -> Build Breakdown -> Deliverables -> Timeline -> CTA grouping, and less always-visible detail
 - consistent from entry layer to submission
 
 ---
@@ -135,5 +137,5 @@ Phase 9 - Identity + Wow is complete.
 - QA the visual polish pass across mobile, tablet, desktop, light, and dark themes
 - QA the configurator clarity pass across package mode and custom build mode
 - monitor package detail disclosure states, grouped custom-module sections, and responsive tap clarity
-- watch long custom-build summaries and sticky summary behavior for crowding or overflow regressions
+- watch summary disclosure states, sticky internal scrolling, and long custom-build breakdowns for crowding or overflow regressions
 - keep case study records and future schema changes aligned with deliverable terminology and package wording
