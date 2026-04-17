@@ -289,8 +289,8 @@ export default function Pricing() {
           <div className="grid gap-8 xl:grid-cols-[minmax(0,1.16fr)_minmax(360px,0.84fr)] xl:items-start 2xl:gap-12 2xl:grid-cols-[minmax(0,1.2fr)_minmax(392px,0.88fr)]">
             <div className="min-w-0 space-y-8 sm:space-y-10 xl:space-y-12">
               <Card className="p-6 sm:p-7 lg:p-8 xl:p-9">
-                <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
-                  <div className="max-w-2xl space-y-4 sm:space-y-5 lg:min-w-0 lg:flex-[1.2]">
+                <div className="flex flex-col gap-6 sm:gap-7">
+                  <div className="space-y-4 sm:space-y-5">
                     <p className="type-kicker">Start path</p>
                     <h2 className="type-section-title max-w-[15ch]">
                       Choose a guided package or build the system module by
@@ -304,14 +304,16 @@ export default function Pricing() {
                     </p>
                   </div>
 
-                  <div className="w-full space-y-4 lg:min-w-[22rem] lg:flex-1 xl:min-w-[24rem]">
-                    <div className="theme-panel rounded-[28px] border border-[color:var(--border-subtle)] p-3 sm:p-4">
-                      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
+                  <div className="w-full">
+                    <div className="theme-panel w-full rounded-[28px] border border-[color:var(--border-subtle)] p-3 sm:p-4">
+                      <div className="flex flex-row gap-3">
                         {configurationModes.map((option) => (
                           <button
                             key={option.id}
                             aria-pressed={mode === option.id}
-                            className={getModeToggleClasses(mode === option.id)}
+                            className={[getModeToggleClasses(mode === option.id), "min-w-0 flex-1"].join(
+                              " ",
+                            )}
                             onClick={() => setMode(option.id)}
                             type="button"
                           >
@@ -332,16 +334,16 @@ export default function Pricing() {
                         ))}
                       </div>
                     </div>
+                  </div>
 
-                    <div className="rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] px-5 py-4 sm:px-6">
-                      <p className="type-label">Current path</p>
-                      <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
-                        {activeConfigurationMode.label}
-                      </p>
-                      <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                        {activeConfigurationMode.summary}
-                      </p>
-                    </div>
+                  <div className="w-full rounded-[24px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] px-5 py-4 sm:px-6">
+                    <p className="type-label">Current path</p>
+                    <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
+                      {activeConfigurationMode.label}
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+                      {activeConfigurationMode.summary}
+                    </p>
                   </div>
                 </div>
               </Card>
