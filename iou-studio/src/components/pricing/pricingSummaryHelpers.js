@@ -3,6 +3,32 @@ import {
   mergeDeliverableSections,
 } from "../../data/configuratorSchema.js";
 
+function getNumericValue(value = "") {
+  const match = String(value).match(/[\d,]+(?:\.\d+)?/);
+
+  if (!match) {
+    return null;
+  }
+
+  const numericValue = Number(match[0].replace(/,/g, ""));
+
+  return Number.isFinite(numericValue) ? numericValue : null;
+}
+
+function formatCompactThousands(value) {
+  if (value < 1000) {
+    return String(Math.round(value));
+  }
+
+  const valueInThousands = value / 1000;
+  const roundedValue =
+    valueInThousands >= 100
+      ? Math.round(valueInThousands)
+      : Math.round(valueInThousands * 10) / 10;
+
+  return `${Number.isInteger(roundedValue) ? roundedValue : roundedValue.toFixed(1).replace(/\.0$/, "")}K`;
+}
+
 function formatCountLabel(count, singular, plural = `${singular}s`) {
   return `${count} ${count === 1 ? singular : plural}`;
 }
@@ -24,6 +50,33 @@ function getRowOutputSummaries(groups = []) {
   return groups.flatMap((group) =>
     (group.rows ?? []).map((row) => row.outputSummary).filter(Boolean),
   );
+}
+
+function formatCompactRange(rangeDays) {
+  const minimum = Number(rangeDays?.minimum);
+  const maximum = Number(rangeDays?.maximum);
+
+  if (
+    !Number.isFinite(minimum) ||
+    !Number.isFinite(maximum) ||
+    minimum <= 0 ||
+    maximum <= 0
+  ) {
+    return "";
+  }
+
+  const useWeeks = minimum % 7 === 0 && maximum % 7 === 0;
+
+  if (useWeeks) {
+    const minimumWeeks = minimum / 7;
+    const maximumWeeks = maximum / 7;
+
+    return minimumWeeks === maximumWeeks
+      ? `${minimumWeeks}w`
+      : `${minimumWeeks}-${maximumWeeks}w`;
+  }
+
+  return minimum === maximum ? `${minimum}d` : `${minimum}-${maximum}d`;
 }
 
 export function getSummaryActionLabel(summary, compact = false) {
@@ -50,6 +103,73 @@ export function getSummaryTopContext(summary) {
   }
 
   return summary.total?.meta || summary.statusLabel || "";
+}
+
+export function hasActiveSummarySelection(summary) {
+  return Boolean(
+    summary &&
+      !summary.isActionDisabled &&
+      (summary.groups?.length ?? 0) > 0,
+  );
+}
+
+export function getCompactSummaryTotal(summary) {
+  const rawValue = String(summary?.total?.value || "").trim();
+
+  if (!rawValue) {
+    return "";
+  }
+
+  if (!/\d/.test(rawValue)) {
+    return /^free$/i.test(rawValue) ? "Free" : "";
+  }
+
+  const numericValue = getNumericValue(rawValue);
+
+  if (numericValue === null) {
+    return "";
+  }
+
+  const currencySymbol = rawValue.includes("\u20B9") ? "\u20B9" : "";
+
+  return `${currencySymbol}${formatCompactThousands(numericValue)}`;
+}
+
+export function getCompactSummaryTimeline(summary) {
+  const rangeValue = formatCompactRange(summary?.timeline?.rangeDays);
+
+  if (rangeValue) {
+    return rangeValue;
+  }
+
+  const timelineValue = String(summary?.timeline?.value || "")
+    .replace(/^Estimated delivery:\s*/i, "")
+    .trim();
+
+  if (
+    !timelineValue ||
+    /pending|confirmed during scope review|updates as you build/i.test(
+      timelineValue,
+    )
+  ) {
+    return "";
+  }
+
+  const parsedValue = timelineValue.match(
+    /(\d+)(?:\s*-\s*(\d+))?\s*(week|weeks|day|days)\b/i,
+  );
+
+  if (!parsedValue) {
+    return "";
+  }
+
+  const minimum = Number(parsedValue[1]);
+  const maximum = parsedValue[2] ? Number(parsedValue[2]) : minimum;
+  const unit = /^week/i.test(parsedValue[3]) ? "w" : "d";
+
+  return minimum === maximum
+    ? `${minimum}${unit}`
+    : `${minimum}-${maximum}${unit}`;
 }
 
 export function getSummarySetup(summary) {

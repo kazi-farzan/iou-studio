@@ -1,12 +1,15 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import CustomBuildModuleCard from "../components/pricing/CustomBuildModuleCard.jsx";
 import MobilePricingSummaryBar from "../components/pricing/MobilePricingSummaryBar.jsx";
 import PackageComparisonSection from "../components/pricing/PackageComparisonSection.jsx";
+import PricingSummaryBottomSheet from "../components/pricing/PricingSummaryBottomSheet.jsx";
 import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
 import RecentBuilds from "../components/pricing/RecentBuilds.jsx";
+import StickyPricingSummaryPill from "../components/pricing/StickyPricingSummaryPill.jsx";
 import StepFlowIndicator from "../components/pricing/StepFlowIndicator.jsx";
 import WhatHappensNext from "../components/pricing/WhatHappensNext.jsx";
+import { hasActiveSummarySelection } from "../components/pricing/pricingSummaryHelpers.js";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
 import { groupModulesByCategory } from "../data/configuratorSchema.js";
@@ -74,6 +77,7 @@ function getCategorySelectionLabel(category, selectedModuleIds) {
 
 export default function Pricing() {
   const location = useLocation();
+  const lowerFullWidthSectionRef = useRef(null);
   const {
     appliedCouponCode,
     billingMode,
@@ -92,6 +96,9 @@ export default function Pricing() {
     setSelectedPlanId,
   } = useOrderFlow();
   const [couponError, setCouponError] = useState("");
+  const [isLowerSummaryPillVisible, setIsLowerSummaryPillVisible] =
+    useState(false);
+  const [isLowerSummarySheetOpen, setIsLowerSummarySheetOpen] = useState(false);
 
   const appliedCoupon = useMemo(
     () => getCouponByCode(appliedCouponCode),
@@ -157,6 +164,10 @@ export default function Pricing() {
     () => draftConfiguration.summaryPanel,
     [draftConfiguration.summaryPanel],
   );
+  const hasSummarySelection = useMemo(
+    () => hasActiveSummarySelection(summaryPanelData),
+    [summaryPanelData],
+  );
 
   const stepFlowSteps = useMemo(
     () =>
@@ -186,6 +197,57 @@ export default function Pricing() {
       block: "start",
     });
   }, [location.hash]);
+
+  useEffect(() => {
+    const sectionNode = lowerFullWidthSectionRef.current;
+
+    if (!sectionNode) {
+      return undefined;
+    }
+
+    let frameId = 0;
+
+    const updateVisibility = () => {
+      frameId = 0;
+      const nextVisibility = sectionNode.getBoundingClientRect().top <= 96;
+
+      setIsLowerSummaryPillVisible((current) =>
+        current === nextVisibility ? current : nextVisibility,
+      );
+    };
+
+    const requestVisibilityUpdate = () => {
+      if (frameId) {
+        return;
+      }
+
+      frameId = window.requestAnimationFrame(updateVisibility);
+    };
+
+    updateVisibility();
+
+    window.addEventListener("scroll", requestVisibilityUpdate, {
+      passive: true,
+    });
+    window.addEventListener("resize", requestVisibilityUpdate);
+
+    return () => {
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+      }
+
+      window.removeEventListener("scroll", requestVisibilityUpdate);
+      window.removeEventListener("resize", requestVisibilityUpdate);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (hasSummarySelection) {
+      return;
+    }
+
+    setIsLowerSummarySheetOpen(false);
+  }, [hasSummarySelection]);
 
   function handleCouponApply() {
     const result = validateCouponCode(couponInput);
@@ -251,6 +313,11 @@ export default function Pricing() {
       behavior: prefersReducedMotion ? "auto" : "smooth",
       block: "start",
     });
+  }
+
+  function handleLowerSummaryInvalidAction() {
+    setIsLowerSummarySheetOpen(false);
+    handleSelectionGuidance();
   }
 
   return (
@@ -355,7 +422,10 @@ export default function Pricing() {
               </div>
             </div>
 
-            <div className="min-w-0 space-y-8 sm:space-y-10 xl:space-y-12">
+            <div
+              className="min-w-0 space-y-8 sm:space-y-10 xl:space-y-12"
+              ref={lowerFullWidthSectionRef}
+            >
               {isPackagesMode ? (
                 <PackageComparisonSection
                   appliedCoupon={appliedCoupon}
@@ -458,6 +528,18 @@ export default function Pricing() {
         </div>
       </Section>
 
+      <StickyPricingSummaryPill
+        isOpen={isLowerSummarySheetOpen}
+        isVisible={hasSummarySelection && isLowerSummaryPillVisible}
+        onClick={() => setIsLowerSummarySheetOpen(true)}
+        summary={summaryPanelData}
+      />
+      <PricingSummaryBottomSheet
+        isOpen={isLowerSummarySheetOpen}
+        onClose={() => setIsLowerSummarySheetOpen(false)}
+        onInvalidAction={handleLowerSummaryInvalidAction}
+        summary={summaryPanelData}
+      />
       <RecentBuilds />
       <WhatHappensNext ctaLabel="Review Setup" ctaTo="/summary" />
       <MobilePricingSummaryBar
