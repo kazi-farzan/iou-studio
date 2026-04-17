@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { formatInr } from "../../data/pricing.js";
+import { getPlanSnapshot } from "../../data/pricing.js";
 import Button from "../ui/Button.jsx";
 import Card from "../ui/Card.jsx";
 import DeliverableList from "./DeliverableList.jsx";
@@ -26,7 +26,7 @@ function getUniqueItems(items = []) {
   return [...new Set(items.filter(Boolean))];
 }
 
-function getCoreInclusions(plan) {
+function getScopeHighlights(plan) {
   const packageDeliverables = (plan.packageDeliverableSections ?? []).flatMap(
     (section) => section.items ?? [],
   );
@@ -34,51 +34,13 @@ function getCoreInclusions(plan) {
   return getUniqueItems([
     ...packageDeliverables,
     ...(plan.features ?? []),
-  ]).slice(0, 4);
+  ]).slice(0, 3);
 }
 
-function getAdditionalCoverage(plan, coreInclusions) {
+function getAdditionalCoverage(plan, scopeHighlights) {
   return (plan.features ?? []).filter(
-    (feature) => !coreInclusions.includes(feature),
+    (feature) => !scopeHighlights.includes(feature),
   );
-}
-
-function getPlanCardOverview(plan) {
-  const { base, coupon, effective } = plan;
-
-  if (base.isYearly) {
-    return {
-      billingNote: base.billingLine,
-      contextNote: `Save ${formatInr(base.yearlySavings)} a year with yearly billing.`,
-      label: "Effective rate",
-      value: `${formatInr(base.monthlyEquivalent)}/month`,
-    };
-  }
-
-  if (coupon?.status === "active" && coupon.code === "FIRST3") {
-    return {
-      billingNote: `Then ${formatInr(coupon.recurringCharge)}/month from month 4`,
-      contextNote: "FIRST3 is applied to the current rate.",
-      label: "Starting rate",
-      value: `${formatInr(coupon.todayCharge)}/month`,
-    };
-  }
-
-  if (coupon?.status === "active" && coupon.code === "TRYONCE") {
-    return {
-      billingNote: `Then ${formatInr(coupon.recurringCharge)}/month from month 2`,
-      contextNote: "TRYONCE removes the first monthly invoice.",
-      label: "Starting rate",
-      value: "Free",
-    };
-  }
-
-  return {
-    billingNote: base.billingLine,
-    contextNote: `Switch to yearly for ${formatInr(base.monthlyEquivalent)}/month effective.`,
-    label: "Current rate",
-    value: `${formatInr(effective.todayCharge)}/month`,
-  };
 }
 
 function getDetailToggleClasses(isOpen) {
@@ -88,6 +50,21 @@ function getDetailToggleClasses(isOpen) {
       ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] text-[var(--text-primary)]"
       : "border-[color:var(--border-subtle)] bg-[var(--surface)] text-[var(--text-secondary)] hover:border-[color:var(--border-strong)] hover:text-[var(--text-primary)]",
   ].join(" ");
+}
+
+function StatPanel({ label, value }) {
+  if (!label || !value) {
+    return null;
+  }
+
+  return (
+    <div className="rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] px-4 py-4">
+      <p className="type-label">{label}</p>
+      <p className="mt-2 text-lg font-semibold tracking-[-0.03em] text-[var(--text-primary)] sm:text-xl">
+        {value}
+      </p>
+    </div>
+  );
 }
 
 function DetailList({ items = [], label }) {
@@ -118,18 +95,18 @@ function IncludedModules({ modules = [] }) {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="mt-5 space-y-3">
       <p className="type-label">Included modules</p>
-      <ul className="grid gap-2 sm:grid-cols-2">
+      <div className="flex flex-wrap gap-2">
         {modules.map((module) => (
-          <li
-            className="rounded-[18px] border border-[color:var(--border-subtle)] bg-[var(--surface)] px-4 py-3 text-sm font-medium text-[var(--text-primary)]"
+          <span
+            className="rounded-full border border-[color:var(--border-subtle)] bg-[var(--surface)] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--text-secondary)]"
             key={module.id}
           >
             {module.title}
-          </li>
+          </span>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
@@ -144,20 +121,20 @@ export default function PricingPlanCard({
     isMostPopular: plan.isMostPopular,
     isSelected,
   });
-  const cardOverview = getPlanCardOverview(plan);
+  const snapshot = getPlanSnapshot(plan);
+  const primaryMetric = snapshot.metrics[0];
+  const secondaryMetric = snapshot.metrics[1];
   const timelineLabel = formatTimelineLabel(plan.timelineEstimate?.label);
-  const coreInclusions = getCoreInclusions(plan);
-  const additionalCoverage = getAdditionalCoverage(plan, coreInclusions);
+  const scopeHighlights = getScopeHighlights(plan);
+  const additionalCoverage = getAdditionalCoverage(plan, scopeHighlights);
 
   return (
     <Card className={cardClasses} interactive>
       <div className="flex h-full min-w-0 flex-col">
         <div className="flex items-start justify-between gap-4">
-          <div className="space-y-2.5">
-            <p className="type-label">For {plan.audience}</p>
-            <h2 className="text-[1.9rem] font-semibold tracking-[-0.05em] text-[var(--text-primary)]">
-              {plan.name}
-            </h2>
+          <div className="space-y-2">
+            <p className="type-label">{plan.audience}</p>
+            <h2 className="type-card-title">{plan.name}</h2>
           </div>
 
           <div className="flex flex-wrap items-center justify-end gap-2">
@@ -175,40 +152,26 @@ export default function PricingPlanCard({
           </div>
         </div>
 
-        <div className="mt-6 rounded-[28px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] p-5 sm:p-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div className="space-y-2">
-              <p className="type-label">{cardOverview.label}</p>
-              <p className="break-words text-[2.45rem] font-semibold leading-none tracking-[-0.06em] text-[var(--text-primary)] sm:text-[2.85rem]">
-                {cardOverview.value}
-              </p>
-              <p className="text-sm leading-6 text-[var(--text-secondary)]">
-                {cardOverview.billingNote}
-              </p>
-            </div>
+        <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
+          {plan.description}
+        </p>
 
-            {timelineLabel ? (
-              <div className="rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface)] px-4 py-3 sm:min-w-[11.5rem] sm:text-right">
-                <p className="type-label">Timeline</p>
-                <p className="mt-1 text-sm font-medium text-[var(--text-primary)]">
-                  {timelineLabel}
-                </p>
-              </div>
-            ) : null}
-          </div>
-
-          {cardOverview.contextNote ? (
-            <p className="mt-4 text-sm leading-6 text-[var(--text-secondary)]">
-              {cardOverview.contextNote}
-            </p>
-          ) : null}
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          <StatPanel label={primaryMetric?.label} value={primaryMetric?.value} />
+          <StatPanel
+            label={secondaryMetric?.label}
+            value={secondaryMetric?.value}
+          />
+          <StatPanel label="Delivery" value={timelineLabel} />
         </div>
 
-        <div className="mt-6 space-y-3">
-          <p className="type-label">Core included</p>
+        <IncludedModules modules={plan.includedModules} />
 
-          <ul className="space-y-3">
-            {coreInclusions.map((item) => (
+        <div className="mt-5 space-y-3">
+          <p className="type-label">Scope highlights</p>
+
+          <ul className="space-y-2.5">
+            {scopeHighlights.map((item) => (
               <li className="flex items-start gap-3" key={item}>
                 <span className="theme-dot mt-2 h-1.5 w-1.5 shrink-0 rounded-full" />
                 <span className="text-sm leading-6 text-[var(--text-secondary)]">
@@ -226,7 +189,7 @@ export default function PricingPlanCard({
             onClick={() => setIsDetailsOpen((current) => !current)}
             type="button"
           >
-            <span>{isDetailsOpen ? "Hide details" : "View details"}</span>
+            <span>{isDetailsOpen ? "Hide package detail" : "View package detail"}</span>
             <svg
               aria-hidden="true"
               className={[
@@ -249,18 +212,16 @@ export default function PricingPlanCard({
           {isDetailsOpen ? (
             <div className="mt-5 space-y-5">
               <p className="text-sm leading-6 text-[var(--text-secondary)]">
-                {plan.description}
+                {snapshot.note}
               </p>
 
               <DeliverableList
                 compact
-                label="Package details"
-                maxItemsPerSection={3}
+                label="Package outputs"
+                maxItemsPerSection={2}
                 sections={plan.packageDeliverableSections}
                 surface="contrast"
               />
-
-              <IncludedModules modules={plan.includedModules} />
 
               <DetailList
                 items={additionalCoverage}
@@ -270,7 +231,7 @@ export default function PricingPlanCard({
           ) : null}
         </div>
 
-        <div className="mt-auto pt-7">
+        <div className="mt-auto pt-6">
           <Button
             className="w-full"
             onClick={() => onSelect(plan.id)}
@@ -282,8 +243,8 @@ export default function PricingPlanCard({
 
           <p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
             {isSelected
-              ? "This package is active in the summary and can still be refined before review."
-              : "Use this as the starting point, then continue into review with the live summary in sync."}
+              ? "This package is active in the live summary and can still be refined before review."
+              : "Use this as the starting point, then continue into review with the same scope kept in sync."}
           </p>
         </div>
       </div>

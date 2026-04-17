@@ -26,6 +26,8 @@
    Simplified package cards into clearer decision units, pushed deeper package detail behind disclosure, grouped custom-build modules by category, and reduced nested option noise without changing pricing or timeline logic.
 32C: Summary Panel Clarity Pass
    Refactored the live summary into a calmer control panel with a dominant cost/timeline block, separated Current Setup -> Build Breakdown -> Deliverables -> Timeline sections, progressive disclosure for dense detail, and aligned desktop/mobile behavior.
+32D: Lower-Half Section Cleanup
+   Refactored the Pricing page lower half so package comparison works as quick decision support, Recent Build Log reads as structured proof, What Happens Next carries more operational weight, and the redundant metric strip no longer repeats the same information.
 
 ---
 

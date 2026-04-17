@@ -1,14 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import CustomBuildModuleCard from "../components/pricing/CustomBuildModuleCard.jsx";
-import MetricsStrip from "../components/pricing/MetricsStrip.jsx";
 import MobilePricingSummaryBar from "../components/pricing/MobilePricingSummaryBar.jsx";
-import PricingPlanCard from "../components/pricing/PricingPlanCard.jsx";
+import PackageComparisonSection from "../components/pricing/PackageComparisonSection.jsx";
 import PricingSummaryPanel from "../components/pricing/PricingSummaryPanel.jsx";
 import RecentBuilds from "../components/pricing/RecentBuilds.jsx";
 import StepFlowIndicator from "../components/pricing/StepFlowIndicator.jsx";
 import WhatHappensNext from "../components/pricing/WhatHappensNext.jsx";
-import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import Section from "../components/ui/Section.jsx";
 import { groupModulesByCategory } from "../data/configuratorSchema.js";
@@ -49,32 +47,11 @@ const configurationModes = [
 const PACKAGE_SELECTION_SECTION_ID = "pricing-package-selection-surface";
 const CUSTOM_BUILD_SECTION_ID = "pricing-custom-build-selection-surface";
 
-function getSurfaceClasses(tone) {
-  if (tone === "accent") {
-    return "theme-panel-contrast border-[color:var(--border-accent)] bg-[var(--surface-accent)]";
-  }
-
-  if (tone === "muted") {
-    return "theme-panel border-[color:var(--border-subtle)]";
-  }
-
-  return "theme-panel-contrast border-[color:var(--border-subtle)]";
-}
-
 function getModeToggleClasses(isActive) {
   return [
     "flex min-h-[116px] flex-col justify-between rounded-[24px] border px-5 py-5 text-left transition-all duration-300 sm:min-h-[124px] sm:px-6 sm:py-6",
     isActive
       ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-accent-strong))] text-[var(--text-primary)] shadow-[var(--shadow-raised)]"
-      : "border-[color:var(--border-subtle)] bg-[var(--surface)] text-[var(--text-secondary)] hover:border-[color:var(--border-strong)] hover:text-[var(--text-primary)]",
-  ].join(" ");
-}
-
-function getToggleClasses(isActive) {
-  return [
-    "flex min-h-[88px] flex-col justify-between rounded-[20px] border px-4 py-4 text-left transition-all duration-300 sm:min-h-[94px] sm:px-5 sm:py-5",
-    isActive
-      ? "border-[color:var(--border-accent)] bg-[linear-gradient(180deg,var(--surface-accent),var(--surface-accent-strong))] text-[var(--text-primary)] shadow-[var(--shadow-accent)]"
       : "border-[color:var(--border-subtle)] bg-[var(--surface)] text-[var(--text-secondary)] hover:border-[color:var(--border-strong)] hover:text-[var(--text-primary)]",
   ].join(" ");
 }
@@ -371,153 +348,23 @@ export default function Pricing() {
 
               {isPackagesMode ? (
                 <>
-                  <div id={PACKAGE_SELECTION_SECTION_ID}>
-                    <Card className="p-6 sm:p-7 xl:p-8">
-                      <div className="grid gap-7 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.92fr)] xl:items-start">
-                      <div className="max-w-3xl space-y-4">
-                        <p className="type-kicker">Packages</p>
-                        <h2 className="type-section-title max-w-[15ch]">
-                          Compare starting configurations without the noise.
-                        </h2>
-                        <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
-                          Each card shows who the package is for, the current
-                          price view, the delivery window, and the core scope.
-                          Billing and coupon changes update the same cards and
-                          the live summary immediately.
-                        </p>
-                      </div>
-
-                      <div className="theme-panel rounded-[28px] border border-[color:var(--border-subtle)] p-5 sm:p-6">
-                        <div className="space-y-5">
-                          <div className="space-y-3">
-                            <p className="type-label">Billing</p>
-                            <div className="grid grid-cols-2 gap-3">
-                              {billingOptions.map((option) => (
-                                <button
-                                  key={option.id}
-                                  aria-pressed={billingMode === option.id}
-                                  className={getToggleClasses(
-                                    billingMode === option.id,
-                                  )}
-                                  onClick={() => setBillingMode(option.id)}
-                                  type="button"
-                                >
-                                  <span className="block text-[0.95rem] font-semibold tracking-[0.01em]">
-                                    {option.label}
-                                  </span>
-                                  <span className="mt-2 block text-sm leading-6 opacity-80">
-                                    {option.note}
-                                  </span>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div className="border-t border-[color:var(--border-subtle)] pt-5">
-                            <div className="flex items-start justify-between gap-4">
-                              <div className="space-y-2">
-                                <p className="type-label">Coupon</p>
-                                <p className="text-sm leading-6 text-[var(--text-secondary)]">
-                                  Try{" "}
-                                  <span className="font-medium text-[var(--text-primary)]">
-                                    FIRST3
-                                  </span>{" "}
-                                  or{" "}
-                                  <span className="font-medium text-[var(--text-primary)]">
-                                    TRYONCE
-                                  </span>
-                                  .
-                                </p>
-                              </div>
-
-                              {appliedCoupon ? (
-                                <button
-                                  className="text-sm font-medium text-[var(--accent-secondary)] transition-colors duration-300 hover:text-[var(--text-primary)]"
-                                  onClick={handleCouponClear}
-                                  type="button"
-                                >
-                                  Clear
-                                </button>
-                              ) : null}
-                            </div>
-
-                            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                              <input
-                                className={[
-                                  "theme-input min-h-[54px] flex-1 rounded-full px-5 py-3 text-sm tracking-[0.08em] uppercase",
-                                  couponError
-                                    ? "border-[rgba(217,93,106,0.38)] bg-[rgba(217,93,106,0.08)]"
-                                    : "",
-                                ]
-                                  .filter(Boolean)
-                                  .join(" ")}
-                                onChange={handleCouponChange}
-                                placeholder="Enter coupon code"
-                                value={couponInput}
-                              />
-
-                              <Button
-                                className="sm:min-w-[132px]"
-                                onClick={handleCouponApply}
-                                size="lg"
-                              >
-                                Apply
-                              </Button>
-                            </div>
-
-                            {couponError ? (
-                              <div className="mt-4 rounded-[20px] border border-[rgba(217,93,106,0.32)] bg-[rgba(217,93,106,0.08)] px-4 py-3">
-                                <p className="text-sm leading-6 text-[var(--text-primary)]">
-                                  {couponError}
-                                </p>
-                              </div>
-                            ) : null}
-                          </div>
-
-                          <div
-                            className={[
-                              "rounded-[24px] border p-5",
-                              getSurfaceClasses(packageStatusNotice.tone),
-                            ].join(" ")}
-                          >
-                            <p className="type-kicker">{packageStatusLabel}</p>
-                            <p className="mt-2 text-base font-semibold text-[var(--text-primary)]">
-                              {packageStatusNotice.title}
-                            </p>
-                            <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-                              {packageStatusNotice.detail}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      </div>
-                    </Card>
-                  </div>
-
-                  <div className="space-y-6 sm:space-y-7">
-                    <div className="max-w-4xl space-y-4">
-                      <p className="type-kicker">Package selection</p>
-                      <h2 className="type-section-title max-w-[14ch]">
-                        Pick the starting point that matches your scope.
-                      </h2>
-                      <p className="max-w-[56ch] text-base leading-8 text-[var(--text-secondary)]">
-                        Use the cards below to compare the three paths. The
-                        selected package feeds the summary on the right
-                        immediately, so you can choose quickly and continue.
-                      </p>
-                    </div>
-
-                    <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
-                      {plans.map((plan) => (
-                        <PricingPlanCard
-                          isSelected={selectedPlanId === plan.id}
-                          key={plan.id}
-                          onSelect={setSelectedPlanId}
-                          plan={plan}
-                        />
-                      ))}
-                    </div>
-                  </div>
+                  <PackageComparisonSection
+                    appliedCoupon={appliedCoupon}
+                    billingMode={billingMode}
+                    billingOptions={billingOptions}
+                    couponError={couponError}
+                    couponInput={couponInput}
+                    id={PACKAGE_SELECTION_SECTION_ID}
+                    onBillingModeChange={setBillingMode}
+                    onCouponApply={handleCouponApply}
+                    onCouponChange={handleCouponChange}
+                    onCouponClear={handleCouponClear}
+                    onSelectPlan={setSelectedPlanId}
+                    packageStatusLabel={packageStatusLabel}
+                    packageStatusNotice={packageStatusNotice}
+                    plans={plans}
+                    selectedPlanId={selectedPlanId}
+                  />
                 </>
               ) : (
                 <div
@@ -608,7 +455,6 @@ export default function Pricing() {
       </Section>
 
       <RecentBuilds />
-      <MetricsStrip />
       <WhatHappensNext ctaLabel="Review Setup" ctaTo="/summary" />
       <MobilePricingSummaryBar
         onInvalidAction={handleSelectionGuidance}

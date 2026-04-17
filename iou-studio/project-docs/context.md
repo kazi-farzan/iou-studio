@@ -73,9 +73,12 @@ Shared order-flow state now supports:
 - deliverable-aware build specifications across pricing and order review
 - a clearer Select -> Configure -> Review shell on the Pricing page
 - calmer package comparison cards with optional detail disclosure instead of always-on dense stacks
+- a dedicated package decision-support layer that separates quick comparison from final package selection
 - category-grouped custom-build sections that reveal add-ons and tier controls only after module selection
 - summary-synced pricing presentation so package cards and the live summary speak with the same billing and coupon state
 - a control-panel-style summary surface with a dominant total/timeline block, clearer section grouping, and collapsed detail by default on desktop and mobile
+- a role-based lower Pricing page where comparison supports decisions, Recent Build Log provides proof, and What Happens Next clarifies the handoff
+- less repetitive lower-page stacking after removing the redundant metric strip from the Pricing flow
 
 The homepage hero now includes a controlled identity layer:
 - a lightweight Three.js ambient node field inside the System State card
@@ -98,7 +101,7 @@ The system generates:
 This output acts as a build specification and is now closer to a provider-readable request document.
 
 Trust proof now includes:
-- Recent Build Log for fast proof on the Pricing surface
+- Recent Build Log for fast proof on the Pricing surface, now framed as representative output records instead of decorative placeholders
 - Case Studies structured as documented builds
 - business context, modules used, delivery timeline, deliverables, visual proof, and outcome per study
 
@@ -119,6 +122,7 @@ The product is now:
 - more readable on the Build / Pricing page with a roomier shell, stronger section hierarchy, and a healthier summary-column balance
 - calmer inside the configurator itself, with clearer package hierarchy, reduced card density, grouped custom-build sections, and lighter nested-option treatment
 - calmer inside the summary itself, with price and timeline surfaced first, cleaner Current Setup -> Build Breakdown -> Deliverables -> Timeline -> CTA grouping, and less always-visible detail
+- clearer through the lower half of the Pricing page, with a quick-scan comparison layer, more believable build proof cards, and a larger operational next-step section
 - consistent from entry layer to submission
 
 ---
@@ -136,6 +140,8 @@ Phase 9 - Identity + Wow is complete.
 - Task 33: Submission Backend
 - QA the visual polish pass across mobile, tablet, desktop, light, and dark themes
 - QA the configurator clarity pass across package mode and custom build mode
+- QA the lower Pricing page comparison matrix, proof cards, and process rail across mobile, tablet, desktop, light, and dark themes
 - monitor package detail disclosure states, grouped custom-module sections, and responsive tap clarity
 - watch summary disclosure states, sticky internal scrolling, and long custom-build breakdowns for crowding or overflow regressions
+- watch package comparison scanability on tablet widths, build-log preview contrast in both themes, and What Happens Next step spacing on smaller screens
 - keep case study records and future schema changes aligned with deliverable terminology and package wording
