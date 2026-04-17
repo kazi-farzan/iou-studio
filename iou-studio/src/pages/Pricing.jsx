@@ -289,8 +289,8 @@ export default function Pricing() {
           <div className="grid gap-8 xl:grid-cols-[minmax(0,1.16fr)_minmax(360px,0.84fr)] xl:items-start 2xl:gap-12 2xl:grid-cols-[minmax(0,1.2fr)_minmax(392px,0.88fr)]">
             <div className="min-w-0 space-y-8 sm:space-y-10 xl:space-y-12">
               <Card className="p-6 sm:p-7 lg:p-8 xl:p-9">
-                <div className="grid gap-6 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:items-start xl:gap-8">
-                  <div className="max-w-2xl space-y-4 sm:space-y-5">
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-8">
+                  <div className="max-w-2xl space-y-4 sm:space-y-5 lg:min-w-0 lg:flex-[1.2]">
                     <p className="type-kicker">Start path</p>
                     <h2 className="type-section-title max-w-[15ch]">
                       Choose a guided package or build the system module by
@@ -304,9 +304,9 @@ export default function Pricing() {
                     </p>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="w-full space-y-4 lg:min-w-[22rem] lg:flex-1 xl:min-w-[24rem]">
                     <div className="theme-panel rounded-[28px] border border-[color:var(--border-subtle)] p-3 sm:p-4">
-                      <div className="grid gap-3 sm:grid-cols-2">
+                      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2">
                         {configurationModes.map((option) => (
                           <button
                             key={option.id}
@@ -325,7 +325,7 @@ export default function Pricing() {
                                 </span>
                               ) : null}
                             </span>
-                            <span className="mt-3 block max-w-[26ch] text-sm leading-7 opacity-90">
+                            <span className="mt-3 block max-w-[28ch] text-sm leading-7 opacity-90">
                               {option.detail}
                             </span>
                           </button>
