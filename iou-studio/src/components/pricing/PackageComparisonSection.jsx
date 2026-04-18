@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
 import { getPlanSnapshot } from "../../data/pricing.js";
 import Button from "../ui/Button.jsx";
 import Card from "../ui/Card.jsx";
+import PackageDetailPanel from "./PackageDetailPanel.jsx";
+import PlanStatusBadges from "./PlanStatusBadges.jsx";
 import PricingPlanCard from "./PricingPlanCard.jsx";
+import { formatTimelineLabel } from "./packagePlanContent.js";
 
 const planComparisonCopy = {
   starter: {
@@ -42,8 +46,12 @@ function getToggleClasses(isActive) {
   ].join(" ");
 }
 
-function formatTimelineLabel(label = "") {
-  return label.replace(/^Estimated delivery:\s*/i, "").trim();
+function getPreferredPlanId(plans, preferredPlanId) {
+  if (plans.some((plan) => plan.id === preferredPlanId)) {
+    return preferredPlanId;
+  }
+
+  return plans[0]?.id ?? null;
 }
 
 function getPlanComparisonMeta(plan) {
@@ -111,7 +119,7 @@ function ComparisonMatrixDesktop({ comparisonPlans, selectedPlanId }) {
               ].join(" ")}
               key={plan.id}
             >
-              <div className="flex items-start justify-between gap-3">
+              <div className="grid grid-cols-[minmax(0,1fr)_7rem] items-start gap-3">
                 <div className="min-w-0">
                   <p className="text-lg font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
                     {plan.name}
@@ -121,19 +129,11 @@ function ComparisonMatrixDesktop({ comparisonPlans, selectedPlanId }) {
                   </p>
                 </div>
 
-                <div className="flex flex-wrap justify-end gap-2">
-                  {plan.isMostPopular ? (
-                    <span className="theme-chip-strong rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em]">
-                      Most selected
-                    </span>
-                  ) : null}
-
-                  {isSelected ? (
-                    <span className="theme-panel rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
-                      Selected
-                    </span>
-                  ) : null}
-                </div>
+                <PlanStatusBadges
+                  isMostPopular={plan.isMostPopular}
+                  isSelected={isSelected}
+                  size="compact"
+                />
               </div>
 
               <div className="mt-5 space-y-2">
@@ -211,7 +211,7 @@ function ComparisonMatrixMobile({ comparisonPlans, selectedPlanId }) {
             ].join(" ")}
             key={plan.id}
           >
-            <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="grid grid-cols-[minmax(0,1fr)_7rem] items-start gap-3">
               <div className="min-w-0">
                 <p className="text-lg font-semibold tracking-[-0.03em] text-[var(--text-primary)]">
                   {plan.name}
@@ -221,19 +221,11 @@ function ComparisonMatrixMobile({ comparisonPlans, selectedPlanId }) {
                 </p>
               </div>
 
-              <div className="flex flex-wrap justify-end gap-2">
-                {plan.isMostPopular ? (
-                  <span className="theme-chip-strong rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em]">
-                    Most selected
-                  </span>
-                ) : null}
-
-                {isSelected ? (
-                  <span className="theme-panel rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
-                    Selected
-                  </span>
-                ) : null}
-              </div>
+              <PlanStatusBadges
+                isMostPopular={plan.isMostPopular}
+                isSelected={isSelected}
+                size="compact"
+              />
             </div>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -279,6 +271,25 @@ export default function PackageComparisonSection({
   }));
   const selectedPlan =
     plans.find((plan) => plan.id === selectedPlanId) ?? comparisonPlans[0]?.plan;
+  const [activeDetailPlanId, setActiveDetailPlanId] = useState(() =>
+    getPreferredPlanId(plans, selectedPlanId),
+  );
+
+  useEffect(() => {
+    setActiveDetailPlanId(getPreferredPlanId(plans, selectedPlanId));
+  }, [plans, selectedPlanId]);
+
+  const activeDetailPlan =
+    plans.find((plan) => plan.id === activeDetailPlanId) ?? selectedPlan ?? null;
+
+  function handleSelectPlan(planId) {
+    setActiveDetailPlanId(planId);
+    onSelectPlan(planId);
+  }
+
+  function handleShowPlanDetails(planId) {
+    setActiveDetailPlanId(planId);
+  }
 
   return (
     <div className="space-y-6 sm:space-y-7" id={id}>
@@ -446,8 +457,8 @@ export default function PackageComparisonSection({
               Choose the setup that already feels closest to the build.
             </h3>
             <p className="max-w-[56ch] text-sm leading-7 text-[var(--text-secondary)] sm:text-base sm:leading-8">
-              The cards below are now for final selection, not for repeating
-              the entire comparison again.
+              Keep the cards comparison-first, then review the active package in
+              the shared detail surface below.
             </p>
           </div>
         </div>
@@ -455,13 +466,20 @@ export default function PackageComparisonSection({
         <div className="grid gap-5 xl:grid-cols-3">
           {plans.map((plan) => (
             <PricingPlanCard
+              isDetailActive={activeDetailPlanId === plan.id}
               isSelected={selectedPlanId === plan.id}
               key={plan.id}
-              onSelect={onSelectPlan}
+              onSelect={handleSelectPlan}
+              onShowDetails={handleShowPlanDetails}
               plan={plan}
             />
           ))}
         </div>
+
+        <PackageDetailPanel
+          isSelected={selectedPlanId === activeDetailPlan?.id}
+          plan={activeDetailPlan}
+        />
       </div>
     </div>
   );

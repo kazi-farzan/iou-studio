@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { getPlanSnapshot } from "../../data/pricing.js";
 import Button from "../ui/Button.jsx";
 import Card from "../ui/Card.jsx";
-import DeliverableList from "./DeliverableList.jsx";
+import PlanStatusBadges from "./PlanStatusBadges.jsx";
+import {
+  getMetricValues,
+  getScopeHighlights,
+} from "./packagePlanContent.js";
 
 function getCardClasses({ isMostPopular, isSelected }) {
   return [
@@ -18,63 +20,46 @@ function getCardClasses({ isMostPopular, isSelected }) {
     .join(" ");
 }
 
-function formatTimelineLabel(label = "") {
-  return label.replace(/^Estimated delivery:\s*/i, "").trim();
-}
-
-function getUniqueItems(items = []) {
-  return [...new Set(items.filter(Boolean))];
-}
-
-function getScopeHighlights(plan) {
-  const packageDeliverables = (plan.packageDeliverableSections ?? []).flatMap(
-    (section) => section.items ?? [],
-  );
-
-  return getUniqueItems([
-    ...packageDeliverables,
-    ...(plan.features ?? []),
-  ]).slice(0, 3);
-}
-
-function getAdditionalCoverage(plan, scopeHighlights) {
-  return (plan.features ?? []).filter(
-    (feature) => !scopeHighlights.includes(feature),
-  );
-}
-
-function getDetailToggleClasses(isOpen) {
+function getDetailToggleClasses(isActive) {
   return [
     "inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-medium transition-[background-color,border-color,color] duration-200",
-    isOpen
+    isActive
       ? "border-[color:var(--border-accent)] bg-[var(--surface-accent)] text-[var(--text-primary)]"
       : "border-[color:var(--border-subtle)] bg-[var(--surface)] text-[var(--text-secondary)] hover:border-[color:var(--border-strong)] hover:text-[var(--text-primary)]",
   ].join(" ");
 }
 
-function StatPanel({ label, value }) {
+function MetricPanel({ className = "", label, value }) {
   if (!label || !value) {
     return null;
   }
 
   return (
-    <div className="rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] px-4 py-4">
+    <div
+      className={[
+        "flex min-h-[5.75rem] min-w-0 flex-col justify-between rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-contrast)] px-4 py-4",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <p className="type-label">{label}</p>
-      <p className="mt-2 text-lg font-semibold tracking-[-0.03em] text-[var(--text-primary)] sm:text-xl">
+      <p className="mt-3 min-w-0 text-base font-semibold tracking-[-0.04em] text-[var(--text-primary)] sm:text-[1.15rem]">
         {value}
       </p>
     </div>
   );
 }
 
-function DetailList({ items = [], label }) {
+function ScopeHighlightList({ items = [] }) {
   if (!items.length) {
     return null;
   }
 
   return (
-    <div className="space-y-3">
-      <p className="type-label">{label}</p>
+    <div className="mt-5 space-y-3">
+      <p className="type-label">Scope highlights</p>
+
       <ul className="space-y-2.5">
         {items.map((item) => (
           <li className="flex items-start gap-3" key={item}>
@@ -112,89 +97,65 @@ function IncludedModules({ modules = [] }) {
 }
 
 export default function PricingPlanCard({
+  isDetailActive = false,
   isSelected = false,
   onSelect,
+  onShowDetails,
   plan,
 }) {
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const cardClasses = getCardClasses({
     isMostPopular: plan.isMostPopular,
     isSelected,
   });
-  const snapshot = getPlanSnapshot(plan);
-  const primaryMetric = snapshot.metrics[0];
-  const secondaryMetric = snapshot.metrics[1];
-  const timelineLabel = formatTimelineLabel(plan.timelineEstimate?.label);
+  const metricValues = getMetricValues(plan);
   const scopeHighlights = getScopeHighlights(plan);
-  const additionalCoverage = getAdditionalCoverage(plan, scopeHighlights);
 
   return (
     <Card className={cardClasses} interactive>
       <div className="flex h-full min-w-0 flex-col">
-        <div className="flex items-start justify-between gap-4">
-          <div className="space-y-2">
+        <div className="grid grid-cols-[minmax(0,1fr)_7.5rem] items-start gap-x-4 gap-y-3 sm:grid-cols-[minmax(0,1fr)_8rem]">
+          <div className="min-w-0 space-y-2">
             <p className="type-label">{plan.audience}</p>
             <h2 className="type-card-title">{plan.name}</h2>
           </div>
 
-          <div className="flex flex-wrap items-center justify-end gap-2">
-            {plan.isMostPopular ? (
-              <span className="theme-chip-strong rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em]">
-                Most selected
-              </span>
-            ) : null}
-
-            {isSelected ? (
-              <span className="theme-panel rounded-full px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--accent-secondary)]">
-                Selected
-              </span>
-            ) : null}
-          </div>
+          <PlanStatusBadges
+            className="min-w-0"
+            isMostPopular={plan.isMostPopular}
+            isSelected={isSelected}
+          />
         </div>
 
         <p className="mt-4 text-sm leading-7 text-[var(--text-secondary)]">
           {plan.description}
         </p>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          <StatPanel label={primaryMetric?.label} value={primaryMetric?.value} />
-          <StatPanel
-            label={secondaryMetric?.label}
-            value={secondaryMetric?.value}
+        <div className="mt-5 grid grid-cols-2 gap-3">
+          <MetricPanel label="Current rate" value={metricValues.currentRate} />
+          <MetricPanel label="Due today" value={metricValues.dueToday} />
+          <MetricPanel
+            className="col-span-2"
+            label="Delivery"
+            value={metricValues.delivery}
           />
-          <StatPanel label="Delivery" value={timelineLabel} />
         </div>
 
         <IncludedModules modules={plan.includedModules} />
-
-        <div className="mt-5 space-y-3">
-          <p className="type-label">Scope highlights</p>
-
-          <ul className="space-y-2.5">
-            {scopeHighlights.map((item) => (
-              <li className="flex items-start gap-3" key={item}>
-                <span className="theme-dot mt-2 h-1.5 w-1.5 shrink-0 rounded-full" />
-                <span className="text-sm leading-6 text-[var(--text-secondary)]">
-                  {item}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ScopeHighlightList items={scopeHighlights} />
 
         <div className="mt-6 border-t border-[color:var(--border-subtle)] pt-5">
           <button
-            aria-expanded={isDetailsOpen}
-            className={getDetailToggleClasses(isDetailsOpen)}
-            onClick={() => setIsDetailsOpen((current) => !current)}
+            aria-pressed={isDetailActive}
+            className={getDetailToggleClasses(isDetailActive)}
+            onClick={() => onShowDetails(plan.id)}
             type="button"
           >
-            <span>{isDetailsOpen ? "Hide package detail" : "View package detail"}</span>
+            <span>{isDetailActive ? "Showing details" : "View package detail"}</span>
             <svg
               aria-hidden="true"
               className={[
                 "h-4 w-4 transition-transform duration-200",
-                isDetailsOpen ? "rotate-180" : "rotate-0",
+                isDetailActive ? "rotate-180" : "rotate-0",
               ].join(" ")}
               fill="none"
               viewBox="0 0 20 20"
@@ -208,27 +169,6 @@ export default function PricingPlanCard({
               />
             </svg>
           </button>
-
-          {isDetailsOpen ? (
-            <div className="mt-5 space-y-5">
-              <p className="text-sm leading-6 text-[var(--text-secondary)]">
-                {snapshot.note}
-              </p>
-
-              <DeliverableList
-                compact
-                label="Package outputs"
-                maxItemsPerSection={2}
-                sections={plan.packageDeliverableSections}
-                surface="contrast"
-              />
-
-              <DetailList
-                items={additionalCoverage}
-                label="Additional coverage"
-              />
-            </div>
-          ) : null}
         </div>
 
         <div className="mt-auto pt-6">
