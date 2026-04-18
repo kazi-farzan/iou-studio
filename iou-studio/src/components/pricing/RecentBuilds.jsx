@@ -347,43 +347,64 @@ function BuildPreview({ preview }) {
   return <PreviewComponent />;
 }
 
+function BuildDetailCard({
+  children,
+  className = "",
+  label,
+  surface = "panel",
+}) {
+  const surfaceClasses =
+    surface === "section"
+      ? "border-t border-[color:var(--border-subtle)] pt-5"
+      : "rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-4";
+
+  return (
+    <div
+      className={[
+        surfaceClasses,
+        className,
+      ].join(" ")}
+    >
+      <p className="type-label">{label}</p>
+      <div className="mt-3">{children}</div>
+    </div>
+  );
+}
+
 function BuildCard({ build }) {
   return (
     <article className="theme-card overflow-hidden rounded-[34px] p-0">
-      <div className="grid lg:grid-cols-[minmax(260px,0.9fr)_minmax(0,1.1fr)]">
-        <div className="border-b border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface-muted),var(--surface-soft))] p-4 sm:p-5 lg:border-b-0 lg:border-r">
+      <div className="flex flex-col">
+        <div className="border-b border-[color:var(--border-subtle)] bg-[linear-gradient(180deg,var(--surface-muted),var(--surface-soft))] p-4 sm:p-5">
           <BuildPreview preview={build.preview} />
         </div>
 
-        <div className="flex flex-col p-5 sm:p-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="min-w-0 space-y-2">
-              <p className="type-label">Build {build.id}</p>
-              <h3 className="type-card-title">{build.name}</h3>
-              <p className="text-sm font-medium text-[var(--text-secondary)]">
-                {build.descriptor}
-              </p>
-            </div>
-
-            <div className="rounded-[20px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-3 sm:min-w-[11rem]">
-              <p className="type-label">Delivery</p>
-              <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">
-                {build.timeline}
-              </p>
-            </div>
+        <div className="flex flex-col gap-5 p-5 sm:gap-6 sm:p-6">
+          <div className="min-w-0 space-y-2">
+            <p className="type-label">Build {build.id}</p>
+            <h3 className="type-card-title">{build.name}</h3>
+            <p className="text-sm font-medium leading-6 text-[var(--text-secondary)]">
+              {build.descriptor}
+            </p>
           </div>
 
-          <div className="mt-5 grid gap-3 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-            <div className="rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-4">
-              <p className="type-label">Output type</p>
-              <p className="mt-2 text-sm font-medium leading-6 text-[var(--text-primary)]">
-                {build.scope}
-              </p>
+          <div className="space-y-3">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <BuildDetailCard label="Delivery">
+                <p className="text-sm font-semibold text-[var(--text-primary)]">
+                  {build.timeline}
+                </p>
+              </BuildDetailCard>
+
+              <BuildDetailCard label="Output type">
+                <p className="text-sm font-medium leading-6 text-[var(--text-primary)]">
+                  {build.scope}
+                </p>
+              </BuildDetailCard>
             </div>
 
-            <div className="rounded-[22px] border border-[color:var(--border-subtle)] bg-[var(--surface-soft)] px-4 py-4">
-              <p className="type-label">Modules in play</p>
-              <div className="mt-3 flex flex-wrap gap-2">
+            <BuildDetailCard label="Modules in play">
+              <div className="flex flex-wrap gap-2">
                 {build.tags.map((tag, index) => (
                   <span
                     className={[
@@ -398,15 +419,14 @@ function BuildCard({ build }) {
                   </span>
                 ))}
               </div>
-            </div>
+            </BuildDetailCard>
           </div>
 
-          <div className="mt-5 border-t border-[color:var(--border-subtle)] pt-5">
-            <p className="type-label">What shipped</p>
-            <p className="mt-3 text-sm leading-7 text-[var(--text-secondary)]">
+          <BuildDetailCard label="What shipped" surface="section">
+            <p className="text-sm leading-7 text-[var(--text-secondary)]">
               {build.outcome}
             </p>
-          </div>
+          </BuildDetailCard>
         </div>
       </div>
     </article>
