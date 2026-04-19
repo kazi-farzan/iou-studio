@@ -246,7 +246,13 @@ export default function Pricing() {
       return;
     }
 
-    setIsLowerSummarySheetOpen(false);
+    const frameId = window.requestAnimationFrame(() => {
+      setIsLowerSummarySheetOpen(false);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
   }, [hasSummarySelection]);
 
   function handleCouponApply() {

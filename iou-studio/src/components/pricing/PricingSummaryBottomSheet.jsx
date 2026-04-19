@@ -97,14 +97,14 @@ export default function PricingSummaryBottomSheet({
       <div className="absolute inset-x-0 bottom-0 px-6 pb-6 2xl:px-8">
         <div
           className={[
-            "mx-auto w-full max-w-5xl transition-[transform,opacity] duration-200 ease-out motion-reduce:transition-none",
+            "mx-auto w-full max-w-[62rem] transition-[transform,opacity] duration-200 ease-out motion-reduce:transition-none",
             isOpen ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
           ].join(" ")}
         >
           <div
             aria-labelledby={titleId}
             aria-modal="true"
-            className="flex max-h-[min(82vh,54rem)] flex-col overflow-hidden rounded-[34px] border border-[color:var(--border-strong)] bg-[var(--surface-strong)] shadow-[var(--shadow-card)] backdrop-blur-xl"
+            className="max-h-[min(88vh,52rem)] overflow-y-auto rounded-[34px] border border-[color:var(--border-strong)] bg-[var(--surface-strong)] shadow-[var(--shadow-card)] backdrop-blur-xl"
             id={dialogId}
             role="dialog"
           >
@@ -123,6 +123,7 @@ export default function PricingSummaryBottomSheet({
                 </button>
               }
               onInvalidAction={handleInvalidSelectionAction}
+              surface="sheet"
               summary={summary}
               titleId={titleId}
             />

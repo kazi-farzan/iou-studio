@@ -52,6 +52,95 @@ function getRowOutputSummaries(groups = []) {
   );
 }
 
+function getSelectedRowLabels(rows = [], limit = 3) {
+  return rows
+    .filter((row) => row.kind === "option" || row.kind === "included-module")
+    .map((row) => row.label)
+    .filter(Boolean)
+    .slice(0, limit)
+    .join(" / ");
+}
+
+function getGroupScopeValue(group) {
+  const rows = group?.rows ?? [];
+  const includedModuleCount = rows.filter(
+    (row) => row.kind === "included-module",
+  ).length;
+  const optionCount = rows.filter((row) => row.kind === "option").length;
+  const baseCount = rows.filter((row) => row.kind === "base").length;
+
+  if (includedModuleCount) {
+    return formatCountLabel(includedModuleCount, "included module");
+  }
+
+  if (baseCount && optionCount) {
+    return `Base scope + ${formatCountLabel(optionCount, "selected option")}`;
+  }
+
+  if (baseCount) {
+    return "Base scope only";
+  }
+
+  if (optionCount) {
+    return formatCountLabel(optionCount, "selected option");
+  }
+
+  return rows.length ? formatCountLabel(rows.length, "selected item") : "";
+}
+
+function getGroupDetail(group) {
+  const deliverableSummary = formatDeliverableSummary(
+    group?.deliverables?.sections ?? [],
+    3,
+    "",
+  );
+
+  if (deliverableSummary) {
+    return {
+      label: "Highlights",
+      value: deliverableSummary,
+    };
+  }
+
+  const selectedLabels = getSelectedRowLabels(group?.rows ?? []);
+
+  if (selectedLabels) {
+    return {
+      label: "Selections",
+      value: selectedLabels,
+    };
+  }
+
+  const outputSummary = (group?.rows ?? [])
+    .map((row) => row.outputSummary)
+    .filter(Boolean)
+    .slice(0, 3)
+    .join(" / ");
+
+  if (outputSummary) {
+    return {
+      label: "Highlights",
+      value: outputSummary,
+    };
+  }
+
+  if (group?.description) {
+    return {
+      label: "Overview",
+      value: group.description,
+    };
+  }
+
+  if (group?.note) {
+    return {
+      label: "Note",
+      value: group.note,
+    };
+  }
+
+  return null;
+}
+
 function formatCompactRange(rangeDays) {
   const minimum = Number(rangeDays?.minimum);
   const maximum = Number(rangeDays?.maximum);
@@ -287,4 +376,56 @@ export function getSummaryTimelineBreakdown(summary) {
       };
     })
     .filter((item) => item.value);
+}
+
+export function getSummaryBreakdownCards(summary, { limit = Infinity } = {}) {
+  const groups = summary?.groups ?? [];
+  const visibleGroups = groups.slice(0, limit).map((group) => {
+    const detail = getGroupDetail(group);
+
+    return {
+      eyebrow: group.eyebrow || "",
+      id: group.id,
+      lines: [
+        {
+          label:
+            summary?.modeLabel === "Packages"
+              ? group.rowsLabel || "Included scope"
+              : "Scope",
+          value: getGroupScopeValue(group),
+        },
+        detail,
+      ].filter((line) => line?.value),
+      subtotal: group.subtotal?.value
+        ? {
+            label: group.subtotal.label || "Subtotal",
+            value: group.subtotal.value,
+          }
+        : null,
+      timeline: group.timeline?.value
+        ? {
+            label: "Delivery",
+            value: group.timeline.value,
+          }
+        : null,
+      title: group.title || "Selected item",
+    };
+  });
+
+  return {
+    hiddenCount: Math.max(groups.length - visibleGroups.length, 0),
+    items: visibleGroups,
+  };
+}
+
+export function getSummaryBreakdownOverflowNote(summary, hiddenCount = 0) {
+  if (!hiddenCount) {
+    return "";
+  }
+
+  const noun = summary?.modeLabel === "Packages" ? "group" : "module";
+
+  return hiddenCount === 1
+    ? `1 more ${noun} remains available in the full review.`
+    : `${hiddenCount} more ${noun}s remain available in the full review.`;
 }
